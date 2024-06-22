@@ -1,0 +1,53 @@
+
+body {
+    margin: 5px;
+    background-color: rgb(255, 236, 224);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 166, 0, 0.699);
+    border-radius: 10px;
+    padding: 5px;
+    width: 95%; /* Default width for small screens (phones) */
+    height: 95%;
+}
+
+@media (min-width: 600px) {
+    .slider-container {
+        width: 85%; /* Width for tablets and larger devices */
+        height: 85%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .slider-container {
+        width: 70%; /* Width for desktop computers and larger devices */
+        height: 70%;
+    }
+}
+
+.amountDiv {
+    display: flex;
+}
+.loanAmountSlider{
+    width: 80%; 
+}
+.loanAmountSlider::-webkit-outer-spin-button,
+.loanAmountSlider::-webkit-inner-spin-button {
+    display: none; /* Hide default arrows in Chrome, Safari, Edge */
+}
+.loanDetails {
+    display: none; /* Hide default arrows in Chrome, Safari, Edge */
+
+}
