@@ -47,7 +47,7 @@ for (var loanAmount = startLoanAmount; loanAmount <= maxLoanAmount; loanAmount +
 }
 
 function updateMonthlyAmountDisplay(value) {
-  document.getElementById('monthlyAmountDisplay').innerText = totalMonthlyAmountDisplay(value);
+  document.getElementById('loanAmountMonthlySlider').value = totalMonthlyAmountDisplay(value);
 }
 
 
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   // Function to update the displayed loan amount
   function updateLoanAmountDisplay(value) {
     loanAmountSlider.value = value;
-    document.getElementById('loanAmountDisplay').innerText = value;
+    //document.getElementById('loanAmountDisplay').innerText = value;
     updateMonthlyAmountDisplay(value);
   }
 
@@ -186,19 +186,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
           value += 500;
           updateLoanAmountDisplay(value);
       }
-      updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
-
-  }
+      //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
+    }
 
   function decrement() {
       let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
       if (value > 5000) { // Adjust the min value as needed
           value -= 500;
           updateLoanAmountDisplay(value);
-      }
-      updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
-
-  }
+        }
+      //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
+    }
 
   incrementButton.addEventListener('click', increment);
   decrementButton.addEventListener('click', decrement);
@@ -217,3 +215,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }
   let interval;
 })        
+
+
+document.getElementById("viewLoanDetails").addEventListener("submit",(e)=>{
+  div.style.display = 'block'
+  
+})
+
+document.addEventListener('click', function(event) {
+  var div = document.querySelector('.loanDetailsDiv');
+  var isClickInside = div.contains(event.target);
+
+  if (!isClickInside) {
+      div.style.display = 'none';
+  }
+});

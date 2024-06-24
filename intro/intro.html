@@ -8,40 +8,70 @@
 </head>
 <body>
     <div class="container">
-        <div class="loanDetails">
+        <div class="loanDetailsDiv">
+            <div class="loanDetails">
+                <div class="topDetails">
 
+                </div>
+                <div class="bottomDetails">
+
+                </div>
+            </div>
         </div>
         <div class="slider-container">
-            <label for="loanInterestDropdown">Select Loan Term (months):</label>
-            <select id="loanInterestDropdown">
-                <option value="0.23">special</option>
-                <option value="0.26">normal</option>
-            </select>
-            <label for="loanTermDropdown">Select Loan Term (months):</label>
-            <select id="loanTermDropdown">
-                <option value="6">6 months</option>
-                <option value="12">12 months</option>
-                <option value="18">18 months</option>
-                <option value="24">24 months</option>
-                <option value="30">30 months</option>
-                <option value="36">36 months</option>
-                <option value="48">48 months</option>
-                <option value="54">54 months</option>
-                <option value="60">60 months</option>
-                <option value="72">72 months</option>
-                <option value="84">84 months</option>
-                <option value="96">96 months</option>
-            </select>
-            <p>Selected Loan Amount: $<span id="loanAmountDisplay">5000</span></p>
-            <p>Total Monthly Amount: $<span id="monthlyAmountDisplay">5000</span></p>
-            <label for="loanAmountSlider">Select Loan Amount:</label>
-            <div class="amountDiv"> 
-                <span id="decrement">-</span>
-                <input type="number" class="loanAmountSlider" id="loanAmountSlider" value="5000">
-                <span id="increment">+</span>
+            <div class="loanInterestDropdownDiv">
+                <div>
+                    <label for="loanInterestDropdown">Select Loan Type</label>
+                </div>
+                <div>
+                    <select id="loanInterestDropdown">
+                        <option value="0.23">special</option>
+                        <option value="0.26">normal</option>
+                    </select>
+                </div>
             </div>
-            <div class="amountDiv+">  
-            </div>            
+            <div class="loanTermDropdownDiv">
+                <div>
+                    <label for="loanTermDropdown">Select Loan Term (months)</label>
+                </div>
+                <div>
+                    <select id="loanTermDropdown">
+                        <option value="6">6 months</option>
+                        <option value="12">12 months</option>
+                        <option value="18">18 months</option>
+                        <option value="24">24 months</option>
+                        <option value="30">30 months</option>
+                        <option value="36">36 months</option>
+                        <option value="48">48 months</option>
+                        <option value="54">54 months</option>
+                        <option value="60">60 months</option>
+                        <option value="72">72 months</option>
+                        <option value="84">84 months</option>
+                        <option value="96">96 months</option>
+                    </select>
+                </div>
+            </div>
+            <div class="monthlyloanDisplayDiv">
+                <div>
+                    <label for="loanAmountMonthlySlider">Total Monthly Amount: (BWP)</label>
+                </div>
+                <div class="monthlyAmountDiv">
+                    <span id="decrementMonthly">-</span>
+                    <input type="number" class="loanAmountMonthlySlider" id="loanAmountMonthlySlider" value="0">
+                    <span id="incrementMonly">+</span>
+                </div>
+            </div>
+            <div class="amountDivContainer"> 
+                <div>
+                    <label for="loanAmountSlider">Select Loan Amount</label>
+                </div>
+                <div class="amountDiv">
+                    <span id="decrement">-</span>
+                    <input type="number" class="loanAmountSlider" id="loanAmountSlider" value="0">
+                    <span id="increment">+</span>
+                </div>       
+            </div>
+            <button type="submit" id="viewLoanDetails"> View loan details</button>
         </div>
     </div>
     
