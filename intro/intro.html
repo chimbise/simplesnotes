@@ -8,16 +8,6 @@
 </head>
 <body>
     <div class="container">
-        <div class="loanDetailsDiv">
-            <div class="loanDetails">
-                <div class="topDetails">
-
-                </div>
-                <div class="bottomDetails">
-
-                </div>
-            </div>
-        </div>
         <div class="slider-container">
             <div class="loanInterestDropdownDiv">
                 <div>
@@ -57,8 +47,8 @@
                 </div>
                 <div class="monthlyAmountDiv">
                     <span id="decrementMonthly">-</span>
-                    <input type="number" class="loanAmountMonthlySlider" id="loanAmountMonthlySlider" value="0">
-                    <span id="incrementMonly">+</span>
+                        <input type="number" class="loanAmountMonthlySlider" id="loanAmountMonthlySlider" value="0">
+                    <span id="incrementMonthly">+</span>
                 </div>
             </div>
             <div class="amountDivContainer"> 
@@ -71,10 +61,19 @@
                     <span id="increment">+</span>
                 </div>       
             </div>
+            <div class="loanDetailsDiv" id="loanDetailsDiv">
+                <div class="loanDetails" id="loanDetails">
+                    <div class="topDetails">
+    
+                    </div>
+                    <div class="bottomDetails">
+    
+                    </div>
+                </div>
+            </div>
             <button type="submit" id="viewLoanDetails"> View loan details</button>
         </div>
     </div>
-    
     <script src="intro.js"></script>
 </body>
 </html>

@@ -217,16 +217,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 })        
 
 
-document.getElementById("viewLoanDetails").addEventListener("submit",(e)=>{
-  div.style.display = 'block'
+var viewLoanDetailsButton = document.getElementById("viewLoanDetails")
+
+viewLoanDetailsButton.addEventListener("click",(e)=>{
+  var div = document.getElementById('loanDetailsDiv');
   
+  if (div.style.display === 'none' || div.style.display === '') {
+    div.style.display = 'flex';
+  } else {
+    div.style.display = 'none';
+  }
 })
 
+// Hide the loanDetailsDiv if clicking outside of it
 document.addEventListener('click', function(event) {
-  var div = document.querySelector('.loanDetailsDiv');
-  var isClickInside = div.contains(event.target);
-
-  if (!isClickInside) {
-      div.style.display = 'none';
+  var loanDetailsDiv = document.getElementById('loanDetailsDiv');
+  var innerDiv = document.querySelector('.loanDetails');
+  if (!innerDiv.contains(event.target) && event.target.id !== 'viewLoanDetails') {
+    loanDetailsDiv.style.display = 'none';
   }
 });
