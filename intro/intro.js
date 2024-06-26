@@ -126,28 +126,11 @@ function totalMonthlyAmountDisplay(selectedLoanAmount){
   return totalMonthlyAmount; // Output the total monthly amount
 }
 
+function viewLoanDetails(){
+  rt//interest
+  term//months
 
-// let value = 5000;
-// const valueSpan = document.getElementById('value');
-
-// var increment = document.getElementById("increment");
-// var decrement = document.getElementById("decrement");
-
-// increment.addEventListener('mouse',() =>{
-//   if (value < 700000) {
-//       value+=500;
-//       valueSpan.textContent = value;
-//   }
-//   console.log(value)
-
-// })
-
-// decrement.addEventListener('click',() => {
-//   if (value > 5000) {
-//       value-=500;
-//       valueSpan.textContent = value;
-//   }
-//   console.log(value)
+}
 
 document.addEventListener('DOMContentLoaded', (event) => {
 
@@ -163,7 +146,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   const loanInterestDropdown = document.getElementById('loanInterestDropdown');
   function updateLoanInterest(){
-    b6 = (loanInterestDropdown.value) / 12;
+    rt = loanInterestDropdown.value;
+    b6 = rt / 12;
     updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
   }
   loanInterestDropdown.addEventListener('change', updateLoanInterest);

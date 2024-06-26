@@ -15,14 +15,14 @@
                 </div>
                 <div>
                     <select id="loanInterestDropdown">
-                        <option value="0.23">special</option>
-                        <option value="0.26">normal</option>
+                        <option class="styled-option" value="0.23">TAWU special</option>
+                        <option  value="0.26" >TAWU normal</option>
                     </select>
                 </div>
             </div>
             <div class="loanTermDropdownDiv">
                 <div>
-                    <label for="loanTermDropdown">Select Loan Term (months)</label>
+                    <label for="loanTermDropdown">Select Loan Term </label>
                 </div>
                 <div>
                     <select id="loanTermDropdown">
@@ -43,17 +43,15 @@
             </div>
             <div class="monthlyloanDisplayDiv">
                 <div>
-                    <label for="loanAmountMonthlySlider">Total Monthly Amount: (BWP)</label>
+                    <label for="loanAmountMonthlySlider">Total Monthly Amount:(P)</label>
                 </div>
                 <div class="monthlyAmountDiv">
-                    <span id="decrementMonthly">-</span>
-                        <input type="number" class="loanAmountMonthlySlider" id="loanAmountMonthlySlider" value="0">
-                    <span id="incrementMonthly">+</span>
+                    <input type="number" class="loanAmountMonthlySlider" id="loanAmountMonthlySlider" value="0">
                 </div>
             </div>
             <div class="amountDivContainer"> 
                 <div>
-                    <label for="loanAmountSlider">Select Loan Amount</label>
+                    <label for="loanAmountSlider">Select Loan Amount:(P)</label>
                 </div>
                 <div class="amountDiv">
                     <span id="decrement">-</span>
@@ -64,10 +62,56 @@
             <div class="loanDetailsDiv" id="loanDetailsDiv">
                 <div class="loanDetails" id="loanDetails">
                     <div class="topDetails">
-    
+                        <div class="scroll-container">
+                            <div class="scroll-item">
+                                <h3>Interest Rate</h3>
+                                <p id="InterestRate">0</p>
+                            </div>
+                            <div class="scroll-item">
+                                <h3>Loan Amount Requested</h3>
+                                <p id="LoanAmountRequested">0</p>
+                            </div>
+                            <div class="scroll-item">
+                                <h3>AdmninFee</h3>
+                                <p id="AdmninFee">0</p>
+                            </div>
+                            <div class="scroll-item">
+                                <h3>Processing Fee</h3>
+                                <p id="ProcessingFee">0</p>
+                            </div>
+                            <div class="scroll-item">
+                                <h3>Total Loan Amount</h3>
+                                <p id="TotalLoanAmount">0</p>
+                            </div>
+                            <div class="scroll-item">
+                                <h3>Annual Percentage Rate</h3>
+                                <p id="AnnualPercentageRate">0</p>
+                            </div>
+                        </div>                        
                     </div>
                     <div class="bottomDetails">
-    
+                        <div class="scroll-container">
+                            <div class="scroll-item">
+                                <h3>Loan Term</h3>
+                                <p id="LoanTerm">0</p>
+                            </div>
+                            <div class="scroll-item">
+                                <h3>Monthly Instalments</h3>
+                                <p id="MonthlyInstalments">0</p>
+                            </div>
+                            <div class="scroll-item">
+                                <h3>Monthly Credit Life Premium</h3>
+                                <p id="MonthlyCreditLifePremium">0</p>
+                            </div>
+                            <div class="scroll-item">
+                                <h3>Monthly Collection Fee</h3>
+                                <p id="MonthlyCollectionFee">0</p>
+                            </div>
+                            <div class="scroll-item">
+                                <h3>Total Monthly Instalments</h3>
+                                <p id="TotalMonthlyInstalments">0</p>
+                            </div>
+                        </div>         
                     </div>
                 </div>
             </div>
