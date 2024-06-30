@@ -88,10 +88,12 @@ body {
 #loanInterestDropdown {
     height: 50px;
     border-radius: 5px;
+    font-size: larger;
 }
 #loanTermDropdown {
     height: 50px;
     border-radius: 5px;
+    font-size: larger;
 }
 .slider-container input {
     text-align: center;
@@ -107,6 +109,10 @@ body {
 .loanAmountMonthlySlider::-webkit-inner-spin-button,
 .loanAmountSlider::-webkit-inner-spin-button {
     display: none;
+}
+.loanAmountMonthlySlider{
+    background-color: #f0f0f0;
+    font-weight: bolder;
 }
 .loanDetails {
     display: flex;

@@ -146,63 +146,252 @@ function viewLoanDetailsDiv(){
   var monthlyEmployerCollection = Number(i14.toFixed(2))
   var totalMonthlyInstalment = totalMonthlyAmountDisplay(loanAmount)
   //var totalMonthlyInstalment = totalMonthlyAmounts
-  var apr = 12 * calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount);
+  var apr = calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount,0,0,0.1)*1200;
 
   document.getElementById('InterestRate').textContent  = interest;
   document.getElementById('LoanAmountRequested').textContent  = loanAmount+ '.00';
   document.getElementById('AdminFee').textContent  = adminFee;
   document.getElementById('ProcessingFee').textContent  = processingFee;
   document.getElementById('TotalLoanAmount').textContent  = totalLoanAmount;
-  document.getElementById('AnnualPercentageRate').textContent  = apr;
+  document.getElementById('AnnualPercentageRate').textContent  = Number(apr.toFixed(2));
   document.getElementById('LoanTerm').textContent  = loanTerm;
   document.getElementById('MonthlyInstalments').textContent  = monthlyLoanInstalment;
   document.getElementById('MonthlyCreditLifePremium').textContent  = monthlyInsurancePremiumm;
   document.getElementById('MonthlyCollectionFee').textContent  = monthlyEmployerCollection;
   document.getElementById('TotalMonthlyInstalments').textContent  = totalMonthlyInstalment;
 }
-function calculateRate(nper, pmt, pv, fv = 0, type = 0, guess = 0.1) {
-  const eps = 1e-10; // Convergence tolerance
-  const iterMax = 100; // Maximum iterations
-  let rate = guess;
+function calculateRate(nper, pmt, pv, fv, type, guess) {
+  // Tolerance for convergence
+  const tol = 1e-6;
+  // Maximum number of iterations
+  const maxIter = 100;
   
-  for (let i = 0; i < iterMax; i++) {
-      let y = (pv * Math.pow(1 + rate, nper) + pmt * (1 + rate * type) * (Math.pow(1 + rate, nper) - 1) / rate + fv);
-      let y0 = pv * Math.pow(1 + rate, nper - 1) + pmt * (1 + rate * type) * (Math.pow(1 + rate, nper - 1) - 1) / rate + fv;
-      let y1 = pv * nper * Math.pow(1 + rate, nper - 1) + pmt * (1 + rate * type) * nper * Math.pow(1 + rate, nper - 1) / rate;
-
-      let x0 = rate;
-      rate = rate - y / y1;
-      
-      if (Math.abs(rate - x0) < eps) {
-          break;
-      }
+  let rate = guess;
+  let iter = 0;
+  
+  while (iter < maxIter) {
+    // Calculate the value of the function
+    const f = pv * Math.pow(1 + rate, nper) + pmt * (1 + rate * type) * (Math.pow(1 + rate, nper) - 1) / rate + fv;
+    
+    // Calculate the value of the derivative of the function
+    const df = pv * nper * Math.pow(1 + rate, nper - 1) + pmt * (1 + rate * type) * (nper * Math.pow(1 + rate, nper - 1) / rate - (Math.pow(1 + rate, nper) - 1) / Math.pow(rate, 2));
+    
+    // Update the estimate
+    const newRate = rate - f / df;
+    
+    // Check for convergence
+    if (Math.abs(newRate - rate) < tol) {
+      return rate;
+    }
+    
+    rate = newRate;
+    iter++;
   }
   
+  // Return the last estimate if no convergence
   return rate;
 }
 
 
-document.addEventListener('DOMContentLoaded', (event) => {
+// document.addEventListener('DOMContentLoaded', (event) => {
 
+//   const loanTermDropdown = document.getElementById('loanTermDropdown');
+//   // Function to update the loan term
+//   function updateLoanTerm() {
+//     // You can add further logic here to handle the loan term change
+//     term = loanTermDropdown.value;
+//     updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
+//     //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
+//   }
+//   loanTermDropdown.addEventListener('change', updateLoanTerm);
+
+//   const loanInterestDropdown = document.getElementById('loanInterestDropdown');
+//   function updateLoanInterest(){
+//     rt = loanInterestDropdown.value;
+//     b6 = rt / 12;
+//     updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
+//     //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
+//   }
+//   loanInterestDropdown.addEventListener('change', updateLoanInterest);
+
+
+//   const loanAmountSlider = document.getElementById('loanAmountSlider');
+//   const decrementButton = document.getElementById('decrement');
+//   const incrementButton = document.getElementById('increment');
+
+//   // Function to update the displayed loan amount
+//   function updateLoanAmountDisplay(value) {
+//     loanAmountSlider.value = value;
+//     //document.getElementById('loanAmountDisplay').innerText = value;
+//     updateMonthlyAmountDisplay(value);
+//   }
+
+//   function increment() {
+//       let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
+//       if (value < 700000) { // Adjust the max value as needed
+//           value += 500;
+//           updateLoanAmountDisplay(value);
+//           //updateMonthlyAmountDisplay(value);
+//       }
+//       //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
+//     }
+
+//   function decrement() {
+//       let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
+//       if (value > 5000) { // Adjust the min value as needed
+//           value -= 500;
+//           updateLoanAmountDisplay(value);
+//           //updateMonthlyAmountDisplay(value);
+//         }
+//       //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
+//     }
+
+//   incrementButton.addEventListener('click', increment);
+//   decrementButton.addEventListener('click', decrement);
+//   // incrementButton.addEventListener('mousedown', () => handleMouseDown(increment));
+//   // decrementButton.addEventListener('mousedown', () => handleMouseDown(decrement));
+ 
+//   let intervalId;
+//   incrementButton.addEventListener('mousedown', () => {
+//     intervalId = setInterval(increment, 100); // Run every second
+//   });
+  
+//   incrementButton.addEventListener('mouseup', () => {
+//     clearInterval(intervalId);
+//   });
+  
+//   incrementButton.addEventListener('mouseleave', () => {
+//     clearInterval(intervalId);
+//   });
+
+//   decrementButton.addEventListener('mousedown', () => {
+//     intervalId = setInterval(decrement, 1000); // Run every second
+//   });
+  
+//   decrementButton.addEventListener('mouseup', () => {
+//     clearInterval(intervalId);
+//   });
+  
+//   decrementButton.addEventListener('mouseleave', () => {
+//     clearInterval(intervalId);
+//   });
+// }) 
+// document.addEventListener('DOMContentLoaded', (event) => {
+//   const loanTermDropdown = document.getElementById('loanTermDropdown');
+
+//   // Function to update the loan term
+//   function updateLoanTerm() {
+//     term = loanTermDropdown.value;
+//     updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
+//   }
+//   loanTermDropdown.addEventListener('change', updateLoanTerm);
+
+//   const loanInterestDropdown = document.getElementById('loanInterestDropdown');
+//   function updateLoanInterest() {
+//     rt = loanInterestDropdown.value;
+//     b6 = rt / 12;
+//     updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
+//   }
+//   loanInterestDropdown.addEventListener('change', updateLoanInterest);
+
+//   const loanAmountSlider = document.getElementById('loanAmountSlider');
+//   const decrementButton = document.getElementById('decrement');
+//   const incrementButton = document.getElementById('increment');
+
+//   // Function to update the displayed loan amount
+//   function updateLoanAmountDisplay(value) {
+//     loanAmountSlider.value = value;
+//     updateMonthlyAmountDisplay(value);
+//   }
+
+//   function increment() {
+//     let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
+//     if (value < 700000) { // Adjust the max value as needed
+//       value += 500;
+//       updateLoanAmountDisplay(value);
+//     }
+//   }
+
+//   function decrement() {
+//     let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
+//     if (value > 5000) { // Adjust the min value as needed
+//       value -= 500;
+//       updateLoanAmountDisplay(value);
+//     }
+//   }
+
+//   let intervalId;
+//   let timeoutId;
+//   let isTouchEvent = false;
+
+//   function handleMouseDown(action) {
+//     timeoutId = setTimeout(() => {
+//       intervalId = setInterval(action, 10); // Run every 500 ms
+//     }, 500); // 500 ms delay to detect long press
+//   }
+
+//   function handleMouseUp(action) {
+//     clearTimeout(timeoutId);
+//     if (intervalId) {
+//       clearInterval(intervalId);
+//       intervalId = null;
+//     } else {
+//       if (!isTouchEvent) {
+//         action(); // Run the action if it was a click and not a touch event
+//       }
+//     }
+//     isTouchEvent = false;
+//   }
+
+//   function handleTouchStart(action) {
+//     isTouchEvent = true;
+//     handleMouseDown(action);
+//   }
+
+//   function handleTouchEnd(action) {
+//     handleMouseUp(action);
+//   }
+
+//   function addEventListeners(button, action) {
+//     button.addEventListener('mousedown', () => handleMouseDown(action));
+//     button.addEventListener('mouseup', () => handleMouseUp(action));
+//     button.addEventListener('mouseleave', () => handleMouseUp(action));
+//     button.addEventListener('mouseout', () => handleMouseUp(action));
+
+//     button.addEventListener('touchstart', (event) => {
+//       event.preventDefault();
+//       handleTouchStart(action);
+//     });
+//     button.addEventListener('touchend', (event) => {
+//       event.preventDefault();
+//       handleTouchEnd(action);
+//     });
+//     button.addEventListener('touchcancel', (event) => {
+//       event.preventDefault();
+//       handleTouchEnd(action);
+//     });
+//   }
+
+//   addEventListeners(incrementButton, increment);
+//   addEventListeners(decrementButton, decrement);
+// });
+document.addEventListener('DOMContentLoaded', (event) => {
   const loanTermDropdown = document.getElementById('loanTermDropdown');
+
   // Function to update the loan term
   function updateLoanTerm() {
-    // You can add further logic here to handle the loan term change
     term = loanTermDropdown.value;
     updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
-    //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
   }
   loanTermDropdown.addEventListener('change', updateLoanTerm);
 
   const loanInterestDropdown = document.getElementById('loanInterestDropdown');
-  function updateLoanInterest(){
+  function updateLoanInterest() {
     rt = loanInterestDropdown.value;
     b6 = rt / 12;
     updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
-    //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
   }
   loanInterestDropdown.addEventListener('change', updateLoanInterest);
-
 
   const loanAmountSlider = document.getElementById('loanAmountSlider');
   const decrementButton = document.getElementById('decrement');
@@ -211,47 +400,94 @@ document.addEventListener('DOMContentLoaded', (event) => {
   // Function to update the displayed loan amount
   function updateLoanAmountDisplay(value) {
     loanAmountSlider.value = value;
-    //document.getElementById('loanAmountDisplay').innerText = value;
     updateMonthlyAmountDisplay(value);
   }
 
   function increment() {
-      let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
-      if (value < 700000) { // Adjust the max value as needed
-          value += 500;
-          updateLoanAmountDisplay(value);
-          //updateMonthlyAmountDisplay(value);
-      }
-      //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
+    let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
+    if (value < 700000) { // Adjust the max value as needed
+      value += 500;
+      updateLoanAmountDisplay(value);
     }
+  }
 
   function decrement() {
-      let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
-      if (value > 5000) { // Adjust the min value as needed
-          value -= 500;
-          updateLoanAmountDisplay(value);
-          //updateMonthlyAmountDisplay(value);
-        }
-      //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
+    let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
+    if (value > 5000) { // Adjust the min value as needed
+      value -= 500;
+      updateLoanAmountDisplay(value);
     }
-
-  incrementButton.addEventListener('click', increment);
-  decrementButton.addEventListener('click', decrement);
-  // incrementButton.addEventListener('mousedown', () => handleMouseDown(increment));
-  // decrementButton.addEventListener('mousedown', () => handleMouseDown(decrement));
-  document.addEventListener('mouseup', handleMouseUp);
-  document.addEventListener('mouseleave', handleMouseUp);
-
-
-  function handleMouseDown(callback) {
-    callback();
-    //interval = setInterval(callback, 100); // Adjust the interval speed as needed
   }
-  function handleMouseUp() {
-    //clearInterval(interval);
+
+  let intervalId;
+  let timeoutId;
+  let touchStartTime;
+  const longPressThreshold = 500; // Threshold in milliseconds to detect a long press
+
+  function handleMouseDown(action) {
+    timeoutId = setTimeout(() => {
+      intervalId = setInterval(action, 10); // Run every 500 ms
+    }, longPressThreshold); // Delay to detect long press
   }
-  let interval;
-})        
+
+  function handleMouseUp(action) {
+    clearTimeout(timeoutId);
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+    } else {
+      action(); // Run the action if it was a click or short touch
+    }
+  }
+
+  function handleTouchStart(action) {
+    touchStartTime = new Date().getTime();
+    handleMouseDown(action);
+  }
+
+  function handleTouchEnd(action) {
+    const touchEndTime = new Date().getTime();
+    const touchDuration = touchEndTime - touchStartTime;
+    
+    if (touchDuration < longPressThreshold) {
+      clearTimeout(timeoutId); // Clear the long press timeout
+      action(); // Run the action for a short touch
+    } else {
+      handleMouseUp(action); // Handle as a long press
+    }
+  }
+
+  function addEventListeners(button, action) {
+    button.addEventListener('mousedown', () => handleMouseDown(action));
+    button.addEventListener('mouseup', () => handleMouseUp(action));
+    button.addEventListener('mouseleave', () => handleMouseUp(action));
+    button.addEventListener('mouseout', () => handleMouseUp(action));
+
+    button.addEventListener('touchstart', (event) => {
+      event.preventDefault(); // Prevent default to ensure consistent behavior
+      handleTouchStart(action);
+    });
+    button.addEventListener('touchend', (event) => {
+      event.preventDefault(); // Prevent default to ensure consistent behavior
+      handleTouchEnd(action);
+    });
+    button.addEventListener('touchcancel', (event) => {
+      event.preventDefault(); // Prevent default to ensure consistent behavior
+      handleMouseUp(action);
+    });
+    // Disable hover effect
+    button.addEventListener('mouseout', (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+    });
+  }
+
+  addEventListeners(incrementButton, increment);
+  addEventListeners(decrementButton, decrement);
+});
+
+
+
 
 
 var viewLoanDetailsButton = document.getElementById("viewLoanDetails")
