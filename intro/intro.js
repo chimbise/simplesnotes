@@ -56,6 +56,7 @@ for (var loanAmount = startLoanAmount; loanAmount <= maxLoanAmount; loanAmount +
 }
 
 function updateMonthlyAmountDisplay(value) {
+  loanAmountSlider.style.color = 'black'
   document.getElementById('loanAmountMonthlySlider').value = totalMonthlyAmountDisplay(value);
 }
 
@@ -193,195 +194,17 @@ function calculateRate(nper, pmt, pv, fv, type, guess) {
 }
 
 
-// document.addEventListener('DOMContentLoaded', (event) => {
-
-//   const loanTermDropdown = document.getElementById('loanTermDropdown');
-//   // Function to update the loan term
-//   function updateLoanTerm() {
-//     // You can add further logic here to handle the loan term change
-//     term = loanTermDropdown.value;
-//     updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
-//     //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
-//   }
-//   loanTermDropdown.addEventListener('change', updateLoanTerm);
-
-//   const loanInterestDropdown = document.getElementById('loanInterestDropdown');
-//   function updateLoanInterest(){
-//     rt = loanInterestDropdown.value;
-//     b6 = rt / 12;
-//     updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
-//     //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
-//   }
-//   loanInterestDropdown.addEventListener('change', updateLoanInterest);
-
-
-//   const loanAmountSlider = document.getElementById('loanAmountSlider');
-//   const decrementButton = document.getElementById('decrement');
-//   const incrementButton = document.getElementById('increment');
-
-//   // Function to update the displayed loan amount
-//   function updateLoanAmountDisplay(value) {
-//     loanAmountSlider.value = value;
-//     //document.getElementById('loanAmountDisplay').innerText = value;
-//     updateMonthlyAmountDisplay(value);
-//   }
-
-//   function increment() {
-//       let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
-//       if (value < 700000) { // Adjust the max value as needed
-//           value += 500;
-//           updateLoanAmountDisplay(value);
-//           //updateMonthlyAmountDisplay(value);
-//       }
-//       //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
-//     }
-
-//   function decrement() {
-//       let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
-//       if (value > 5000) { // Adjust the min value as needed
-//           value -= 500;
-//           updateLoanAmountDisplay(value);
-//           //updateMonthlyAmountDisplay(value);
-//         }
-//       //updateLoanAmountDisplay(document.getElementById('loanAmountSlider').value);
-//     }
-
-//   incrementButton.addEventListener('click', increment);
-//   decrementButton.addEventListener('click', decrement);
-//   // incrementButton.addEventListener('mousedown', () => handleMouseDown(increment));
-//   // decrementButton.addEventListener('mousedown', () => handleMouseDown(decrement));
- 
-//   let intervalId;
-//   incrementButton.addEventListener('mousedown', () => {
-//     intervalId = setInterval(increment, 100); // Run every second
-//   });
-  
-//   incrementButton.addEventListener('mouseup', () => {
-//     clearInterval(intervalId);
-//   });
-  
-//   incrementButton.addEventListener('mouseleave', () => {
-//     clearInterval(intervalId);
-//   });
-
-//   decrementButton.addEventListener('mousedown', () => {
-//     intervalId = setInterval(decrement, 1000); // Run every second
-//   });
-  
-//   decrementButton.addEventListener('mouseup', () => {
-//     clearInterval(intervalId);
-//   });
-  
-//   decrementButton.addEventListener('mouseleave', () => {
-//     clearInterval(intervalId);
-//   });
-// }) 
-// document.addEventListener('DOMContentLoaded', (event) => {
-//   const loanTermDropdown = document.getElementById('loanTermDropdown');
-
-//   // Function to update the loan term
-//   function updateLoanTerm() {
-//     term = loanTermDropdown.value;
-//     updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
-//   }
-//   loanTermDropdown.addEventListener('change', updateLoanTerm);
-
-//   const loanInterestDropdown = document.getElementById('loanInterestDropdown');
-//   function updateLoanInterest() {
-//     rt = loanInterestDropdown.value;
-//     b6 = rt / 12;
-//     updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
-//   }
-//   loanInterestDropdown.addEventListener('change', updateLoanInterest);
-
-//   const loanAmountSlider = document.getElementById('loanAmountSlider');
-//   const decrementButton = document.getElementById('decrement');
-//   const incrementButton = document.getElementById('increment');
-
-//   // Function to update the displayed loan amount
-//   function updateLoanAmountDisplay(value) {
-//     loanAmountSlider.value = value;
-//     updateMonthlyAmountDisplay(value);
-//   }
-
-//   function increment() {
-//     let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
-//     if (value < 700000) { // Adjust the max value as needed
-//       value += 500;
-//       updateLoanAmountDisplay(value);
-//     }
-//   }
-
-//   function decrement() {
-//     let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
-//     if (value > 5000) { // Adjust the min value as needed
-//       value -= 500;
-//       updateLoanAmountDisplay(value);
-//     }
-//   }
-
-//   let intervalId;
-//   let timeoutId;
-//   let isTouchEvent = false;
-
-//   function handleMouseDown(action) {
-//     timeoutId = setTimeout(() => {
-//       intervalId = setInterval(action, 10); // Run every 500 ms
-//     }, 500); // 500 ms delay to detect long press
-//   }
-
-//   function handleMouseUp(action) {
-//     clearTimeout(timeoutId);
-//     if (intervalId) {
-//       clearInterval(intervalId);
-//       intervalId = null;
-//     } else {
-//       if (!isTouchEvent) {
-//         action(); // Run the action if it was a click and not a touch event
-//       }
-//     }
-//     isTouchEvent = false;
-//   }
-
-//   function handleTouchStart(action) {
-//     isTouchEvent = true;
-//     handleMouseDown(action);
-//   }
-
-//   function handleTouchEnd(action) {
-//     handleMouseUp(action);
-//   }
-
-//   function addEventListeners(button, action) {
-//     button.addEventListener('mousedown', () => handleMouseDown(action));
-//     button.addEventListener('mouseup', () => handleMouseUp(action));
-//     button.addEventListener('mouseleave', () => handleMouseUp(action));
-//     button.addEventListener('mouseout', () => handleMouseUp(action));
-
-//     button.addEventListener('touchstart', (event) => {
-//       event.preventDefault();
-//       handleTouchStart(action);
-//     });
-//     button.addEventListener('touchend', (event) => {
-//       event.preventDefault();
-//       handleTouchEnd(action);
-//     });
-//     button.addEventListener('touchcancel', (event) => {
-//       event.preventDefault();
-//       handleTouchEnd(action);
-//     });
-//   }
-
-//   addEventListeners(incrementButton, increment);
-//   addEventListeners(decrementButton, decrement);
-// });
 document.addEventListener('DOMContentLoaded', (event) => {
+
+  const loanAmountSlider = document.getElementById('loanAmountSlider');
+  const decrementButton = document.getElementById('decrement');
+  const incrementButton = document.getElementById('increment');
   const loanTermDropdown = document.getElementById('loanTermDropdown');
 
   // Function to update the loan term
   function updateLoanTerm() {
     term = loanTermDropdown.value;
-    updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
+    updateMonthlyAmountDisplay(loanAmountSlider.value);
   }
   loanTermDropdown.addEventListener('change', updateLoanTerm);
 
@@ -389,13 +212,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
   function updateLoanInterest() {
     rt = loanInterestDropdown.value;
     b6 = rt / 12;
-    updateMonthlyAmountDisplay(document.getElementById('loanAmountSlider').value);
+    updateMonthlyAmountDisplay(loanAmountSlider.value);
   }
   loanInterestDropdown.addEventListener('change', updateLoanInterest);
-
-  const loanAmountSlider = document.getElementById('loanAmountSlider');
-  const decrementButton = document.getElementById('decrement');
-  const incrementButton = document.getElementById('increment');
 
   // Function to update the displayed loan amount
   function updateLoanAmountDisplay(value) {
@@ -403,20 +222,45 @@ document.addEventListener('DOMContentLoaded', (event) => {
     updateMonthlyAmountDisplay(value);
   }
 
+  
+  loanAmountSlider.addEventListener('input', function() {
+    var number = loanAmountSlider.value;
+    if (isMultipleOf500AndInRange(number)) {
+      updateMonthlyAmountDisplay(number);
+    } else {
+      loanAmountSlider.style.color = 'red'
+      document.getElementById('loanAmountMonthlySlider').value = ""
+    }  
+  });
+  function isMultipleOf500AndInRange(number) {
+    const isMultipleOf500 = number % 500 === 0;
+    const isInRange = number >= 5000 && number <= 700000;
+    return isMultipleOf500 && isInRange;
+  }
+
   function increment() {
     let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
-    if (value < 700000) { // Adjust the max value as needed
-      value += 500;
-      updateLoanAmountDisplay(value);
+    if (value < 5000) {
+        value = 5000;
+    } else if (value < 700000) { // Adjust the max value as needed
+        value += 500;
+    } else if(value > 700000){
+      return
     }
-  }
+    updateLoanAmountDisplay(value);
+}
+
 
   function decrement() {
     let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
-    if (value > 5000) { // Adjust the min value as needed
+    if(value > 700000){
+      value = 700000;
+    } else if (value > 5000) { // Adjust the min value as needed
       value -= 500;
-      updateLoanAmountDisplay(value);
+    }else if(value < 5000){
+      return
     }
+    updateLoanAmountDisplay(value);
   }
 
   let intervalId;
@@ -464,7 +308,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     button.addEventListener('mouseout', () => handleMouseUp(action));
 
     button.addEventListener('touchstart', (event) => {
-      event.preventDefault(); // Prevent default to ensure consistent behavior
+      if (event.cancelable) {
+        event.preventDefault();
+        // Handle the touch event as needed
+      }
       handleTouchStart(action);
     });
     button.addEventListener('touchend', (event) => {
@@ -484,6 +331,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   addEventListeners(incrementButton, increment);
   addEventListeners(decrementButton, decrement);
+
 });
 
 

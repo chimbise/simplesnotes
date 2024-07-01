@@ -21,7 +21,7 @@ body {
     padding: 5px;
     width: 95%; /* Default width for small screens (phones) */
     height: 95%;
-    font-size: large;
+    font-size: larger;
 
 }
 
@@ -139,6 +139,7 @@ body {
     background-color: rgb(107, 255, 107);
     border-radius: 5px;
     padding: 10px;
+    font-size: larger;
 }
 
 .topDetails{
