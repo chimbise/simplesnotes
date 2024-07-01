@@ -221,6 +221,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       case "Tawu normal":
             c9 = 1 - 0.025;
           break;
+      case "Ubassu":
       case "Dikgosana":
       case "Bots life":
       case "Lahisa":
