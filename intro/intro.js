@@ -139,14 +139,13 @@ function viewLoanDetailsDiv(){
   var interest = rt*100//interest
   var loanTerm = term//months
   var loanAmount = document.getElementById('loanAmountSlider').value;
+  var totalMonthlyInstalment = totalMonthlyAmountDisplay(loanAmount)
   var adminFee = Number(d14.toFixed(2))
   var processingFee = Number(e14.toFixed(2))
   var totalLoanAmount = Number(f14.toFixed(2));
   var monthlyLoanInstalment = Number(g14.toFixed(2));
   var monthlyInsurancePremiumm = Number(h14.toFixed(2))
   var monthlyEmployerCollection = Number(i14.toFixed(2))
-  var totalMonthlyInstalment = totalMonthlyAmountDisplay(loanAmount)
-  //var totalMonthlyInstalment = totalMonthlyAmounts
   var apr = calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount,0,0,0.1)*1200;
 
   document.getElementById('InterestRate').textContent  = interest;
@@ -212,6 +211,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
   function updateLoanInterest() {
     rt = loanInterestDropdown.value;
     b6 = rt / 12;
+
+    switch (loanInterestDropdown.options[loanInterestDropdown.selectedIndex].textContent) {
+      case "Gov special":
+      case "Gov normal":
+            c9 = 1 - 0.0271;
+          break;
+      case "Tawu special":
+      case "Tawu normal":
+            c9 = 1 - 0.025;
+          break;
+      case "Dikgosana":
+      case "Bots life":
+      case "Lahisa":
+            c9 = 1 - 0.0268;
+          break;
+      case "Bpopf":
+            c9 = 1 - 0.0306;
+          break;          
+      default:
+          // Code to be executed if expression doesn't match any case
+    }
     updateMonthlyAmountDisplay(loanAmountSlider.value);
   }
   loanInterestDropdown.addEventListener('change', updateLoanInterest);

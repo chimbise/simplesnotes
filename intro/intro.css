@@ -16,13 +16,12 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: linear-gradient(135deg,blue, rgb(131, 131, 243)); /* Gradient background */
+    background: linear-gradient(135deg,rgb(91, 91, 255), rgb(170, 170, 255)); /* Gradient background */
     border-radius: 10px;
     padding: 5px;
     width: 95%; /* Default width for small screens (phones) */
     height: 95%;
     font-size: larger;
-
 }
 
 @media (min-width: 600px) {
