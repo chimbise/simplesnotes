@@ -31,6 +31,7 @@ var c9 = 1 - b9; // Adjusted factor for collections fee
 var b10 = 1500; // Take-home married
 var b11 = 1300; // Take-home single
 var b12 = 600; // A3 to B1 pay scale
+var loanMax = 700000;
 
 //secondary variables
 var d14 = 0; // d14 is ag14
@@ -40,16 +41,19 @@ var g14 = 0; // Calculate g14
 var h14 = 0; // Calculate h14
 var j14 = 0; // Calculate j14
 var i14 = 0; // Calculate i14
+var l14 = 0;
 
 // Create loan amount column
 var startLoanAmount = 5000;
 var increment = 500;
 var maxLoanAmount = 700000;
 var loanAmountColumn = {}; // Loan amount column
+var loans = [];
 var keyIndex = 14;
 
 // Loop to populate the loan amount column
 for (var loanAmount = startLoanAmount; loanAmount <= maxLoanAmount; loanAmount += increment) {
+    loans.push(loanAmount)
     var ckey = loanAmount.toString();
     loanAmountColumn[ckey] = loanAmount;
     keyIndex++;
@@ -57,9 +61,21 @@ for (var loanAmount = startLoanAmount; loanAmount <= maxLoanAmount; loanAmount +
 
 function updateMonthlyAmountDisplay(value) {
   loanAmountSlider.style.color = 'black'
-  document.getElementById('loanAmountMonthlySlider').value = totalMonthlyAmountDisplay(value);
+  monthlyPayDiv.value = totalMonthlyAmountDisplay(value);
 }
+var monthlyPayDiv = document.getElementById('loanAmountMonthlySlider');
+monthlyPayDiv.addEventListener('input', function() {
 
+  var number = monthlyPayDiv.value;
+  if (number < 158.10) {
+    return null;
+  }  
+  
+  var result = findClosestKey(number);
+  console.log(result[0])
+  totalMonthlyAmountDisplay(result[1]);
+  loanAmountSlider.value = result[1];
+});
 
 // Function to calculate PMT
 function PMT(rate, nper, pv) {
@@ -102,11 +118,26 @@ function checkValueAh2(AF14) {
       return 2929.8;
   } else {
       return AF14;
+  }                    
+}
+console.log(findClosestKey(5000,loans));
+function findClosestKey(target) {
+  var arr = loans;
+  for (let i = 0; i < arr.length; i++) {
+      var realMonthly = totalMonthlyAmountDisplay(arr[i]);
+      var difference = realMonthly - target;
+      if (difference > 0) {
+        return [totalMonthlyAmountDisplay(arr[i-1]),arr[i-1]]
+      } else if(difference == 0){
+        return [realMonthly,arr[i]]
+      }
   }
 }
 
-
 function totalMonthlyAmountDisplay(selectedLoanAmount){
+
+    //loan max
+    
     // Initialize variables for calculations
     var c14 = loanAmountColumn[selectedLoanAmount.toString()]; // Example value for c14
     var ae14 = c14 * 0.0114; // Calculate ae14
@@ -129,7 +160,11 @@ function totalMonthlyAmountDisplay(selectedLoanAmount){
     j14 = g14 + h14; // Calculate j14
     i14 = j14 / c9 - j14; // Calculate i14
 
-    // Calculate total monthly amount
+    //total interest
+    l14 = (g14*term)-f14;
+
+    // Calculate total monthly amount+
+
     var totalMonthlyAmount = Number((j14 + i14).toFixed(2));
 
   return totalMonthlyAmount; // Output the total monthly amount
@@ -146,7 +181,13 @@ function viewLoanDetailsDiv(){
   var monthlyLoanInstalment = Number(g14.toFixed(2));
   var monthlyInsurancePremiumm = Number(h14.toFixed(2))
   var monthlyEmployerCollection = Number(i14.toFixed(2))
-  var apr = calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount,0,0,0.1)*1200;
+  var apr = 0;
+
+  if(loanInterestDropdown.options[loanInterestDropdown.selectedIndex].textContent === "Bots life"){
+    apr = (((l14+d14+e14)/loanAmount)/2920)*365
+  }else{
+    apr = calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount,0,0,0.1)*1200;
+  }
 
   document.getElementById('InterestRate').textContent  = interest;
   document.getElementById('LoanAmountRequested').textContent  = loanAmount+ '.00';
@@ -214,22 +255,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     switch (loanInterestDropdown.options[loanInterestDropdown.selectedIndex].textContent) {
       case "Gov special":
+        c9 = 1 - 0.0271;
+        break;
       case "Gov normal":
-            c9 = 1 - 0.0271;
-          break;
+        c9 = 1 - 0.0271;
+        break;
       case "Tawu special":
+        c9 = 1 - 0.025;
+        break;
       case "Tawu normal":
-            c9 = 1 - 0.025;
-          break;
+        c9 = 1 - 0.025;
+        break;
       case "Ubassu":
+        c9 = 1 - 0.0268;
+        break;
       case "Dikgosana":
+        c9 = 1 - 0.0268;
+        loanMax = 330000;
+        break;
       case "Bots life":
+        c9 = 1 - 0.0268;
+        break;
       case "Lahisa":
-            c9 = 1 - 0.0268;
-          break;
+        c9 = 1 - 0.0268;
+        break;
       case "Bpopf":
-            c9 = 1 - 0.0306;
-          break;          
+        c9 = 1 - 0.0306;
+        break;          
       default:
           // Code to be executed if expression doesn't match any case
     }
@@ -250,12 +302,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
       updateMonthlyAmountDisplay(number);
     } else {
       loanAmountSlider.style.color = 'red'
-      document.getElementById('loanAmountMonthlySlider').value = ""
+      number = number.slice(0, 7); // Truncate to 6 digits
+      loanAmountSlider.value = number;
+      monthlyPayDiv.value = ""
     }  
   });
   function isMultipleOf500AndInRange(number) {
     const isMultipleOf500 = number % 500 === 0;
-    const isInRange = number >= 5000 && number <= 700000;
+    const isInRange = number >= 5000 && number <= loanMax;
     return isMultipleOf500 && isInRange;
   }
 
@@ -263,9 +317,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
     if (value < 5000) {
         value = 5000;
-    } else if (value < 700000) { // Adjust the max value as needed
+    } else if (value < loanMax) { // Adjust the max value as needed
         value += 500;
-    } else if(value > 700000){
+    } else if(value > loanMax){
       return
     }
     updateLoanAmountDisplay(value);
@@ -274,8 +328,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   function decrement() {
     let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
-    if(value > 700000){
-      value = 700000;
+    if(value > loanMax){
+      value = loanMax;
     } else if (value > 5000) { // Adjust the min value as needed
       value -= 500;
     }else if(value < 5000){
