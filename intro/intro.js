@@ -67,14 +67,23 @@ var monthlyPayDiv = document.getElementById('loanAmountMonthlySlider');
 monthlyPayDiv.addEventListener('input', function() {
 
   var number = monthlyPayDiv.value;
-  if (number < 158.10) {
+ 
+  if (number < 158.10 ||number > totalMonthlyAmountDisplay(loanMax)) {
+    //monthlyPayDiv.style.color = 'red'
+    number = number.slice(0, 7); // Truncate to 6 digits
+    monthlyPayDiv.value = number;
+    loanAmountSlider.value = "";
     return null;
   }  
-  
   var result = findClosestKey(number);
+  actualInstalment.style.display = "block";
   console.log(result[0])
   totalMonthlyAmountDisplay(result[1]);
-  loanAmountSlider.value = result[1];
+});
+monthlyPayDiv.addEventListener('blur', function() {
+
+  actualInstalment.style.display = "none";
+  monthlyPayDiv.value = totalMonthlyAmountDisplay(loanAmountSlider.value)
 });
 
 // Function to calculate PMT
@@ -135,10 +144,14 @@ function findClosestKey(target) {
 }
 
 function totalMonthlyAmountDisplay(selectedLoanAmount){
+  loanAmountSlider.value = selectedLoanAmount;
 
     //loan max
     
     // Initialize variables for calculations
+    if(selectedLoanAmount.toString()==="undefined"||selectedLoanAmount.toString()==="NaN"){
+      return null;
+    }
     var c14 = loanAmountColumn[selectedLoanAmount.toString()]; // Example value for c14
     var ae14 = c14 * 0.0114; // Calculate ae14
       if (selectedLoanAmount >= 257500){
@@ -166,6 +179,8 @@ function totalMonthlyAmountDisplay(selectedLoanAmount){
     // Calculate total monthly amount+
 
     var totalMonthlyAmount = Number((j14 + i14).toFixed(2));
+    actualInstalment.textContent = "Actual Instalment: "+ totalMonthlyAmount;
+
 
   return totalMonthlyAmount; // Output the total monthly amount
 }
@@ -240,6 +255,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const decrementButton = document.getElementById('decrement');
   const incrementButton = document.getElementById('increment');
   const loanTermDropdown = document.getElementById('loanTermDropdown');
+  const actualInstalment = document.getElementById('actualInstalment');;
 
   // Function to update the loan term
   function updateLoanTerm() {

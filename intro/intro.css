@@ -43,6 +43,10 @@ body {
 }
 .monthlyAmountDiv {
     display: flex;
+    flex-direction: column;
+}
+#actualInstalment{
+    display: none;
 }
 .slider-container span {
     border: 2px solid  rgb(107, 255, 107); /* You can adjust the border thickness and color */
