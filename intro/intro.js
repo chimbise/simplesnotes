@@ -76,13 +76,12 @@ monthlyPayDiv.addEventListener('input', function() {
     return null;
   }  
   var result = findClosestKey(number);
-  actualInstalment.style.display = "block";
-  console.log(result[0])
+  showH3()
   totalMonthlyAmountDisplay(result[1]);
 });
 monthlyPayDiv.addEventListener('blur', function() {
 
-  actualInstalment.style.display = "none";
+  hideH3()
   monthlyPayDiv.value = totalMonthlyAmountDisplay(loanAmountSlider.value)
 });
 
@@ -129,7 +128,6 @@ function checkValueAh2(AF14) {
       return AF14;
   }                    
 }
-console.log(findClosestKey(5000,loans));
 function findClosestKey(target) {
   var arr = loans;
   for (let i = 0; i < arr.length; i++) {
@@ -199,7 +197,14 @@ function viewLoanDetailsDiv(){
   var apr = 0;
 
   if(loanInterestDropdown.options[loanInterestDropdown.selectedIndex].textContent === "Bots life"){
-    apr = (((l14+d14+e14)/loanAmount)/2920)*365
+    if(loanTerm == 84){
+      apr = calculateRate(loanTerm, -totalMonthlyInstalment, totalLoanAmount,0,0,0.1)*1200;
+    }else if(loanTerm == 96){
+      apr = Math.round((((l14+d14+e14)/loanAmount)/2920)*36500)
+      //apr = Math.round(apr);
+    }else{
+      apr = calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount,0,0,0.1)*1200;
+    }
   }else{
     apr = calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount,0,0,0.1)*1200;
   }
@@ -248,7 +253,15 @@ function calculateRate(nper, pmt, pv, fv, type, guess) {
   return rate;
 }
 
+// Function to show the h3 element
+function showH3() {
+  actualInstalment.classList.remove('hidden');
+}
 
+// Function to hide the h3 element
+function hideH3() {
+  actualInstalment.classList.add('hidden');
+}
 document.addEventListener('DOMContentLoaded', (event) => {
 
   const loanAmountSlider = document.getElementById('loanAmountSlider');
@@ -330,6 +343,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }
 
   function increment() {
+    if(actualInstalment.classList !=='hidden'){
+      monthlyPayDiv.blur()
+    }
     let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
     if (value < 5000) {
         value = 5000;
@@ -343,6 +359,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
   function decrement() {
+    if(actualInstalment.classList !=='hidden'){
+      monthlyPayDiv.blur()
+    }
     let value = Math.round(parseInt(loanAmountSlider.value, 10) / 500) * 500;
     if(value > loanMax){
       value = loanMax;

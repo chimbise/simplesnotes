@@ -45,8 +45,10 @@ body {
     display: flex;
     flex-direction: column;
 }
-#actualInstalment{
-    display: none;
+#actualInstalment.hidden{
+    visibility: hidden;
+    padding: 0px;
+    margin: 0px;
 }
 .slider-container span {
     border: 2px solid  rgb(107, 255, 107); /* You can adjust the border thickness and color */
