@@ -1,4 +1,81 @@
-.sub-list {
-    display: none;
-    margin-left: 20px;
+
+body {
+    background-color: rgb(0, 0, 128);
+
 }
+.progress-direction {
+    margin: 5px;
+    position: relative;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px; /* Adjust this value to position the child element */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+.main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg,rgb(170, 170, 255), rgb(170, 170, 255)); /* Gradient background */
+    border-radius: 10px;
+    width: 80%;
+    height: 50%;
+    padding: 10px;
+}
+.span-button {
+    background-color: lightcoral;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+
+}
+.span-button:hover {
+    background-color: #0056b3;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: bold;
+    height: 100%;
+}
+.basic {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    align-items: center;
+    justify-content: space-around;
+}
+.workPlace {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: large;
+}
+
+input{
+    margin: 5px;
+    padding: 10px;
+    font-size: large;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* CSS to increase the size of radio buttons */
+input[type="radio"] {
+    transform: scale(1.5); /* Adjust the scale factor as needed */
+    margin-right: 10px; /* Add some space between the radio button and label */
+}
+
+
+
