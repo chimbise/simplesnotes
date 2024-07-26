@@ -46,6 +46,8 @@ body {
     justify-content: space-around;
     font-weight: bold;
     height: 100%;
+    font-size: large;
+
 }
 .basic {
     display: flex;
@@ -54,6 +56,14 @@ body {
     align-items: center;
     justify-content: space-around;
 }
+input{
+    margin: 5px;
+    padding: 10px;
+    font-size: large;
+    border-radius: 10px;
+    text-align: center;
+}
+
 .workPlace {
     display: flex;
     flex-direction: column;
@@ -62,13 +72,32 @@ body {
     border-radius: 10px;
     font-size: large;
 }
+.govSub {
+    padding:10px;
+    margin-top: 10px;
+    background-color: white;
+    border-radius:10px 10px 0 0;
+}
+.councilSub {
+    padding:10px;
+    background-color: white;
+    border-radius:0 0 10px 10px;
 
-input{
-    margin: 5px;
-    padding: 10px;
-    font-size: large;
-    border-radius: 10px;
-    text-align: center;
+}
+.bdfSub {
+    padding:10px;
+    margin-top: 10px;
+    background-color: white;
+    border-radius:10px 10px 0 0;
+}
+.policeSub {
+    padding:10px;
+    background-color: white;
+}
+.educationSub {
+    padding:10px;
+    background-color: white;
+    border-radius:0 0 10px 10px;
 }
 
 /* CSS to increase the size of radio buttons */

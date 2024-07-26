@@ -1,5 +1,6 @@
 var basicAmount = 0;
 var workPlace = 'none'
+var department = 'none'
 
 const containerDiv = document.querySelector('.container');
 createBasicDiv()
@@ -11,11 +12,13 @@ document.getElementById('next').addEventListener('click',()=>{
             containerDiv.removeChild(document.getElementById('basic'));
             createWorkDiv()
             break;
+        case 'workPlace':
+            containerDiv.removeChild(document.getElementById('workPlace'));
+            createDepartmentDiv()
+            break;
         default:
             break;
     }
-    console.log(basicAmount)
-
 })
 document.getElementById('back').addEventListener('click',()=>{
     var currentDiv = containerDiv.firstElementChild.className
@@ -24,12 +27,13 @@ document.getElementById('back').addEventListener('click',()=>{
             containerDiv.removeChild(document.getElementById('workPlace'));
             createBasicDiv()
             break;
-    
+        case 'department':
+            containerDiv.removeChild(document.getElementById('department'));
+            createWorkDiv()
+            break;
         default:
             break;
     }
-    console.log(basicAmount)
-
 })
 
 function createBasicDiv() {
@@ -42,7 +46,7 @@ function createBasicDiv() {
     // Create the label
     const label = document.createElement('label');
     label.setAttribute('for', 'amountBasic');
-    label.textContent = 'BASIC SALARY';
+    label.textContent = 'Enter your basic salary (payslip)';
 
     // Create the input
     const input = document.createElement('input');
@@ -72,11 +76,12 @@ function createWorkDiv() {
     const workDiv = document.createElement('div')
     workDiv.className = 'workPlace'
     workDiv.id = 'workPlace'
-    workDiv.textContent = 'select your work of place?'
+    workDiv.textContent = 'Select your work of place?'
     workDiv.style.width = '90%'
 
     // Create the first radio input for Government
     const optDiv = document.createElement('div')
+    optDiv.className = 'govSub'
     const governmentInput = document.createElement('input');
     governmentInput.setAttribute('type', 'radio');
     governmentInput.setAttribute('name', 'workplace');
@@ -87,14 +92,12 @@ function createWorkDiv() {
     governmentLabel.textContent = 'Government';
     optDiv.appendChild(governmentInput)
     optDiv.appendChild(governmentLabel)
-    optDiv.style.padding = '10px'
-    optDiv.style.marginTop = '10px'
-    optDiv.style.backgroundColor ='white'
-    optDiv.style.borderRadius = '10px'
+    
 
 
     // Create the second radio input for Council
     const opt2 = document.createElement('div')
+    opt2.className ='councilSub'
     const councilInput = document.createElement('input');
     councilInput.setAttribute('type', 'radio');
     councilInput.setAttribute('name', 'workplace');
@@ -105,9 +108,6 @@ function createWorkDiv() {
     councilLabel.textContent = 'Council/Landboard';
     opt2.appendChild(councilInput)
     opt2.appendChild(councilLabel)
-    opt2.style.padding = '10px'
-    opt2.style.backgroundColor ='white'
-    opt2.style.borderRadius = '10px'
 
 
     // Append the radio inputs before the labels to the parent div
@@ -129,6 +129,93 @@ function createWorkDiv() {
         governmentInput.setAttribute('checked', 'government');
     } else {
         councilInput.setAttribute('checked','council')
+    }
+    
+}
+function createDepartmentDiv() {
+    const departmentDiv = document.createElement('div')
+    departmentDiv.className = 'department'
+    departmentDiv.id = 'department'
+    departmentDiv.textContent = 'Select your department?'
+    departmentDiv.style.width = '90%'
+
+    // Create the first radio input for Government
+    const optDiv = document.createElement('div')
+    optDiv.className = 'bdfSub'
+    const bdfInput = document.createElement('input');
+    bdfInput.setAttribute('type', 'radio');
+    bdfInput.setAttribute('name', 'department');
+    bdfInput.setAttribute('id', 'bdf');
+    bdfInput.setAttribute('value', 'bdf');
+    const bdfLabel = document.createElement('label');
+    bdfLabel.setAttribute('for', 'bdf');
+    bdfLabel.textContent = 'BDF';
+    optDiv.appendChild(bdfInput)
+    optDiv.appendChild(bdfLabel)
+    
+
+
+    // Create the second radio input for Council
+    const opt2 = document.createElement('div')
+    opt2.className ='policeSub'
+    const policeInput = document.createElement('input');
+    policeInput.setAttribute('type', 'radio');
+    policeInput.setAttribute('name', 'department');
+    policeInput.setAttribute('id', 'police');
+    policeInput.setAttribute('value', 'police');
+    const policeLabel = document.createElement('label');
+    policeLabel.setAttribute('for', 'police');
+    policeLabel.textContent = 'Police';
+    opt2.appendChild(policeInput)
+    opt2.appendChild(policeLabel)
+
+    // Create the second radio input for Council
+    const opt3 = document.createElement('div')
+    opt3.className ='educationSub'
+    const educationInput = document.createElement('input');
+    educationInput.setAttribute('type', 'radio');
+    educationInput.setAttribute('name', 'department');
+    educationInput.setAttribute('id', 'education');
+    educationInput.setAttribute('value', 'education');
+    const educationLabel = document.createElement('label');
+    educationLabel.setAttribute('for', 'education');
+    educationLabel.textContent = 'Education';
+    opt3.appendChild(educationInput)
+    opt3.appendChild(educationLabel)
+
+
+    // Append the radio inputs before the labels to the parent div
+    departmentDiv.appendChild(optDiv);
+    departmentDiv.appendChild(opt2);
+    departmentDiv.appendChild(opt3);
+
+    containerDiv.appendChild(departmentDiv)
+
+    // Add change event listeners to the radio buttons
+    bdfInput.addEventListener('change', (event)=>{
+        department = event.target.value;
+    });
+    policeInput.addEventListener('change', (event)=>{
+        department = event.target.value;
+    });
+    educationInput.addEventListener('change', (event)=>{
+        department = event.target.value;
+    });
+
+   
+    switch (department) {
+        case 'none':
+        case 'bdf':
+            bdfInput.setAttribute('checked', 'bdf');
+            break;
+        case 'police':
+            policeInput.setAttribute('checked', 'police');
+            break;
+        case 'education':
+            educationInput.setAttribute('checked', 'education');
+            break;
+        default:
+            break;
     }
     
 }
@@ -155,7 +242,7 @@ function createWorkDiv() {
 //         if (subList.style.display === 'none' || subList.style.display === '') {
 //             subList.style.display = 'block';
 //         } else {
-//             subList.style.display = 'none';
+//             subList.style.display =kj 'none';
 //         }
 //     });
 // });
