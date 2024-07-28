@@ -174,3 +174,26 @@ input[type="checkbox"]{
     .slide-in-right {
         animation: slideInRight 0.5s forwards;
     }
+    .inputWrapper {
+        background-color: white;
+        display: flex;
+        align-items: center;
+        padding: 5px;
+
+    }
+    .inputWrapper input{
+        width: 30%;
+        font-size: medium;
+    }
+    .inputWrapper label{
+        width: 70%;
+    }
+    #inputWrapper0{
+        margin-top: 10px;
+        border-radius:10px 10px 0 0;
+    }
+    .selectedBox {
+        max-height: 100%; /* Make it fit within the parent */
+    overflow-y: auto; /* Enable vertical scrolling */
+    }
+    

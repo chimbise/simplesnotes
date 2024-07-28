@@ -3,7 +3,8 @@ var workPlace = 'none'
 var department = 'none'
 var govDepartment = department;
 var councilDepartment = department;
-const selectedAllowances = [];
+var selectedAllowances = [];
+var selectionGroup = 0;
 var direction = true;
 
 const containerDiv = document.querySelector('.container');
@@ -32,6 +33,7 @@ document.getElementById('next').addEventListener('click',()=>{
             switch (department) {
                 case 'bdf':
                     bdfAllowanceSelection()
+                    selectionGroup = 1;
                     break;
                 case 'police':
                 
@@ -43,8 +45,11 @@ document.getElementById('next').addEventListener('click',()=>{
                     break;
             }
             break;
-        case '':
-
+        case 'allowance':
+            var s = getSelectedAllowances()
+            containerDiv.removeChild(document.getElementById('allowance'));
+            console.log(s)
+            createNumberInputs(s)
             break;
         default:
             break;
@@ -68,6 +73,14 @@ document.getElementById('back').addEventListener('click',()=>{
                 createGovDepartmentDiv()
             } else {
                 createCouncilDepartmentDiv()
+            }
+            break;
+        case 'selectedBox':
+            containerDiv.removeChild(document.getElementById('selectedBox'));
+            if (selectionGroup == 1) {
+                bdfAllowanceSelection()
+            } else {
+                
             }
             break;
         default:
@@ -412,23 +425,62 @@ function bdfAllowanceSelection() {
     });
     containerDiv.appendChild(bdfAllowanceDiv)
 
-    if (direction) {
-        bdfAllowanceDiv.classList.add('slide-in-right');
-    } else {
-        bdfAllowanceDiv.classList.add('slide-in-left');
-    }
+    // if (direction) {
+    //     bdfAllowanceDiv.classList.add('slide-in-right');
+    // } else {
+    //     bdfAllowanceDiv.classList.add('slide-in-left');
+    // }
 }
 
 function getSelectedAllowances() {
+    selectedAllowances = []
     const checkboxes = document.querySelectorAll('input[name="allowance"]:checked');
     checkboxes.forEach(checkbox => {
-        selected.push(checkbox.value);
+        selectedAllowances.push(checkbox.value);
     });
     console.log(selectedAllowances.join(', '));
+    return selectedAllowances
 }
 
 
+function createNumberInputs(array) {
+    const container = document.createElement('div');
+    container.className = 'selectedBox'
+    container.id = 'selectedBox'
+    container.textContent = 'Enter allowance values on your payslip'
 
+    const lastIndex = array.length - 1;
+    array.forEach((item, index) => {
+        const wrapperDiv = document.createElement('div');
+        wrapperDiv.className = 'inputWrapper';
+        wrapperDiv.id = `inputWrapper${index}`;
+        if(index == 0&&index == lastIndex){
+            wrapperDiv.style.borderRadius = '10px'
+        }else if(index == lastIndex){
+            wrapperDiv.style.borderRadius = '0 0 10px 10px'
+        }
+
+        const label = document.createElement('label');
+        label.htmlFor = `numberInput${index}`;
+        label.textContent = item;
+
+        const numberInput = document.createElement('input');
+        numberInput.type = 'number';
+        numberInput.id = `numberInput${index}`;
+        numberInput.name = item.replace(/\s+/g, '-').toLowerCase(); // create a name based on the item
+        numberInput.min = 0;
+
+        wrapperDiv.appendChild(label);
+        wrapperDiv.appendChild(numberInput);
+
+        console.log(container)
+
+        container.appendChild(wrapperDiv);
+
+    });
+
+    containerDiv.appendChild(container)
+}
 
 
 
