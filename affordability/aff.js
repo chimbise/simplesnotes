@@ -1,27 +1,58 @@
 var basicAmount = 0;
 var workPlace = 'none'
 var department = 'none'
+var govDepartment = department;
+var councilDepartment = department;
+const selectedAllowances = [];
+var direction = true;
 
 const containerDiv = document.querySelector('.container');
 createBasicDiv()
+var current = document.getElementById(containerDiv.firstElementChild.className)
 
 document.getElementById('next').addEventListener('click',()=>{
-    var currentDiv = containerDiv.firstElementChild.className
+    direction = true;
+    var currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
+    var current = document.getElementById(currentDiv)
     switch (currentDiv) {
         case 'basic':
-            containerDiv.removeChild(document.getElementById('basic'));
+            containerDiv.removeChild(current);
             createWorkDiv()
             break;
         case 'workPlace':
-            containerDiv.removeChild(document.getElementById('workPlace'));
-            createDepartmentDiv()
+            containerDiv.removeChild(current);
+            if (workPlace === 'government') {
+                createGovDepartmentDiv()
+            } else {
+                createCouncilDepartmentDiv()
+            }
+            break;
+        case 'department':
+            containerDiv.removeChild(document.getElementById('department'));
+            switch (department) {
+                case 'bdf':
+                    bdfAllowanceSelection()
+                    break;
+                case 'police':
+                
+                    break;
+                case 'education':
+                
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case '':
+
             break;
         default:
             break;
     }
 })
 document.getElementById('back').addEventListener('click',()=>{
-    var currentDiv = containerDiv.firstElementChild.className
+    direction = false;
+    var currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
     switch (currentDiv) {
         case 'workPlace':
             containerDiv.removeChild(document.getElementById('workPlace'));
@@ -30,6 +61,14 @@ document.getElementById('back').addEventListener('click',()=>{
         case 'department':
             containerDiv.removeChild(document.getElementById('department'));
             createWorkDiv()
+            break;
+        case 'allowance':
+            containerDiv.removeChild(document.getElementById('allowance'));
+            if (workPlace === 'government') {
+                createGovDepartmentDiv()
+            } else {
+                createCouncilDepartmentDiv()
+            }
             break;
         default:
             break;
@@ -70,8 +109,13 @@ function createBasicDiv() {
     } else {
         document.getElementById('amountBasic').value = 0
     }
-}
 
+    if (direction) {
+        basicDiv.classList.add('slide-in-right');
+    } else {
+        basicDiv.classList.add('slide-in-left');
+    }
+}
 function createWorkDiv() {
     const workDiv = document.createElement('div')
     workDiv.className = 'workPlace'
@@ -127,12 +171,20 @@ function createWorkDiv() {
     // Set initial value for checked
     if (workPlace === 'none' || workPlace === 'government') {
         governmentInput.setAttribute('checked', 'government');
+        workPlace = 'government'
     } else {
         councilInput.setAttribute('checked','council')
     }
-    
+    if (direction) {
+        workDiv.classList.add('slide-in-right');
+    } else {
+        workDiv.classList.add('slide-in-left');
+    }
+
 }
-function createDepartmentDiv() {
+function createGovDepartmentDiv() {
+    
+
     const departmentDiv = document.createElement('div')
     departmentDiv.className = 'department'
     departmentDiv.id = 'department'
@@ -194,19 +246,24 @@ function createDepartmentDiv() {
     // Add change event listeners to the radio buttons
     bdfInput.addEventListener('change', (event)=>{
         department = event.target.value;
+        govDepartment = department;
     });
     policeInput.addEventListener('change', (event)=>{
         department = event.target.value;
+        govDepartment = department;
+
     });
     educationInput.addEventListener('change', (event)=>{
         department = event.target.value;
+        govDepartment = department;
     });
 
-   
+    department = govDepartment;
     switch (department) {
         case 'none':
         case 'bdf':
             bdfInput.setAttribute('checked', 'bdf');
+            department = 'bdf'
             break;
         case 'police':
             policeInput.setAttribute('checked', 'police');
@@ -217,9 +274,158 @@ function createDepartmentDiv() {
         default:
             break;
     }
+    if (direction) {
+        departmentDiv.classList.add('slide-in-right');
+    } else {
+        departmentDiv.classList.add('slide-in-left');
+    }
     
 }
+function createCouncilDepartmentDiv() {
+    const departmentDiv = document.createElement('div')
+    departmentDiv.className = 'department'
+    departmentDiv.id = 'department'
+    departmentDiv.textContent = 'Select your department?'
+    departmentDiv.style.width = '90%'
 
+    // Create the first radio input for council
+    const optDiv = document.createElement('div')
+    optDiv.className = 'publicOfficersSub'
+    const publicOfficersInput = document.createElement('input');
+    publicOfficersInput.setAttribute('type', 'radio');
+    publicOfficersInput.setAttribute('name', 'department');
+    publicOfficersInput.setAttribute('id', 'publicOfficers');
+    publicOfficersInput.setAttribute('value', 'publicOfficers');
+    const publicOfficersLabel = document.createElement('label');
+    publicOfficersLabel.setAttribute('for', 'publicOfficers');
+    publicOfficersLabel.textContent = 'Public Officers';
+    optDiv.appendChild(publicOfficersInput)
+    optDiv.appendChild(publicOfficersLabel)
+    
+
+
+    // Create the second radio input for Council
+    const opt2 = document.createElement('div')
+    opt2.className ='councilDeptSub'
+    const councilDeptSubInput = document.createElement('input');
+    councilDeptSubInput.setAttribute('type', 'radio');
+    councilDeptSubInput.setAttribute('name', 'department');
+    councilDeptSubInput.setAttribute('id', 'council');
+    councilDeptSubInput.setAttribute('value', 'council');
+    const councilDeptSubLabel = document.createElement('label');
+    councilDeptSubLabel.setAttribute('for', 'council');
+    councilDeptSubLabel.textContent = 'council';
+    opt2.appendChild(councilDeptSubInput)
+    opt2.appendChild(councilDeptSubLabel)
+
+    // Create the second radio input for Council
+    const opt3 = document.createElement('div')
+    opt3.className ='landboardSub'
+    const landboardInput = document.createElement('input');
+    landboardInput.setAttribute('type', 'radio');
+    landboardInput.setAttribute('name', 'department');
+    landboardInput.setAttribute('id', 'landboard');
+    landboardInput.setAttribute('value', 'landboard');
+    const landboardLabel = document.createElement('label');
+    landboardLabel.setAttribute('for', 'landboard');
+    landboardLabel.textContent = 'landboard';
+    opt3.appendChild(landboardInput)
+    opt3.appendChild(landboardLabel)
+
+
+    // Append the radio inputs before the labels to the parent div
+    departmentDiv.appendChild(optDiv);
+    departmentDiv.appendChild(opt2);
+    departmentDiv.appendChild(opt3);
+
+    containerDiv.appendChild(departmentDiv)
+
+    // Add change event listeners to the radio buttons
+    publicOfficersInput.addEventListener('change', (event)=>{
+        department = event.target.value;
+        councilDepartment = department;
+    });
+    councilDeptSubInput.addEventListener('change', (event)=>{
+        department = event.target.value;
+    });
+    landboardInput.addEventListener('change', (event)=>{
+        department = event.target.value;
+    });
+
+    department = councilDepartment;
+    switch (department) {
+        case 'none':
+        case 'publicOfficers':
+            publicOfficersInput.setAttribute('checked', 'publicOfficers');
+            department = 'publicOfficers'
+            break;
+        case 'council':
+            councilDeptSubInput.setAttribute('checked', 'council');
+            break;
+        case 'landboard':
+            landboardInput.setAttribute('checked', 'landboard');
+            break;
+        default:
+            break;
+    }
+
+    if (direction) {
+        departmentDiv.classList.add('slide-in-right');
+    } else {
+        departmentDiv.classList.add('slide-in-left');
+    }
+}
+function bdfAllowanceSelection() {
+  const allowance =  ['Commuted allowance','Technical allowance','BDF special Hazard',
+        'Housing & Upkeep allowance','Housing allowance','Scarce skill',
+        'X-Factor','Professional allowance','BDF special duty','Band Allowance',
+        'Fire Fighters Overtime Allowance 30%','Horse Allowance']
+    // Create the bdfAllowance div
+    const bdfAllowanceDiv = document.createElement('div');
+    bdfAllowanceDiv.className = 'allowance';
+    bdfAllowanceDiv.id = 'allowance';
+
+    const text = document.createElement('p');
+    text.textContent = 'Select your allowances(payslip)'
+    text.id = 'textheader'
+    bdfAllowanceDiv.appendChild(text)
+
+    allowance.forEach((item, index) => {
+        const checkboxDiv = document.createElement('div')
+        checkboxDiv.className = 'checkboxDiv'
+        checkboxDiv.id = `allowance${index}`;
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `allowance${index}`;
+        checkbox.name = 'allowance';
+        checkbox.value = item;
+
+        const label = document.createElement('label');
+        label.htmlFor = `allowance${index}`;
+        label.textContent = item;
+
+        checkboxDiv.appendChild(checkbox);
+        checkboxDiv.appendChild(label);
+        checkboxDiv.appendChild(document.createElement('br'));
+
+        bdfAllowanceDiv.appendChild(checkboxDiv)
+    });
+    containerDiv.appendChild(bdfAllowanceDiv)
+
+    if (direction) {
+        bdfAllowanceDiv.classList.add('slide-in-right');
+    } else {
+        bdfAllowanceDiv.classList.add('slide-in-left');
+    }
+}
+
+function getSelectedAllowances() {
+    const checkboxes = document.querySelectorAll('input[name="allowance"]:checked');
+    checkboxes.forEach(checkbox => {
+        selected.push(checkbox.value);
+    });
+    console.log(selectedAllowances.join(', '));
+}
 
 
 
