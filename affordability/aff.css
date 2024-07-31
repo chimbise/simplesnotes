@@ -54,6 +54,14 @@ body {
     flex-direction: column;
     margin: 5px;
     align-items: center;
+    justify-items:center ;
+    justify-content: space-around;
+}
+.deduction {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    align-items: center;
     justify-content: space-around;
 }
 input{
@@ -194,6 +202,6 @@ input[type="checkbox"]{
     }
     .selectedBox {
         max-height: 100%; /* Make it fit within the parent */
-    overflow-y: auto; /* Enable vertical scrolling */
+        overflow-y: auto; /* Enable vertical scrolling */
     }
     

@@ -6,7 +6,7 @@ var councilDepartment = department;
 var selectedAllowances = [];
 var selectionGroup = 0;
 var direction = true;
-
+var deductionAmount = 0;
 const containerDiv = document.querySelector('.container');
 createBasicDiv()
 var current = document.getElementById(containerDiv.firstElementChild.className)
@@ -51,6 +51,10 @@ document.getElementById('next').addEventListener('click',()=>{
             console.log(s)
             createNumberInputs(s)
             break;
+        case 'selectedBox':
+            containerDiv.removeChild(document.getElementById('selectedBox'));
+            createDeductionDiv()
+            break;
         default:
             break;
     }
@@ -82,6 +86,11 @@ document.getElementById('back').addEventListener('click',()=>{
             } else {
                 
             }
+            break;
+        case 'deduction':
+            var s = getSelectedAllowances()
+            containerDiv.removeChild(document.getElementById('deduction'));
+            createNumberInputs(s)
             break;
         default:
             break;
@@ -409,7 +418,7 @@ function bdfAllowanceSelection() {
         checkboxDiv.id = `allowance${index}`;
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.id = `allowance${index}`;
+        checkbox.id = `bdfAllowance${item}`;
         checkbox.name = 'allowance';
         checkbox.value = item;
 
@@ -422,8 +431,11 @@ function bdfAllowanceSelection() {
         checkboxDiv.appendChild(document.createElement('br'));
 
         bdfAllowanceDiv.appendChild(checkboxDiv)
+        console.log(checkboxDiv)
+
     });
     containerDiv.appendChild(bdfAllowanceDiv)
+    checkalreadySelected(selectedAllowances,'bdf')
 
     // if (direction) {
     //     bdfAllowanceDiv.classList.add('slide-in-right');
@@ -431,12 +443,37 @@ function bdfAllowanceSelection() {
     //     bdfAllowanceDiv.classList.add('slide-in-left');
     // }
 }
-
+function checkalreadySelected(array,section) {
+    array.forEach(name => {
+        const checkbox = document.querySelector(`input[type="checkbox"][id="${section}Allowance${name}"]`);
+        if (checkbox) {
+            checkbox.checked = true; // Check the checkbox if it exists
+        }
+    })
+}
 function getSelectedAllowances() {
-    selectedAllowances = []
+
+    //selectedAllowances = []
     const checkboxes = document.querySelectorAll('input[name="allowance"]:checked');
     checkboxes.forEach(checkbox => {
-        selectedAllowances.push(checkbox.value);
+        if(!selectedAllowances.includes(checkbox.value)){
+            switch (selectionGroup) {
+                case 1:
+                    selectedAllowances.push(checkbox.value);
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    
+                // Use a selector to find the checkbox with the matching value
+                // const checkbox = document.querySelector(`input[type="checkbox"][value="${checkbox.value}"]`);
+                // console.log(checkbox)
+                // if (checkbox) {
+                //     checkbox.checked = true; // Check the checkbox if it exists
+                // }
+        
     });
     console.log(selectedAllowances.join(', '));
     return selectedAllowances
@@ -480,6 +517,47 @@ function createNumberInputs(array) {
     });
 
     containerDiv.appendChild(container)
+}
+function createDeductionDiv() {
+
+    // Create the basic div
+    const deductionDiv = document.createElement('div');
+    deductionDiv.className = 'deduction';
+    deductionDiv.id = 'deduction';
+
+    // Create the label
+    const label = document.createElement('label');
+    label.setAttribute('for', 'amountDeduction');
+    label.textContent = 'Enter your deduction amount';
+
+    // Create the input
+    const input = document.createElement('input');
+    input.setAttribute('type', 'number');
+    input.setAttribute('id', 'amountDeduction');
+    input.className = 'amountDeduction';
+
+    // Append the label and input to the basic div
+    deductionDiv.appendChild(label);
+    deductionDiv.appendChild(input);
+    containerDiv.appendChild(deductionDiv)
+
+    // Update basicAmount whenever the input value changes
+    document.getElementById('amountDeduction').addEventListener('input', (event) => {
+        deductionAmount = event.target.value;
+        console.log(deductionAmount)
+    });
+
+    if (document.getElementById('amountDeduction').value != null) {
+        document.getElementById('amountDeduction').value = amountDeduction;
+    } else {
+        document.getElementById('amountDeduction').value = 0
+    }
+
+    if (direction) {
+        deductionDiv.classList.add('slide-in-right');
+    } else {
+        deductionDiv.classList.add('slide-in-left');
+    }
 }
 
 
