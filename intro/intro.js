@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         c9 = 1 - 0.0306;
         break;
       case "conditional 20%":
-        c9 = 1 - 0.0271;
+        c9 = 1 - 0.02706;
       default:
           // Code to be executed if expression doesn't match any case
     }
