@@ -313,7 +313,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         break;
       case "conditional 20%":
         c9 = 1 - 0.02706;
+        break;
       default:
+        break;
           // Code to be executed if expression doesn't match any case
     }
     updateMonthlyAmountDisplay(loanAmountSlider.value);
