@@ -132,6 +132,7 @@ function createBasicDiv() {
         document.getElementById('amountBasic').value = 0
     }
 
+    
     if (direction) {
         basicDiv.classList.add('slide-in-right');
     } else {
