@@ -282,16 +282,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
     b6 = rt / 12;
 
     switch (loanInterestDropdown.options[loanInterestDropdown.selectedIndex].textContent) {
-      case "Gov special":
+      case "botusafe 23%":
         c9 = 1 - 0.0271;
         break;
-      case "Gov normal":
+      case "botusafe 26%":
         c9 = 1 - 0.0271;
         break;
-      case "Tawu special":
+      case "Tawu 23%":
         c9 = 1 - 0.025;
         break;
-      case "Tawu normal":
+      case "Tawu 26%":
         c9 = 1 - 0.025;
         break;
       case "Ubassu":
