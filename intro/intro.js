@@ -201,7 +201,6 @@ function viewLoanDetailsDiv(){
       apr = calculateRate(loanTerm, -totalMonthlyInstalment, totalLoanAmount,0,0,0.1)*1200;
     }else if(loanTerm == 96){
       apr = Math.round((((l14+d14+e14)/loanAmount)/2920)*36500)
-      //apr = Math.round(apr);
     }else{
       apr = calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount,0,0,0.1)*1200;
     }
@@ -311,8 +310,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
       case "Bpopf":
         c9 = 1 - 0.0306;
         break;
-      case "conditional 20%":
-        c9 = 1 - 0.02706;
+      case "botusafe 20%":
+        c9 = 1 - 0.0271;
         break;
       default:
         break;
