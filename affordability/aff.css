@@ -203,5 +203,30 @@ input[type="checkbox"]{
     .selectedBox {
         max-height: 100%; /* Make it fit within the parent */
         overflow-y: auto; /* Enable vertical scrolling */
+        display: flex;
+        flex-direction: column;
+        margin: 5px;
+        align-items: center;
+        justify-items:center ;
+        justify-content: space-around;
+    }
+    .newloanPresent {
+        display: flex;
+        flex-direction: column;
+        margin: 5px;
+        justify-content: space-around;
+    }
+    .yes {
+        padding:10px;
+        margin-top: 10px;
+        background-color: white;
+        border-radius:10px 10px 0 0;
+    }
+    .no {
+        padding:10px;
+        background-color: white;
+        border-radius:0 0 10px 10px;
+    
+    
     }
     

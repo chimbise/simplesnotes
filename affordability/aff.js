@@ -4,9 +4,11 @@ var department = 'none'
 var govDepartment = department;
 var councilDepartment = department;
 var selectedAllowances = [];
-var selectionGroup = 0;
+var selectionGroup = 0; //for back button
 var direction = true;
+var selectedAllowancesAmounts =[];
 var deductionAmount = 0;
+var newloanPresent = 'none';
 const containerDiv = document.querySelector('.container');
 createBasicDiv()
 var current = document.getElementById(containerDiv.firstElementChild.className)
@@ -55,6 +57,10 @@ document.getElementById('next').addEventListener('click',()=>{
             containerDiv.removeChild(document.getElementById('selectedBox'));
             createDeductionDiv()
             break;
+        case 'deduction':
+            containerDiv.removeChild(document.getElementById('deduction'));
+            createNewloanDiv()
+            break;
         default:
             break;
     }
@@ -92,6 +98,9 @@ document.getElementById('back').addEventListener('click',()=>{
             containerDiv.removeChild(document.getElementById('deduction'));
             createNumberInputs(s)
             break;
+        case 'newloanPresent':
+            containerDiv.removeChild(document.getElementById('newloanPresent'));
+            createDeductionDiv()
         default:
             break;
     }
@@ -517,7 +526,21 @@ function createNumberInputs(array) {
 
     });
 
+    // document.getElementById(`numberInput${index}`).addEventListener('input', (event) => {
+    //     selectedAllowancesAmounts.push(event.target.value);
+    // });
+
+    // if (document.getElementById(`numberInput${index}`).value != null) {
+    //     document.getElementById(`numberInput${index}`).value = basicAmount;
+    // } else {
+    //     document.getElementById(`numberInput${index}`).value = 0
+    // }
     containerDiv.appendChild(container)
+    if (direction) {
+        container.classList.add('slide-in-right');
+    } else {
+        container.classList.add('slide-in-left');
+    }
 }
 function createDeductionDiv() {
 
@@ -549,7 +572,7 @@ function createDeductionDiv() {
     });
 
     if (document.getElementById('amountDeduction').value != null) {
-        document.getElementById('amountDeduction').value = amountDeduction;
+        document.getElementById('amountDeduction').value = deductionAmount;
     } else {
         document.getElementById('amountDeduction').value = 0
     }
@@ -559,6 +582,72 @@ function createDeductionDiv() {
     } else {
         deductionDiv.classList.add('slide-in-left');
     }
+}
+function createNewloanDiv() {
+    const newloanDiv = document.createElement('div')
+    newloanDiv.className = 'newloanPresent'
+    newloanDiv.id = 'newloanPresent'
+    newloanDiv.textContent = 'Do you have a new loan that has not deducted yet?'
+    newloanDiv.style.width = '90%'
+
+    // Create the first radio input for Government
+    const optDiv = document.createElement('div')
+    optDiv.className = 'yes'
+    const yesInput = document.createElement('input');
+    yesInput.setAttribute('type', 'radio');
+    yesInput.setAttribute('name', 'newloan');
+    yesInput.setAttribute('id', 'yes');
+    yesInput.setAttribute('value', 'yes');
+    const yesLabel = document.createElement('label');
+    yesLabel.setAttribute('for', 'yes');
+    yesLabel.textContent = 'yes';
+    optDiv.appendChild(yesInput)
+    optDiv.appendChild(yesLabel)
+    
+
+
+    // Create the second radio input for Council
+    const opt2 = document.createElement('div')
+    opt2.className ='no'
+    const noInput = document.createElement('input');
+    noInput.setAttribute('type', 'radio');
+    noInput.setAttribute('name', 'newloan');
+    noInput.setAttribute('id', 'no');
+    noInput.setAttribute('value', 'no');
+    const noLabel = document.createElement('label');
+    noLabel.setAttribute('for', 'no');
+    noLabel.textContent = 'no';
+    opt2.appendChild(noInput)
+    opt2.appendChild(noLabel)
+
+
+    // Append the radio inputs before the labels to the parent div
+    newloanDiv.appendChild(optDiv);
+    newloanDiv.appendChild(opt2);
+
+    containerDiv.appendChild(newloanDiv)
+
+    // Add change event listeners to the radio buttons
+    yesInput.addEventListener('change', (event)=>{
+        newloanPresent = event.target.value;
+    });
+    noInput.addEventListener('change', (event)=>{
+        newloanPresent = event.target.value;
+    });
+
+    // Set initial value for checked
+    if (newloanPresent === 'none' || newloanPresent === 'yes') {
+        yesInput.setAttribute('checked', 'yes');
+        newloanPresent = 'yes'
+    } else {
+        noInput.setAttribute('checked','no')
+    }
+    if (direction) {
+        newloanDiv.classList.add('slide-in-right');
+    } else {
+        newloanDiv.classList.add('slide-in-left');
+    }
+
 }
 
 
