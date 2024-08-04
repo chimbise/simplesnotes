@@ -5,5 +5,6 @@
 //AWS local server is live
 //calculate loanAount given instalment
 //add SSl for https to work
-//recall allowances that was selected*
+//recall allowances that was selected
+//implement createSettleLoanCodesOption*
 

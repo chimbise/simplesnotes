@@ -142,6 +142,7 @@ input[type="checkbox"]{
     margin-bottom: 10px;
     margin-top: 50px;
     border-radius: 10px;
+    width: 100%;
 }
 .checkboxDiv{
     background-color: white;
@@ -229,4 +230,57 @@ input[type="checkbox"]{
     
     
     }
-    
+    .newloanPresentSelection {
+        max-height: 100%; /* Make it fit within the parent */
+        overflow-y: auto; /* Enable vertical scrolling */
+        margin-bottom: 10px;
+        margin-top: 50px;
+        border-radius: 10px;
+        width: 100%;
+    }
+    .checkboxDivNewloan{
+        background-color: white;
+        padding:5px;
+    }
+    #newloan0 {
+        padding:5px;
+        border-radius:10px 10px 0 0;
+    }
+    #newloan8{
+        border-radius:0 0 10px 10px;
+    }
+    #textheaderNewloan {
+        position: absolute;
+        top: 0;
+        z-index: 1;
+        padding: 10px;
+    }
+
+    .inputWrapperNewloan {
+        background-color: white;
+        display: flex;
+        align-items: center;
+        padding: 5px;
+
+    }
+    .inputWrapperNewloan input{
+        width: 30%;
+        font-size: medium;
+    }
+    .inputWrapperNewloan label{
+        width: 70%;
+    }
+    #inputWrapperNewloan0{
+        margin-top: 10px;
+        border-radius:10px 10px 0 0;
+    }
+    .selectedBoxNewloan{
+        max-height: 100%; /* Make it fit within the parent */
+        overflow-y: auto; /* Enable vertical scrolling */
+        display: flex;
+        flex-direction: column;
+        margin: 5px;
+        align-items: center;
+        justify-items:center ;
+        justify-content: space-around; 
+    }

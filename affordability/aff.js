@@ -4,19 +4,26 @@ var department = 'none'
 var govDepartment = department;
 var councilDepartment = department;
 var selectedAllowances = [];
-var selectionGroup = 0; //for back button
+var selectionGroup = 0; //for back button allowance
+var selectionGroupNewloan = 0;
 var direction = true;
-var selectedAllowancesAmounts =[];
+//var selectedAllowancesAmounts =[];
 var deductionAmount = 0;
 var newloanPresent = 'none';
+var settleloan = 'none';
+var selectedNewLoanCode = []
+var selectedsettleLoanCode = []
+
+
 const containerDiv = document.querySelector('.container');
 createBasicDiv()
-var current = document.getElementById(containerDiv.firstElementChild.className)
+var currentDiv = ''
+var current = ''
 
 document.getElementById('next').addEventListener('click',()=>{
     direction = true;
-    var currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
-    var current = document.getElementById(currentDiv)
+    currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
+    current = document.getElementById(currentDiv)
     switch (currentDiv) {
         case 'basic':
             containerDiv.removeChild(current);
@@ -31,7 +38,7 @@ document.getElementById('next').addEventListener('click',()=>{
             }
             break;
         case 'department':
-            containerDiv.removeChild(document.getElementById('department'));
+            containerDiv.removeChild(current);
             switch (department) {
                 case 'bdf':
                     bdfAllowanceSelection()
@@ -48,18 +55,36 @@ document.getElementById('next').addEventListener('click',()=>{
             }
             break;
         case 'allowance':
-            var s = getSelectedAllowances()
-            containerDiv.removeChild(document.getElementById('allowance'));
-            console.log(s)
-            createNumberInputs(s)
+            containerDiv.removeChild(current);
+            createNumberInputs(selectedAllowances)
             break;
         case 'selectedBox':
-            containerDiv.removeChild(document.getElementById('selectedBox'));
+            containerDiv.removeChild(current);
             createDeductionDiv()
             break;
         case 'deduction':
-            containerDiv.removeChild(document.getElementById('deduction'));
+            containerDiv.removeChild(current);
             createNewloanDiv()
+            break;
+        case 'newloanPresent':
+            containerDiv.removeChild(current);
+            if (newloanPresent === 'yes'|| newloanPresent === 'none') {
+                createLoanCodesOption()
+            } else {
+                createSettleLoanDiv()
+            }
+            break;
+        case 'newloanPresentSelection':
+            containerDiv.removeChild(current);
+            createNumberInputsNewloan(selectedNewLoanCode)
+            break;
+        case 'selectedBoxNewloan':
+            containerDiv.removeChild(current);
+            createSettleLoanDiv()
+            break;
+        case 'oldloanSettle':
+            containerDiv.removeChild(current);
+            createSettleLoanCodesOption()
             break;
         default:
             break;
@@ -67,7 +92,7 @@ document.getElementById('next').addEventListener('click',()=>{
 })
 document.getElementById('back').addEventListener('click',()=>{
     direction = false;
-    var currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
+    currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
     switch (currentDiv) {
         case 'workPlace':
             containerDiv.removeChild(document.getElementById('workPlace'));
@@ -94,18 +119,34 @@ document.getElementById('back').addEventListener('click',()=>{
             }
             break;
         case 'deduction':
-            var s = getSelectedAllowances()
+            //var s = getSelectedAllowances()
             containerDiv.removeChild(document.getElementById('deduction'));
-            createNumberInputs(s)
+            createNumberInputs(selectedAllowances)
             break;
         case 'newloanPresent':
             containerDiv.removeChild(document.getElementById('newloanPresent'));
             createDeductionDiv()
+            break;
+        case 'newloanPresentSelection':
+            containerDiv.removeChild(document.getElementById('newloanPresentSelection'));
+            createNewloanDiv()
+            break;
+        case 'selectedBoxNewloan':
+            containerDiv.removeChild(document.getElementById('selectedBoxNewloan'));
+            createLoanCodesOption()            
+            break;
+        case 'oldloanSettle':
+            containerDiv.removeChild(document.getElementById('oldloanSettle'));
+            if (newloanPresent === 'yes'|| newloanPresent === 'none') {
+                createNumberInputsNewloan(selectedNewLoanCode)
+            } else {
+                createNewloanDiv()
+            }
+            break;
         default:
             break;
     }
 })
-
 function createBasicDiv() {
 
     // Create the basic div
@@ -441,9 +482,17 @@ function bdfAllowanceSelection() {
         checkboxDiv.appendChild(document.createElement('br'));
 
         bdfAllowanceDiv.appendChild(checkboxDiv)
-        console.log(checkboxDiv)
+
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                selectedAllowances.push(checkbox.value)
+            } else {
+                selectedAllowances = selectedAllowances.filter(item => item !== checkbox.value);
+            }
+        });
 
     });
+
     containerDiv.appendChild(bdfAllowanceDiv)
     checkalreadySelected(selectedAllowances,'bdf')
 
@@ -461,35 +510,6 @@ function checkalreadySelected(array,section) {
         }
     })
 }
-function getSelectedAllowances() {
-
-    //selectedAllowances = []
-    const checkboxes = document.querySelectorAll('input[name="allowance"]:checked');
-    checkboxes.forEach(checkbox => {
-        if(!selectedAllowances.includes(checkbox.value)){
-            switch (selectionGroup) {
-                case 1:
-                    selectedAllowances.push(checkbox.value);
-                    break;
-            
-                default:
-                    break;
-            }
-        }
-    
-                // Use a selector to find the checkbox with the matching value
-                // const checkbox = document.querySelector(`input[type="checkbox"][value="${checkbox.value}"]`);
-                // console.log(checkbox)
-                // if (checkbox) {
-                //     checkbox.checked = true; // Check the checkbox if it exists
-                // }
-        
-    });
-    console.log(selectedAllowances.join(', '));
-    return selectedAllowances
-}
-
-
 function createNumberInputs(array) {
     const container = document.createElement('div');
     container.className = 'selectedBox'
@@ -587,7 +607,7 @@ function createNewloanDiv() {
     const newloanDiv = document.createElement('div')
     newloanDiv.className = 'newloanPresent'
     newloanDiv.id = 'newloanPresent'
-    newloanDiv.textContent = 'Do you have a new loan that has not deducted yet?'
+    newloanDiv.textContent = 'Do you have a New loan that has not deducted yet?'
     newloanDiv.style.width = '90%'
 
     // Create the first radio input for Government
@@ -649,121 +669,215 @@ function createNewloanDiv() {
     }
 
 }
+function createLoanCodesOption() {
+    const allowance =  ['boprita','bogowu','botusafe(capital bank)','botusafe(other)','TAWU',
+        'letshego','bayport','BDF advance','other']
+
+    const newloanPresentDiv = document.createElement('div');
+    newloanPresentDiv.className = 'newloanPresentSelection';
+    newloanPresentDiv.id = 'newloanPresentSelection';
+
+    const text = document.createElement('p');
+    text.textContent = 'Select your New loan code'
+    text.id = 'textheaderNewloan'
+    newloanPresentDiv.appendChild(text)
+
+    allowance.forEach((item, index) => {
+        const checkboxDiv = document.createElement('div')
+        checkboxDiv.className = 'checkboxDivNewloan'
+        checkboxDiv.id = `newloan${index}`;
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `newloanAllowance${item}`;
+        checkbox.name = 'newloan';
+        checkbox.value = item;
+
+        const label = document.createElement('label');
+        label.htmlFor = `newloan${index}`;
+        label.textContent = item;
+
+        checkboxDiv.appendChild(checkbox);
+        checkboxDiv.appendChild(label);
+        checkboxDiv.appendChild(document.createElement('br'));
+
+        newloanPresentDiv.appendChild(checkboxDiv)
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                selectedNewLoanCode.push(checkbox.value)
+            } else {
+                selectedNewLoanCode = selectedNewLoanCode.filter(item => item !== checkbox.value);
+            }
+        });
+    });
+
+    containerDiv.appendChild(newloanPresentDiv)
+    checkalreadySelected(selectedNewLoanCode,'newloan')
+}
+function getSelectedNewloans() {
+    const checkboxes = document.querySelectorAll('input[name="newloan"]:checked');
+    checkboxes.forEach(checkbox => {
+        if(!selectedNewLoanCode.includes(checkbox.value)){
+            selectedNewLoanCode.push(checkbox.value);
+        }
+    });
+    return selectedNewLoanCode
+}
+function createNumberInputsNewloan(array) {
+    const container = document.createElement('div');
+    container.className = 'selectedBoxNewloan'
+    container.id = 'selectedBoxNewloan'
+    container.textContent = 'Enter NEW LOAN AMOUNT as shown in your payslip'
+
+    const lastIndex = array.length - 1;
+    array.forEach((item, index) => {
+        const wrapperDiv = document.createElement('div');
+        wrapperDiv.className = 'inputWrapperNewloan';
+        wrapperDiv.id = `inputWrapperNewloan${index}`;
+        if(index == 0&&index == lastIndex){
+            wrapperDiv.style.borderRadius = '10px'
+        }else if(index == lastIndex){
+            wrapperDiv.style.borderRadius = '0 0 10px 10px'
+        }
+
+        const label = document.createElement('label');
+        label.htmlFor = `numberInputNewloan${index}`;
+        label.textContent = item;
+
+        const numberInput = document.createElement('input');
+        numberInput.type = 'number';
+        numberInput.id = `numberInputNewloan${index}`;
+        numberInput.name = item.replace(/\s+/g, '-').toLowerCase(); // create a name based on the item
+        numberInput.min = 0;
+
+        wrapperDiv.appendChild(label);
+        wrapperDiv.appendChild(numberInput);
+
+        container.appendChild(wrapperDiv);
+
+    });
+
+    // document.getElementById(`numberInput${index}`).addEventListener('input', (event) => {
+    //     selectedAllowancesAmounts.push(event.target.value);
+    // });
+
+    // if (document.getElementById(`numberInput${index}`).value != null) {
+    //     document.getElementById(`numberInput${index}`).value = basicAmount;
+    // } else {
+    //     document.getElementById(`numberInput${index}`).value = 0
+    // }
+    containerDiv.appendChild(container)
+    if (direction) {
+        container.classList.add('slide-in-right');
+    } else {
+        container.classList.add('slide-in-left');
+    }
+}
+function createSettleLoanDiv() {
+    const settleloanDiv = document.createElement('div')
+    settleloanDiv.className = 'oldloanSettle'
+    settleloanDiv.id = 'oldloanSettle'
+    settleloanDiv.textContent = 'Is there any loan(s) you want to settle?'
+    settleloanDiv.style.width = '90%'
+
+    // Create the first radio input for Government
+    const optDiv = document.createElement('div')
+    optDiv.className = 'yes'
+    const yesInput = document.createElement('input');
+    yesInput.setAttribute('type', 'radio');
+    yesInput.setAttribute('name', 'settleloan');
+    yesInput.setAttribute('id', 'settleloan');
+    yesInput.setAttribute('value', 'yes');
+    const yesLabel = document.createElement('label');
+    yesLabel.setAttribute('for', 'settleloan');
+    yesLabel.textContent = 'yes';
+    optDiv.appendChild(yesInput)
+    optDiv.appendChild(yesLabel)
+    
 
 
+    // Create the second radio input for Council
+    const opt2 = document.createElement('div')
+    opt2.className ='no'
+    const noInput = document.createElement('input');
+    noInput.setAttribute('type', 'radio');
+    noInput.setAttribute('name', 'settleloan');
+    noInput.setAttribute('id', 'settleloan');
+    noInput.setAttribute('value', 'no');
+    const noLabel = document.createElement('label');
+    noLabel.setAttribute('for', 'settleloan');
+    noLabel.textContent = 'no';
+    opt2.appendChild(noInput)
+    opt2.appendChild(noLabel)
 
 
+    // Append the radio inputs before the labels to the parent div
+    settleloanDiv.appendChild(optDiv);
+    settleloanDiv.appendChild(opt2);
 
-// var botusafe = false; //if true process 26% otherwise 23% if clearing
-// var netpay = 0; // clear all loans
-// var basicTreshhold = 9100;//
+    containerDiv.appendChild(settleloanDiv)
 
+    // Add change event listeners to the radio buttons
+    yesInput.addEventListener('change', (event)=>{
+        settleloan = event.target.value;
+    });
+    noInput.addEventListener('change', (event)=>{
+        settleloan = event.target.value;
+    });
 
-// // JavaScript code to handle list item clicks
-// document.querySelectorAll('.clickable').forEach(item => {
-//     item.addEventListener('click', function(event) {
-//         event.stopPropagation();
-//         // Toggle visibility of the sub-list
-//         const subList = this.querySelector('.sub-list');
-//         if (subList.style.display === 'none' || subList.style.display === '') {
-//             subList.style.display = 'block';
-//         } else {
-//             subList.style.display =kj 'none';
-//         }
-//     });
-// });
-// // JavaScript code to handle sub-list item clicks
-// document.querySelectorAll('.clickable-sub').forEach(subItem => {
-//     subItem.addEventListener('click', function(event) {
-//         // Prevent the event from bubbling up to parent elements
-//         event.stopPropagation();
-//          // Toggle visibility of the sub-list
-//          const subList2 = this.querySelector('.sub-list2');
-//          if(subList2==null){
-//             return
-//          }
-//          if (subList2.style.display === 'none' || subList2.style.display === '') {
-//              subList2.style.display = 'block';
-//          } else {
-//              subList2.style.display = 'none';
-//          }
-//     });
-// });
+    // Set initial value for checked
+    if (settleloan === 'none' || settleloan === 'yes') {
+        yesInput.setAttribute('checked', 'yes');
+        settleloan = 'yes'
+    } else {
+        noInput.setAttribute('checked','no')
+    }
+    if (direction) {
+        settleloanDiv.classList.add('slide-in-right');
+    } else {
+        settleloanDiv.classList.add('slide-in-left');
+    }
+}
+function createSettleLoanCodesOption() {
+    const allowance =  ['boprita','bogowu','botusafe(capital bank)','botusafe(other)','TAWU',
+        'letshego','bayport','BDF advance','other']
 
-// const items = ['Housing & Upkeep', 'Scarce Skill','Housing Allowance','Technical Allowance',
-//     'BDF Special Harzard','X-Factor','Professional Allowance','BDF Speacial Duty','Band Allowance',
-// 'Fire Fighters Overtime 30pcnt','Horse Allowance'];
-// createCheckboxList(items);
+    const newloanPresentDiv = document.createElement('div');
+    newloanPresentDiv.className = 'settleloanPresentSelection';
+    newloanPresentDiv.id = 'settleloanPresentSelection';
 
-//     // Function to create and insert the checkbox list
-//     function createCheckboxList(items) {
-//         const list = document.getElementById('bdfChecklist');
+    const text = document.createElement('p');
+    text.textContent = 'Select the loan code you want to settle'
+    text.id = 'textheadersettleloan'
+    newloanPresentDiv.appendChild(text)
 
-//         items.forEach((item, index) => {
-//             const div = document.createElement('div')
-//             div.style.margin = '5px'
-//             // Create the checkbox
-//             const checkbox = document.createElement('input');
-//             checkbox.type = 'checkbox';
-//             checkbox.id = item;
-//             checkbox.className = 'checkbox-item';
+    allowance.forEach((item, index) => {
+        const checkboxDiv = document.createElement('div')
+        checkboxDiv.className = 'checkboxDivSettleloan'
+        checkboxDiv.id = `settleloan${index}`;
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `settleloanAllowance${item}`;
+        checkbox.name = 'settleloan';
+        checkbox.value = item;
 
-//             // Create the label
-//             const label = document.createElement('label');
-//             label.htmlFor = item;
-//             label.textContent = item;
+        const label = document.createElement('label');
+        label.htmlFor = `settleloan${index}`;
+        label.textContent = item;
 
-//             // Append the checkbox and label to the list item
-//             div.appendChild(checkbox);
-//             div.appendChild(label);
-//             list.appendChild(div)
-//         });
-//         const spanButton = document.createElement('span');
-//         spanButton.id = 'buildBdf';
-//         spanButton.className = 'span-button';
-//         spanButton.textContent = 'Next';
-//         spanButton.addEventListener('click', function() {
-//             chosenAllowances()
-//         });
-//         list.appendChild(spanButton);
-//     }
-//         // JavaScript code to handle checkbox clicks
-//         var checkedArr = [];
-//         document.querySelectorAll('.checkbox-item').forEach(checkbox => {
-//             checkbox.addEventListener('change', function() {
-//                 if (this.checked) {
-//                     checkedArr.push(this.id)
-//                 } else {
-//                     checkedArr = checkedArr.filter(item => item !== this.id);
-//                 }
-//             });
-//         });
-//         function chosenAllowances(){
+        checkboxDiv.appendChild(checkbox);
+        checkboxDiv.appendChild(label);
+        checkboxDiv.appendChild(document.createElement('br'));
 
-//         }
-        // <li class="clickable-sub">
-        // <label for="housing">Housing & Upkeep</label>
-        // <input type="number" name="housing" id="housing">
-        // <label for="scarceSkill">scarce skill</label>
-        // <input type="number" name="scarceSkill" id="scarceSkill">
-        // <label for="scarceSkill">Commuted Allowance</label>
-        // <input type="number" name="commutedAllowance" id="commutedAllowance">
-        // <label for="housingAllowance">Housing Allowance</label>
-        // <input type="number" name="housingAllowance" id="housingAllowance">
-        // <label for="technicalAllowance">Technical Allowance</label>
-        // <input type="number" name="technicalAllowance" id="technicalAllowance">
-        // <label for="BDFSpecialHarzard">BDF Special Harzard</label>
-        // <input type="number" name="BDFSpecialHarzard" id="BDFSpecialHarzard">
-        // <label for="X-Factor">X-Factor</label>
-        // <input type="number" name="X-Factor" id="X-Factor">
-        // <label for="professionalAllowance">Professional Allowance</label>
-        // <input type="number" name="professionalAllowance" id="professionalAllowance">
-        // <label for="BDFSpeacialDuty">BDF Speacial Duty</label>
-        // <input type="number" name="BDFSpeacialDuty" id="BDFSpeacialDuty">
-        // <label for="bandAllowance">Band Allowance</label>
-        // <input type="number" name="bandAllowance" id="bandAllowance">
-        // <label for="fireFightersOvertime30pcnt">fire Fighters Overtime 30pcnt</label>
-        // <input type="number" name="fireFightersOvertime30pcnt" id="fireFightersOvertime30pcnt">
-        // <label for="horseAllowance">Horse Allowance</label>
-        // <input type="number" name="horseAllowance" id="horseAllowance">
-        // </li>
+        newloanPresentDiv.appendChild(checkboxDiv)
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                selectedsettleLoanCode.push(checkbox.value)
+            } else {
+                selectedsettleLoanCode = selectedsettleLoanCode.filter(item => item !== checkbox.value);
+            }
+        });
+    });
+
+    containerDiv.appendChild(newloanPresentDiv)
+    checkalreadySelected(selectedsettleLoanCode,'newloan')
+}
