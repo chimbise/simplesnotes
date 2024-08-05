@@ -54,7 +54,7 @@ body {
     flex-direction: column;
     margin: 5px;
     align-items: center;
-    justify-items:center ;
+    justify-items: center ;
     justify-content: space-around;
 }
 .deduction {
@@ -140,7 +140,7 @@ input[type="checkbox"]{
     max-height: 100%; /* Make it fit within the parent */
     overflow-y: auto; /* Enable vertical scrolling */
     margin-bottom: 10px;
-    margin-top: 50px;
+    margin-top: 60px;
     border-radius: 10px;
     width: 100%;
 }
@@ -189,7 +189,6 @@ input[type="checkbox"]{
         align-items: center;
         padding: 5px;
         width: 90%;
-
     }
     .inputWrapper input{
         width: 30%;
@@ -228,14 +227,12 @@ input[type="checkbox"]{
         padding:10px;
         background-color: white;
         border-radius:0 0 10px 10px;
-    
-    
     }
     .newloanPresentSelection {
         max-height: 100%; /* Make it fit within the parent */
         overflow-y: auto; /* Enable vertical scrolling */
         margin-bottom: 10px;
-        margin-top: 50px;
+        margin-top: 60px;
         border-radius: 10px;
         width: 100%;
     }
@@ -330,6 +327,35 @@ input[type="checkbox"]{
         border-radius:10px 10px 0 0;
     }
     .selectedBoxSettleloan{
+        max-height: 100%; /* Make it fit within the parent */
+        overflow-y: auto; /* Enable vertical scrolling */
+        display: flex;
+        flex-direction: column;
+        margin: 5px;
+        align-items: center;
+        justify-items:center ;
+        justify-content: space-around; 
+    }
+
+    .inputWrapperTax {
+        background-color: white;
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        width: 90%;
+    }
+    .inputWrapperTax input{
+        width: 30%;
+        font-size: medium;
+    }
+    .inputWrapperTax label{
+        width: 70%;
+    }
+    #inputWrapperTax0{
+        margin-top: 10px;
+        border-radius:10px 10px 0 0;
+    }
+    .selectedBoxNewloan{
         max-height: 100%; /* Make it fit within the parent */
         overflow-y: auto; /* Enable vertical scrolling */
         display: flex;

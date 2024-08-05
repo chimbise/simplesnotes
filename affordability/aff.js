@@ -9,11 +9,12 @@ var selectionGroupNewloan = 0;
 var direction = true;
 //var selectedAllowancesAmounts =[];
 var deductionAmount = 0;
-var newloanPresent = 'none';
-var settleloan = 'none';
+var newloanPresent = 'no';
+var settleloan = 'no';
 var selectedNewLoanCode = []
 var selectedsettleLoanCode = []
-var taxCorrection = 'none'
+var taxCorrection = 'no'
+var maritalStatusValue = 'single'
 
 
 const containerDiv = document.querySelector('.container');
@@ -69,7 +70,7 @@ document.getElementById('next').addEventListener('click',()=>{
             break;
         case 'newloanPresent':
             containerDiv.removeChild(current);
-            if (newloanPresent === 'yes'|| newloanPresent === 'none') {
+            if (newloanPresent === 'yes') {
                 createLoanCodesOption()
             } else {
                 createSettleLoanDiv()
@@ -85,7 +86,7 @@ document.getElementById('next').addEventListener('click',()=>{
             break;
         case 'oldloanSettle':
             containerDiv.removeChild(current);
-            if (settleloan === 'yes'|| settleloan === 'none') {
+            if (settleloan === 'yes') {
                 createSettleLoanCodesOption()
             } else {
                 createTaxOption()
@@ -98,6 +99,18 @@ document.getElementById('next').addEventListener('click',()=>{
         case 'selectedBoxSettleloan':
             containerDiv.removeChild(current);
             createTaxOption()
+            break;
+        case 'taxDiv':
+            containerDiv.removeChild(current);
+            if (taxCorrection === 'yes') {
+                createTaxCorrectionInputs()
+            }else {
+                maritalStatus()
+            }
+            break;
+        case 'taxDivInput':
+            containerDiv.removeChild(current);
+            maritalStatus()
             break;
         default:
             break;
@@ -150,7 +163,7 @@ document.getElementById('back').addEventListener('click',()=>{
             break;
         case 'oldloanSettle':
             containerDiv.removeChild(document.getElementById('oldloanSettle'));
-            if (newloanPresent === 'yes'|| newloanPresent === 'none') {
+            if (newloanPresent === 'yes') {
                 createNumberInputsNewloan(selectedNewLoanCode)
             } else {
                 createNewloanDiv()
@@ -166,10 +179,22 @@ document.getElementById('back').addEventListener('click',()=>{
             break;
         case 'taxDiv':
             containerDiv.removeChild(document.getElementById('taxDiv'));
-            if (settleloan === 'yes'|| settleloan === 'none') {
+            if (settleloan === 'yes') {
                 createNumberInputsSettleloan(selectedsettleLoanCode)
             } else {
                 createSettleLoanDiv()
+            }
+            break;
+        case 'taxDivInput':
+            containerDiv.removeChild(document.getElementById('taxDivInput'));
+            createTaxOption()
+            break;
+        case 'maritalDiv':
+            containerDiv.removeChild(document.getElementById('maritalDiv'));
+            if (taxCorrection === 'yes') {
+                createTaxCorrectionInputs()
+            } else {
+                createTaxOption()
             }
             break;
         default:
@@ -186,7 +211,7 @@ function createBasicDiv() {
     // Create the label
     const label = document.createElement('label');
     label.setAttribute('for', 'amountBasic');
-    label.textContent = 'Enter your basic salary (payslip)';
+    label.textContent = 'Enter your BASIC SALARY (payslip)';
 
     // Create the input
     const input = document.createElement('input');
@@ -202,7 +227,6 @@ function createBasicDiv() {
     // Update basicAmount whenever the input value changes
     document.getElementById('amountBasic').addEventListener('input', (event) => {
         basicAmount = event.target.value;
-        console.log(basicAmount)
     });
 
     if (document.getElementById('amountBasic').value != null) {
@@ -222,7 +246,7 @@ function createWorkDiv() {
     const workDiv = document.createElement('div')
     workDiv.className = 'workPlace'
     workDiv.id = 'workPlace'
-    workDiv.textContent = 'Select your work of place?'
+    workDiv.textContent = 'Select your place of WORK?'
     workDiv.style.width = '90%'
 
     // Create the first radio input for Government
@@ -290,7 +314,7 @@ function createGovDepartmentDiv() {
     const departmentDiv = document.createElement('div')
     departmentDiv.className = 'department'
     departmentDiv.id = 'department'
-    departmentDiv.textContent = 'Select your department?'
+    departmentDiv.textContent = 'Select your DEPARTMENT?'
     departmentDiv.style.width = '90%'
 
     // Create the first radio input for Government
@@ -387,7 +411,7 @@ function createCouncilDepartmentDiv() {
     const departmentDiv = document.createElement('div')
     departmentDiv.className = 'department'
     departmentDiv.id = 'department'
-    departmentDiv.textContent = 'Select your department?'
+    departmentDiv.textContent = 'Select your DEPARTMENT?'
     departmentDiv.style.width = '90%'
 
     // Create the first radio input for council
@@ -488,7 +512,7 @@ function bdfAllowanceSelection() {
     bdfAllowanceDiv.id = 'allowance';
 
     const text = document.createElement('p');
-    text.textContent = 'Select your allowances(payslip)'
+    text.textContent = 'Select your PERMANENT ALLOWANCES(payslip)'
     text.id = 'textheader'
     bdfAllowanceDiv.appendChild(text)
 
@@ -543,7 +567,7 @@ function createNumberInputs(array) {
     const container = document.createElement('div');
     container.className = 'selectedBox'
     container.id = 'selectedBox'
-    container.textContent = 'Enter allowance values on your payslip'
+    container.textContent = 'Enter ALLOWANCE AMOUNT as shown on your payslip'
 
     const lastIndex = array.length - 1;
     array.forEach((item, index) => {
@@ -601,7 +625,7 @@ function createDeductionDiv() {
     // Create the label
     const label = document.createElement('label');
     label.setAttribute('for', 'amountDeduction');
-    label.textContent = 'Enter your deduction amount';
+    label.textContent = 'Enter your DEDUCTION amount';
 
     // Create the input
     const input = document.createElement('input');
@@ -636,7 +660,7 @@ function createNewloanDiv() {
     const newloanDiv = document.createElement('div')
     newloanDiv.className = 'newloanPresent'
     newloanDiv.id = 'newloanPresent'
-    newloanDiv.textContent = 'Do you have a New loan that has not deducted yet?'
+    newloanDiv.textContent = 'Do you have a NEW LOAN(past 3 months) that has not deducted yet?'
     newloanDiv.style.width = '90%'
 
     // Create the first radio input for Government
@@ -685,10 +709,10 @@ function createNewloanDiv() {
     });
 
     // Set initial value for checked
-    if (newloanPresent === 'none' || newloanPresent === 'yes') {
+    if (newloanPresent === 'yes') {
         yesInput.setAttribute('checked', 'yes');
-        newloanPresent = 'yes'
     } else {
+        newloanPresent = 'no'
         noInput.setAttribute('checked','no')
     }
     if (direction) {
@@ -707,7 +731,7 @@ function createLoanCodesOption() {
     newloanPresentDiv.id = 'newloanPresentSelection';
 
     const text = document.createElement('p');
-    text.textContent = 'Select your New loan code'
+    text.textContent = 'Select your NEW LOAN CODE'
     text.id = 'textheaderNewloan'
     newloanPresentDiv.appendChild(text)
 
@@ -755,7 +779,7 @@ function createNumberInputsNewloan(array) {
     const container = document.createElement('div');
     container.className = 'selectedBoxNewloan'
     container.id = 'selectedBoxNewloan'
-    container.textContent = 'Enter NEW LOAN AMOUNT as shown in your payslip'
+    container.textContent = 'Enter NEW LOAN INSTALLMENT as shown in your payslip'
 
     const lastIndex = array.length - 1;
     array.forEach((item, index) => {
@@ -854,10 +878,10 @@ function createSettleLoanDiv() {
     });
 
     // Set initial value for checked
-    if (settleloan === 'none' || settleloan === 'yes') {
+    if (settleloan === 'yes') {
         yesInput.setAttribute('checked', 'yes');
-        settleloan = 'yes'
     } else {
+        settleloan = 'no'
         noInput.setAttribute('checked','no')
     }
     if (direction) {
@@ -875,7 +899,7 @@ function createSettleLoanCodesOption() {
     newloanPresentDiv.id = 'settleloanPresentSelection';
 
     const text = document.createElement('p');
-    text.textContent = 'Select the loan code you want to settle'
+    text.textContent = 'Select the LOAN CODE you want to SETTLE'
     text.id = 'textheadersettleloan'
     newloanPresentDiv.appendChild(text)
 
@@ -914,7 +938,7 @@ function createNumberInputsSettleloan(array){
     const container = document.createElement('div');
     container.className = 'selectedBoxSettleloan'
     container.id = 'selectedBoxSettleloan'
-    container.textContent = 'Enter amount for LOAN(s) TO BE SETTLED as shown in your payslip'
+    container.textContent = 'Enter INSTALLMENTS for the LOAN(s) TO BE SETTLED as shown in your payslip'
 
     const lastIndex = array.length - 1;
     array.forEach((item, index) => {
@@ -964,7 +988,7 @@ function createTaxOption() {
     const taxDiv = document.createElement('div')
     taxDiv.className = 'taxDiv'
     taxDiv.id = 'taxDiv'
-    taxDiv.textContent = 'do you have non-permanent overtime/allowance for tax correction? '
+    taxDiv.textContent = 'do you have non-permanent overtime/allowance for TAX CORRECTION? '
     taxDiv.style.width = '90%'
 
     // Create the first radio input for Government
@@ -980,8 +1004,6 @@ function createTaxOption() {
     yesLabel.textContent = 'yes';
     optDiv.appendChild(yesInput)
     optDiv.appendChild(yesLabel)
-    
-
 
     // Create the second radio input for Council
     const opt2 = document.createElement('div')
@@ -1023,5 +1045,109 @@ function createTaxOption() {
         taxDiv.classList.add('slide-in-right');
     } else {
         taxDiv.classList.add('slide-in-left');
+    }
+}
+function createTaxCorrectionInputs() {
+    const container = document.createElement('div');
+    container.className = 'taxDivInput'
+    container.id = 'taxDivInput'
+    container.textContent = 'Enter your INCOME TAX and PENSION deductions as reflected in your payslip'
+
+    const lastIndex = 1;
+    ['Income Tax','Pension deduction'].forEach((item, index) => {
+        const wrapperDiv = document.createElement('div');
+        wrapperDiv.className = 'inputWrapperTax';
+        wrapperDiv.id = `inputWrapperTax${index}`;
+        if(index == 0&&index == lastIndex){
+            wrapperDiv.style.borderRadius = '10px'
+        }else if(index == lastIndex){
+            wrapperDiv.style.borderRadius = '0 0 10px 10px'
+        }
+
+        const label = document.createElement('label');
+        label.htmlFor = `numberInputTax${index}`;
+        label.textContent = item;
+
+        const numberInput = document.createElement('input');
+        numberInput.type = 'number';
+        numberInput.id = `numberInputTax${index}`;
+        numberInput.name = item.replace(/\s+/g, '-').toLowerCase(); // create a name based on the item
+        numberInput.min = 0;
+
+        wrapperDiv.appendChild(label);
+        wrapperDiv.appendChild(numberInput);
+
+        container.appendChild(wrapperDiv);
+
+    });
+
+    containerDiv.appendChild(container)
+    if (direction) {
+        container.classList.add('slide-in-right');
+    } else {
+        container.classList.add('slide-in-left');
+    }
+}
+function maritalStatus() {
+    const maritalDiv = document.createElement('div')
+    maritalDiv.className = 'maritalDiv'
+    maritalDiv.id = 'maritalDiv'
+    maritalDiv.textContent = 'Select YES if you are either MARRIED, DIRVOCED or WIDOWED'
+    maritalDiv.style.width = '90%'
+
+    // Create the first radio input for Government
+    const optDiv = document.createElement('div')
+    optDiv.className = 'yes'
+    const yesInput = document.createElement('input');
+    yesInput.setAttribute('type', 'radio');
+    yesInput.setAttribute('name', 'maritalStatus');
+    yesInput.setAttribute('id', 'maritalStatus');
+    yesInput.setAttribute('value', 'yes');
+    const yesLabel = document.createElement('label');
+    yesLabel.setAttribute('for', 'maritalStatus');
+    yesLabel.textContent = 'yes';
+    optDiv.appendChild(yesInput)
+    optDiv.appendChild(yesLabel)
+
+    // Create the second radio input for Council
+    const opt2 = document.createElement('div')
+    opt2.className ='no'
+    const noInput = document.createElement('input');
+    noInput.setAttribute('type', 'radio');
+    noInput.setAttribute('name', 'maritalStatus');
+    noInput.setAttribute('id', 'maritalStatus');
+    noInput.setAttribute('value', 'no');
+    const noLabel = document.createElement('label');
+    noLabel.setAttribute('for', 'maritalStatus');
+    noLabel.textContent = 'no';
+    opt2.appendChild(noInput)
+    opt2.appendChild(noLabel)
+
+
+    // Append the radio inputs before the labels to the parent div
+    maritalDiv.appendChild(optDiv);
+    maritalDiv.appendChild(opt2);
+
+    containerDiv.appendChild(maritalDiv)
+
+    // Add change event listeners to the radio buttons
+    yesInput.addEventListener('change', (event)=>{
+        maritalStatusValue = event.target.value;
+    });
+    noInput.addEventListener('change', (event)=>{
+        maritalStatusValue = event.target.value;
+    });
+
+    // Set initial value for checked
+    if (maritalStatusValue === 'no') {
+        noInput.setAttribute('checked', 'no');
+        maritalStatusValue = 'no'
+    } else {
+        yesInput.setAttribute('checked','yes')
+    }
+    if (direction) {
+        maritalDiv.classList.add('slide-in-right');
+    } else {
+        maritalDiv.classList.add('slide-in-left');
     }
 }
