@@ -13,6 +13,7 @@ var newloanPresent = 'none';
 var settleloan = 'none';
 var selectedNewLoanCode = []
 var selectedsettleLoanCode = []
+var taxCorrection = 'none'
 
 
 const containerDiv = document.querySelector('.container');
@@ -84,7 +85,19 @@ document.getElementById('next').addEventListener('click',()=>{
             break;
         case 'oldloanSettle':
             containerDiv.removeChild(current);
-            createSettleLoanCodesOption()
+            if (settleloan === 'yes'|| settleloan === 'none') {
+                createSettleLoanCodesOption()
+            } else {
+                createTaxOption()
+            }
+            break;
+        case 'settleloanPresentSelection':
+            containerDiv.removeChild(current);
+            createNumberInputsSettleloan(selectedsettleLoanCode)
+            break;
+        case 'selectedBoxSettleloan':
+            containerDiv.removeChild(current);
+            createTaxOption()
             break;
         default:
             break;
@@ -141,6 +154,22 @@ document.getElementById('back').addEventListener('click',()=>{
                 createNumberInputsNewloan(selectedNewLoanCode)
             } else {
                 createNewloanDiv()
+            }
+            break;
+        case 'settleloanPresentSelection':
+            containerDiv.removeChild(document.getElementById('settleloanPresentSelection'));
+            createSettleLoanDiv()
+            break;
+        case 'selectedBoxSettleloan':
+            containerDiv.removeChild(document.getElementById('selectedBoxSettleloan'));
+            createSettleLoanCodesOption()
+            break;
+        case 'taxDiv':
+            containerDiv.removeChild(document.getElementById('taxDiv'));
+            if (settleloan === 'yes'|| settleloan === 'none') {
+                createNumberInputsSettleloan(selectedsettleLoanCode)
+            } else {
+                createSettleLoanDiv()
             }
             break;
         default:
@@ -879,5 +908,120 @@ function createSettleLoanCodesOption() {
     });
 
     containerDiv.appendChild(newloanPresentDiv)
-    checkalreadySelected(selectedsettleLoanCode,'newloan')
+    checkalreadySelected(selectedsettleLoanCode,'settleloan')
+}
+function createNumberInputsSettleloan(array){
+    const container = document.createElement('div');
+    container.className = 'selectedBoxSettleloan'
+    container.id = 'selectedBoxSettleloan'
+    container.textContent = 'Enter amount for LOAN(s) TO BE SETTLED as shown in your payslip'
+
+    const lastIndex = array.length - 1;
+    array.forEach((item, index) => {
+        const wrapperDiv = document.createElement('div');
+        wrapperDiv.className = 'inputWrapperSettleloan';
+        wrapperDiv.id = `inputWrapperSettleloan${index}`;
+        if(index == 0&&index == lastIndex){
+            wrapperDiv.style.borderRadius = '10px'
+        }else if(index == lastIndex){
+            wrapperDiv.style.borderRadius = '0 0 10px 10px'
+        }
+
+        const label = document.createElement('label');
+        label.htmlFor = `numberInputSettleloan${index}`;
+        label.textContent = item;
+
+        const numberInput = document.createElement('input');
+        numberInput.type = 'number';
+        numberInput.id = `numberInputSettleloan${index}`;
+        numberInput.name = item.replace(/\s+/g, '-').toLowerCase(); // create a name based on the item
+        numberInput.min = 0;
+
+        wrapperDiv.appendChild(label);
+        wrapperDiv.appendChild(numberInput);
+
+        container.appendChild(wrapperDiv);
+
+    });
+
+    // document.getElementById(`numberInput${index}`).addEventListener('input', (event) => {
+    //     selectedAllowancesAmounts.push(event.target.value);
+    // });
+
+    // if (document.getElementById(`numberInput${index}`).value != null) {
+    //     document.getElementById(`numberInput${index}`).value = basicAmount;
+    // } else {
+    //     document.getElementById(`numberInput${index}`).value = 0
+    // }
+    containerDiv.appendChild(container)
+    if (direction) {
+        container.classList.add('slide-in-right');
+    } else {
+        container.classList.add('slide-in-left');
+    }
+}
+function createTaxOption() {
+    const taxDiv = document.createElement('div')
+    taxDiv.className = 'taxDiv'
+    taxDiv.id = 'taxDiv'
+    taxDiv.textContent = 'do you have non-permanent overtime/allowance for tax correction? '
+    taxDiv.style.width = '90%'
+
+    // Create the first radio input for Government
+    const optDiv = document.createElement('div')
+    optDiv.className = 'yes'
+    const yesInput = document.createElement('input');
+    yesInput.setAttribute('type', 'radio');
+    yesInput.setAttribute('name', 'taxCorrection');
+    yesInput.setAttribute('id', 'taxCorrection');
+    yesInput.setAttribute('value', 'yes');
+    const yesLabel = document.createElement('label');
+    yesLabel.setAttribute('for', 'taxCorrection');
+    yesLabel.textContent = 'yes';
+    optDiv.appendChild(yesInput)
+    optDiv.appendChild(yesLabel)
+    
+
+
+    // Create the second radio input for Council
+    const opt2 = document.createElement('div')
+    opt2.className ='no'
+    const noInput = document.createElement('input');
+    noInput.setAttribute('type', 'radio');
+    noInput.setAttribute('name', 'taxCorrection');
+    noInput.setAttribute('id', 'taxCorrection');
+    noInput.setAttribute('value', 'no');
+    const noLabel = document.createElement('label');
+    noLabel.setAttribute('for', 'taxCorrection');
+    noLabel.textContent = 'no';
+    opt2.appendChild(noInput)
+    opt2.appendChild(noLabel)
+
+
+    // Append the radio inputs before the labels to the parent div
+    taxDiv.appendChild(optDiv);
+    taxDiv.appendChild(opt2);
+
+    containerDiv.appendChild(taxDiv)
+
+    // Add change event listeners to the radio buttons
+    yesInput.addEventListener('change', (event)=>{
+        taxCorrection = event.target.value;
+    });
+    noInput.addEventListener('change', (event)=>{
+        taxCorrection = event.target.value;
+    });
+
+    // Set initial value for checked
+    if (taxCorrection === 'none' || taxCorrection === 'no') {
+        noInput.setAttribute('checked', 'no');
+        taxCorrection = 'no'
+    } else {
+        yesInput.setAttribute('checked','yes')
+    }
+    if (direction) {
+        taxDiv.classList.add('slide-in-right');
+    } else {
+        taxDiv.classList.add('slide-in-left');
+    }
 }

@@ -6,5 +6,6 @@
 //calculate loanAount given instalment
 //add SSl for https to work
 //recall allowances that was selected
-//implement createSettleLoanCodesOption*
+//implement createSettleLoanCodesOption
+//determine tax*
 
