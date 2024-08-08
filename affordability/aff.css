@@ -26,7 +26,7 @@ body {
     padding: 10px;
 }
 .span-button {
-    background-color: lightcoral;
+    background-color: white;
     border-radius: 10px;
     padding: 10px;
     cursor: pointer;
@@ -35,7 +35,7 @@ body {
 
 }
 .span-button:hover {
-    background-color: #0056b3;
+    background: #8dc63f; /* Gradient background */
 }
 
 .container {
@@ -56,6 +56,7 @@ body {
     align-items: center;
     justify-items: center ;
     justify-content: space-around;
+
 }
 .deduction {
     display: flex;
@@ -174,7 +175,17 @@ input[type="checkbox"]{
         from { transform: translateX(100%); }
         to { transform: translateX(0); }
     }
-
+    /* Animation for shrinking and fading out */
+    @keyframes shrinkToCenter {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(0);
+            opacity: 0;
+        }
+    }
     
     .slide-in-left {
         animation: slideInLeft 0.5s forwards;
@@ -182,6 +193,10 @@ input[type="checkbox"]{
 
     .slide-in-right {
         animation: slideInRight 0.5s forwards;
+    }
+    /* Class to trigger the animation */
+    .shrink {
+        animation: shrinkToCenter 0.5s forwards;
     }
     .inputWrapper {
         background-color: white;
@@ -355,13 +370,23 @@ input[type="checkbox"]{
         margin-top: 10px;
         border-radius:10px 10px 0 0;
     }
-    .taxDiv{
-        max-height: 100%; /* Make it fit within the parent */
-        overflow-y: auto; /* Enable vertical scrolling */
+
+    .birthdateDiv{
+        width: 90%;
+    }
+    .birthdateForm {
         display: flex;
-        flex-direction: column;
-        margin: 5px;
         align-items: center;
-        justify-items:center ;
-        justify-content: space-around; 
+        justify-items: center ;
+        justify-content: space-around;
+        width: 100%;
+
+    }
+    select, input[type="submit"] {
+        font-size: medium; /* Increase font size */
+        padding: 5px; /* Add padding for a larger clickable area */
+        margin-left: 5px; /* Add some margin for spacing */
+        width: 100%; /* Set a width for the select elements */
+        border-radius: 5px;
+        box-sizing: border-box; /* Ensure padding is included in the width */
     }

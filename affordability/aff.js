@@ -14,7 +14,8 @@ var settleloan = 'no';
 var selectedNewLoanCode = []
 var selectedsettleLoanCode = []
 var taxCorrection = 'no'
-var maritalStatusValue = 'single'
+var maritalStatusValue = 'no'
+var birthdate = 0;
 
 
 const containerDiv = document.querySelector('.container');
@@ -28,8 +29,10 @@ document.getElementById('next').addEventListener('click',()=>{
     current = document.getElementById(currentDiv)
     switch (currentDiv) {
         case 'basic':
-            containerDiv.removeChild(current);
-            createWorkDiv()
+            current.classList.add('shrink');
+            current.addEventListener('animationend',containerDiv.removeChild(current));
+
+            //createWorkDiv()
             break;
         case 'workPlace':
             containerDiv.removeChild(current);
@@ -111,6 +114,10 @@ document.getElementById('next').addEventListener('click',()=>{
         case 'taxDivInput':
             containerDiv.removeChild(current);
             maritalStatus()
+            break;
+        case 'maritalDiv':
+            containerDiv.removeChild(current);
+            getAge()
             break;
         default:
             break;
@@ -196,6 +203,10 @@ document.getElementById('back').addEventListener('click',()=>{
             } else {
                 createTaxOption()
             }
+            break;
+        case 'birthdateDiv':
+            containerDiv.removeChild(document.getElementById('birthdateDiv'));
+            maritalStatus()
             break;
         default:
             break;
@@ -779,7 +790,7 @@ function createNumberInputsNewloan(array) {
     const container = document.createElement('div');
     container.className = 'selectedBoxNewloan'
     container.id = 'selectedBoxNewloan'
-    container.textContent = 'Enter NEW LOAN INSTALLMENT as shown in your payslip'
+    container.textContent = 'Enter NEW LOAN INSTALLMENT as shown in your loan contract'
 
     const lastIndex = array.length - 1;
     array.forEach((item, index) => {
@@ -829,7 +840,7 @@ function createSettleLoanDiv() {
     const settleloanDiv = document.createElement('div')
     settleloanDiv.className = 'oldloanSettle'
     settleloanDiv.id = 'oldloanSettle'
-    settleloanDiv.textContent = 'Is there any loan(s) you want to settle?'
+    settleloanDiv.textContent = 'Is there any loan(s) you want to SETTLE?'
     settleloanDiv.style.width = '90%'
 
     // Create the first radio input for Government
@@ -1149,5 +1160,90 @@ function maritalStatus() {
         maritalDiv.classList.add('slide-in-right');
     } else {
         maritalDiv.classList.add('slide-in-left');
+    }
+}
+function getAge() {
+    // Create the basic div
+    const birthdateDiv = document.createElement('div');
+    birthdateDiv.className = 'birthdateDiv'
+    birthdateDiv.id = 'birthdateDiv'
+    birthdateDiv.textContent = 'Enter your birthday'
+        // Create the form element
+        const form = document.createElement('form');
+        form.className = 'birthdateForm'
+       
+        // Create the day select element
+        const daySelect = document.createElement('select');
+        daySelect.setAttribute('id', 'day');
+        daySelect.setAttribute('name', 'day');
+        daySelect.required = true;
+
+        let dayOption = document.createElement('option');
+        dayOption.value = '';
+        dayOption.textContent = 'Day';
+        daySelect.appendChild(dayOption);
+
+        for (let i = 1; i <= 31; i++) {
+            dayOption = document.createElement('option');
+            dayOption.value = i;
+            dayOption.textContent = i;
+            daySelect.appendChild(dayOption);
+        }
+        form.appendChild(daySelect);
+
+        // Create the month select element
+        const monthSelect = document.createElement('select');
+        monthSelect.setAttribute('id', 'month');
+        monthSelect.setAttribute('name', 'month');
+        monthSelect.required = true;
+
+        let monthOption = document.createElement('option');
+        monthOption.value = '';
+        monthOption.textContent = 'Month';
+        monthSelect.appendChild(monthOption);
+
+        const months = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+
+        months.forEach((month, index) => {
+            monthOption = document.createElement('option');
+            monthOption.value = index + 1;
+            monthOption.textContent = month;
+            monthSelect.appendChild(monthOption);
+        });
+        form.appendChild(monthSelect);
+
+        // Create the year select element
+        const yearSelect = document.createElement('select');
+        yearSelect.setAttribute('id', 'year');
+        yearSelect.setAttribute('name', 'year');
+        yearSelect.required = true;
+
+        let yearOption = document.createElement('option');
+        yearOption.value = '';
+        yearOption.textContent = 'Year';
+        yearSelect.appendChild(yearOption);
+
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear - 16; i >= currentYear-75; i--) {
+            yearOption = document.createElement('option');
+            yearOption.value = i;
+            yearOption.textContent = i;
+            yearSelect.appendChild(yearOption);
+        }
+        form.appendChild(yearSelect);
+
+        // Line break
+        form.appendChild(document.createElement('br'));
+        form.appendChild(document.createElement('br'));
+
+        birthdateDiv.appendChild(form)   
+    containerDiv.appendChild(birthdateDiv)
+    if (direction) {
+        birthdateDiv.classList.add('slide-in-right');
+    } else {
+        birthdateDiv.classList.add('slide-in-left');
     }
 }
