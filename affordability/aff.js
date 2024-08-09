@@ -27,193 +27,304 @@ document.getElementById('next').addEventListener('click',()=>{
     direction = true;
     currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
     current = document.getElementById(currentDiv)
-    switch (currentDiv) {
-        case 'basic':
-            current.classList.add('shrink');
-            current.addEventListener('animationend',containerDiv.removeChild(current));
-
-            //createWorkDiv()
-            break;
-        case 'workPlace':
-            containerDiv.removeChild(current);
-            if (workPlace === 'government') {
-                createGovDepartmentDiv()
-            } else {
-                createCouncilDepartmentDiv()
-            }
-            break;
-        case 'department':
-            containerDiv.removeChild(current);
-            switch (department) {
-                case 'bdf':
-                    bdfAllowanceSelection()
-                    selectionGroup = 1;
+    
+    current.classList.add('shrink');
+    setTimeout(() => {
+        switch (currentDiv) {
+            case 'basic':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('basic'));
+                createWorkDiv()
+                break;
+            case 'workPlace':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
+                if (workPlace === 'government') {
+                    createGovDepartmentDiv()
+                } else {
+                    createCouncilDepartmentDiv()
+                }
+                break;
+            case 'department':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
+                switch (department) {
+                    case 'bdf':
+                        bdfAllowanceSelection()
+                        selectionGroup = 1;
+                        break;
+                    case 'police':
+                    
+                        break;
+                    case 'education':
+                    
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 'allowance':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }else if(selectedAllowances.length == 0 ) {
+                    containerDiv.removeChild(current);
+                    createDeductionDiv()
                     break;
-                case 'police':
-                
-                    break;
-                case 'education':
-                
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case 'allowance':
-            containerDiv.removeChild(current);
-            createNumberInputs(selectedAllowances)
-            break;
-        case 'selectedBox':
-            containerDiv.removeChild(current);
-            createDeductionDiv()
-            break;
-        case 'deduction':
-            containerDiv.removeChild(current);
-            createNewloanDiv()
-            break;
-        case 'newloanPresent':
-            containerDiv.removeChild(current);
-            if (newloanPresent === 'yes') {
-                createLoanCodesOption()
-            } else {
+                 }
+                containerDiv.removeChild(current);
+                createNumberInputs(selectedAllowances)
+                break;
+            case 'selectedBox':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
+                createDeductionDiv()
+                break;
+            case 'deduction':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
+                createNewloanDiv()
+                break;
+            case 'newloanPresent':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
+                if (newloanPresent === 'yes') {
+                    createLoanCodesOption()
+                } else {
+                    createSettleLoanDiv()
+                }
+                break;
+            case 'newloanPresentSelection':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
+                createNumberInputsNewloan(selectedNewLoanCode)
+                break;
+            case 'selectedBoxNewloan':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
                 createSettleLoanDiv()
-            }
-            break;
-        case 'newloanPresentSelection':
-            containerDiv.removeChild(current);
-            createNumberInputsNewloan(selectedNewLoanCode)
-            break;
-        case 'selectedBoxNewloan':
-            containerDiv.removeChild(current);
-            createSettleLoanDiv()
-            break;
-        case 'oldloanSettle':
-            containerDiv.removeChild(current);
-            if (settleloan === 'yes') {
-                createSettleLoanCodesOption()
-            } else {
+                break;
+            case 'oldloanSettle':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
+                if (settleloan === 'yes') {
+                    createSettleLoanCodesOption()
+                } else {
+                    createTaxOption()
+                }
+                break;
+            case 'settleloanPresentSelection':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
+                createNumberInputsSettleloan(selectedsettleLoanCode)
+                break;
+            case 'selectedBoxSettleloan':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
                 createTaxOption()
-            }
-            break;
-        case 'settleloanPresentSelection':
-            containerDiv.removeChild(current);
-            createNumberInputsSettleloan(selectedsettleLoanCode)
-            break;
-        case 'selectedBoxSettleloan':
-            containerDiv.removeChild(current);
-            createTaxOption()
-            break;
-        case 'taxDiv':
-            containerDiv.removeChild(current);
-            if (taxCorrection === 'yes') {
-                createTaxCorrectionInputs()
-            }else {
+                break;
+            case 'taxDiv':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
+                if (taxCorrection === 'yes') {
+                    createTaxCorrectionInputs()
+                }else {
+                    maritalStatus()
+                }
+                break;
+            case 'taxDivInput':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
                 maritalStatus()
-            }
-            break;
-        case 'taxDivInput':
-            containerDiv.removeChild(current);
-            maritalStatus()
-            break;
-        case 'maritalDiv':
-            containerDiv.removeChild(current);
-            getAge()
-            break;
-        default:
-            break;
-    }
+                break;
+            case 'maritalDiv':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
+                getAge()
+                break;
+            default:
+                break;
+        }
+    }, 200);
+
 })
 document.getElementById('back').addEventListener('click',()=>{
     direction = false;
     currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
-    switch (currentDiv) {
-        case 'workPlace':
-            containerDiv.removeChild(document.getElementById('workPlace'));
-            createBasicDiv()
-            break;
-        case 'department':
-            containerDiv.removeChild(document.getElementById('department'));
-            createWorkDiv()
-            break;
-        case 'allowance':
-            containerDiv.removeChild(document.getElementById('allowance'));
-            if (workPlace === 'government') {
-                createGovDepartmentDiv()
-            } else {
-                createCouncilDepartmentDiv()
-            }
-            break;
-        case 'selectedBox':
-            containerDiv.removeChild(document.getElementById('selectedBox'));
-            if (selectionGroup == 1) {
-                bdfAllowanceSelection()
-            } else {
-                
-            }
-            break;
-        case 'deduction':
-            //var s = getSelectedAllowances()
-            containerDiv.removeChild(document.getElementById('deduction'));
-            createNumberInputs(selectedAllowances)
-            break;
-        case 'newloanPresent':
-            containerDiv.removeChild(document.getElementById('newloanPresent'));
-            createDeductionDiv()
-            break;
-        case 'newloanPresentSelection':
-            containerDiv.removeChild(document.getElementById('newloanPresentSelection'));
-            createNewloanDiv()
-            break;
-        case 'selectedBoxNewloan':
-            containerDiv.removeChild(document.getElementById('selectedBoxNewloan'));
-            createLoanCodesOption()            
-            break;
-        case 'oldloanSettle':
-            containerDiv.removeChild(document.getElementById('oldloanSettle'));
-            if (newloanPresent === 'yes') {
-                createNumberInputsNewloan(selectedNewLoanCode)
-            } else {
-                createNewloanDiv()
-            }
-            break;
-        case 'settleloanPresentSelection':
-            containerDiv.removeChild(document.getElementById('settleloanPresentSelection'));
-            createSettleLoanDiv()
-            break;
-        case 'selectedBoxSettleloan':
-            containerDiv.removeChild(document.getElementById('selectedBoxSettleloan'));
-            createSettleLoanCodesOption()
-            break;
-        case 'taxDiv':
-            containerDiv.removeChild(document.getElementById('taxDiv'));
-            if (settleloan === 'yes') {
-                createNumberInputsSettleloan(selectedsettleLoanCode)
-            } else {
-                createSettleLoanDiv()
-            }
-            break;
-        case 'taxDivInput':
-            containerDiv.removeChild(document.getElementById('taxDivInput'));
-            createTaxOption()
-            break;
-        case 'maritalDiv':
-            containerDiv.removeChild(document.getElementById('maritalDiv'));
-            if (taxCorrection === 'yes') {
-                createTaxCorrectionInputs()
-            } else {
-                createTaxOption()
-            }
-            break;
-        case 'birthdateDiv':
-            containerDiv.removeChild(document.getElementById('birthdateDiv'));
-            maritalStatus()
-            break;
-        default:
-            break;
+    current = document.getElementById(currentDiv)
+    if (current.classList[0] === 'basic') {
+        return;
     }
+    current.classList.add('shrink');
+    setTimeout(() => {
+        switch (currentDiv) {
+            case 'workPlace':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('workPlace'));
+                createBasicDiv()
+                break;
+            case 'department':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('department'));
+                createWorkDiv()
+                break;
+            case 'allowance':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('allowance'));
+                if (workPlace === 'government') {
+                    createGovDepartmentDiv()
+                } else {
+                    createCouncilDepartmentDiv()
+                }
+                break;
+            case 'selectedBox':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('selectedBox'));
+                if (selectionGroup == 1) {
+                    bdfAllowanceSelection()
+                } else {
+                    
+                }
+                break;
+            case 'deduction':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }                
+                 containerDiv.removeChild(document.getElementById('deduction'));
+                if (selectedAllowances.length == 0 && workPlace === 'government') {
+                    createGovDepartmentDiv()
+                }else if(selectedAllowances.length == 0 && workPlace === 'council'){
+                    createCouncilDepartmentDiv()
+                }else{
+                    createNumberInputs(selectedAllowances)
+                }
+                break;
+            case 'newloanPresent':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('newloanPresent'));
+                createDeductionDiv()
+                break;
+            case 'newloanPresentSelection':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('newloanPresentSelection'));
+                createNewloanDiv()
+                break;
+            case 'selectedBoxNewloan':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('selectedBoxNewloan'));
+                createLoanCodesOption()            
+                break;
+            case 'oldloanSettle':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('oldloanSettle'));
+                if (newloanPresent === 'yes') {
+                    createNumberInputsNewloan(selectedNewLoanCode)
+                } else {
+                    createNewloanDiv()
+                }
+                break;
+            case 'settleloanPresentSelection':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('settleloanPresentSelection'));
+                createSettleLoanDiv()
+                break;
+            case 'selectedBoxSettleloan':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('selectedBoxSettleloan'));
+                createSettleLoanCodesOption()
+                break;
+            case 'taxDiv':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('taxDiv'));
+                if (settleloan === 'yes') {
+                    createNumberInputsSettleloan(selectedsettleLoanCode)
+                } else {
+                    createSettleLoanDiv()
+                }
+                break;
+            case 'taxDivInput':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('taxDivInput'));
+                createTaxOption()
+                break;
+            case 'maritalDiv':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('maritalDiv'));
+                if (taxCorrection === 'yes') {
+                    createTaxCorrectionInputs()
+                } else {
+                    createTaxOption()
+                }
+                break;
+            case 'birthdateDiv':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                }
+                containerDiv.removeChild(document.getElementById('birthdateDiv'));
+                maritalStatus()
+                break;
+            default:
+                break;
+        }
+    }, 200);
+
 })
 function createBasicDiv() {
 
+    
     // Create the basic div
     const basicDiv = document.createElement('div');
     basicDiv.className = 'basic';
@@ -521,12 +632,15 @@ function bdfAllowanceSelection() {
     const bdfAllowanceDiv = document.createElement('div');
     bdfAllowanceDiv.className = 'allowance';
     bdfAllowanceDiv.id = 'allowance';
+    bdfAllowanceDiv.textContent = 'Select your PERMANENT ALLOWANCES(payslip)'
 
-    const text = document.createElement('p');
-    text.textContent = 'Select your PERMANENT ALLOWANCES(payslip)'
-    text.id = 'textheader'
-    bdfAllowanceDiv.appendChild(text)
+    // const text = document.createElement('p');
+    // text.textContent = 'Select your PERMANENT ALLOWANCES(payslip)'
+    // text.id = 'textheader'
+    // bdfAllowanceDiv.appendChild(text)
 
+    const newDiv = document.createElement('div');
+    newDiv.className = 'newDiv';
     allowance.forEach((item, index) => {
         const checkboxDiv = document.createElement('div')
         checkboxDiv.className = 'checkboxDiv'
@@ -545,7 +659,7 @@ function bdfAllowanceSelection() {
         checkboxDiv.appendChild(label);
         checkboxDiv.appendChild(document.createElement('br'));
 
-        bdfAllowanceDiv.appendChild(checkboxDiv)
+        newDiv.appendChild(checkboxDiv)
 
         checkbox.addEventListener('change', () => {
             if (checkbox.checked) {
@@ -556,15 +670,15 @@ function bdfAllowanceSelection() {
         });
 
     });
-
+    bdfAllowanceDiv.appendChild(newDiv)
     containerDiv.appendChild(bdfAllowanceDiv)
     checkalreadySelected(selectedAllowances,'bdf')
 
-    // if (direction) {
-    //     bdfAllowanceDiv.classList.add('slide-in-right');
-    // } else {
-    //     bdfAllowanceDiv.classList.add('slide-in-left');
-    // }
+    if (direction) {
+        bdfAllowanceDiv.classList.add('slide-in-right');
+    } else {
+        bdfAllowanceDiv.classList.add('slide-in-left');
+    }
 }
 function checkalreadySelected(array,section) {
     array.forEach(name => {
@@ -580,6 +694,8 @@ function createNumberInputs(array) {
     container.id = 'selectedBox'
     container.textContent = 'Enter ALLOWANCE AMOUNT as shown on your payslip'
 
+    const newDiv = document.createElement('div');
+    newDiv.className = 'newDiv';
     const lastIndex = array.length - 1;
     array.forEach((item, index) => {
         const wrapperDiv = document.createElement('div');
@@ -604,10 +720,7 @@ function createNumberInputs(array) {
         wrapperDiv.appendChild(label);
         wrapperDiv.appendChild(numberInput);
 
-        console.log(container)
-
-        container.appendChild(wrapperDiv);
-
+        newDiv.appendChild(wrapperDiv);
     });
 
     // document.getElementById(`numberInput${index}`).addEventListener('input', (event) => {
@@ -619,6 +732,7 @@ function createNumberInputs(array) {
     // } else {
     //     document.getElementById(`numberInput${index}`).value = 0
     // }
+    container.appendChild(newDiv)
     containerDiv.appendChild(container)
     if (direction) {
         container.classList.add('slide-in-right');
@@ -740,12 +854,11 @@ function createLoanCodesOption() {
     const newloanPresentDiv = document.createElement('div');
     newloanPresentDiv.className = 'newloanPresentSelection';
     newloanPresentDiv.id = 'newloanPresentSelection';
+    newloanPresentDiv.textContent = 'Select your NEW LOAN CODE'
 
-    const text = document.createElement('p');
-    text.textContent = 'Select your NEW LOAN CODE'
-    text.id = 'textheaderNewloan'
-    newloanPresentDiv.appendChild(text)
 
+    const newDiv = document.createElement('div');
+    newDiv.className = 'newDiv';
     allowance.forEach((item, index) => {
         const checkboxDiv = document.createElement('div')
         checkboxDiv.className = 'checkboxDivNewloan'
@@ -764,18 +877,24 @@ function createLoanCodesOption() {
         checkboxDiv.appendChild(label);
         checkboxDiv.appendChild(document.createElement('br'));
 
-        newloanPresentDiv.appendChild(checkboxDiv)
+        newDiv.appendChild(checkboxDiv)
         checkbox.addEventListener('change', () => {
             if (checkbox.checked) {
                 selectedNewLoanCode.push(checkbox.value)
             } else {
                 selectedNewLoanCode = selectedNewLoanCode.filter(item => item !== checkbox.value);
             }
-        });
-    });
+        })
+    })
 
+    newloanPresentDiv.appendChild(newDiv)
     containerDiv.appendChild(newloanPresentDiv)
     checkalreadySelected(selectedNewLoanCode,'newloan')
+    if (direction) {
+        newloanPresentDiv.classList.add('slide-in-right');
+    } else {
+        newloanPresentDiv.classList.add('slide-in-left');
+    }
 }
 function getSelectedNewloans() {
     const checkboxes = document.querySelectorAll('input[name="newloan"]:checked');
@@ -792,6 +911,8 @@ function createNumberInputsNewloan(array) {
     container.id = 'selectedBoxNewloan'
     container.textContent = 'Enter NEW LOAN INSTALLMENT as shown in your loan contract'
 
+    const newDiv = document.createElement('div');
+    newDiv.className = 'newDiv';
     const lastIndex = array.length - 1;
     array.forEach((item, index) => {
         const wrapperDiv = document.createElement('div');
@@ -816,7 +937,7 @@ function createNumberInputsNewloan(array) {
         wrapperDiv.appendChild(label);
         wrapperDiv.appendChild(numberInput);
 
-        container.appendChild(wrapperDiv);
+        newDiv.appendChild(wrapperDiv);
 
     });
 
@@ -829,6 +950,7 @@ function createNumberInputsNewloan(array) {
     // } else {
     //     document.getElementById(`numberInput${index}`).value = 0
     // }
+    container.appendChild(newDiv)
     containerDiv.appendChild(container)
     if (direction) {
         container.classList.add('slide-in-right');
@@ -951,6 +1073,8 @@ function createNumberInputsSettleloan(array){
     container.id = 'selectedBoxSettleloan'
     container.textContent = 'Enter INSTALLMENTS for the LOAN(s) TO BE SETTLED as shown in your payslip'
 
+    const newDiv = document.createElement('div');
+    newDiv.className = 'newDiv';
     const lastIndex = array.length - 1;
     array.forEach((item, index) => {
         const wrapperDiv = document.createElement('div');
@@ -975,7 +1099,7 @@ function createNumberInputsSettleloan(array){
         wrapperDiv.appendChild(label);
         wrapperDiv.appendChild(numberInput);
 
-        container.appendChild(wrapperDiv);
+        newDiv.appendChild(wrapperDiv);
 
     });
 
@@ -988,6 +1112,7 @@ function createNumberInputsSettleloan(array){
     // } else {
     //     document.getElementById(`numberInput${index}`).value = 0
     // }
+    container.appendChild(newDiv)
     containerDiv.appendChild(container)
     if (direction) {
         container.classList.add('slide-in-right');
@@ -1064,6 +1189,8 @@ function createTaxCorrectionInputs() {
     container.id = 'taxDivInput'
     container.textContent = 'Enter your INCOME TAX and PENSION deductions as reflected in your payslip'
 
+    const newDiv = document.createElement('div');
+    newDiv.className = 'newDiv';
     const lastIndex = 1;
     ['Income Tax','Pension deduction'].forEach((item, index) => {
         const wrapperDiv = document.createElement('div');
@@ -1088,10 +1215,11 @@ function createTaxCorrectionInputs() {
         wrapperDiv.appendChild(label);
         wrapperDiv.appendChild(numberInput);
 
-        container.appendChild(wrapperDiv);
+        newDiv.appendChild(wrapperDiv);
 
     });
 
+    container.appendChild(newDiv)
     containerDiv.appendChild(container)
     if (direction) {
         container.classList.add('slide-in-right');

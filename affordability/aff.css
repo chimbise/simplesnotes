@@ -53,20 +53,20 @@ body {
     display: flex;
     flex-direction: column;
     margin: 5px;
-    align-items: center;
-    justify-items: center ;
+    align-items: start;
+    justify-items: start ;
     justify-content: space-around;
-
 }
 .deduction {
     display: flex;
     flex-direction: column;
     margin: 5px;
-    align-items: center;
+    align-items: start;
     justify-content: space-around;
 }
 input{
-    margin: 5px;
+
+    margin: 10px 10px 10px 0;
     padding: 10px;
     font-size: large;
     border-radius: 10px;
@@ -139,9 +139,16 @@ input[type="checkbox"]{
 
 .allowance {
     max-height: 100%; /* Make it fit within the parent */
+    overflow-y: hidden; /* Enable vertical scrolling */
+    margin-bottom: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+.newDiv{
+    max-height: 100%; /* Make it fit within the parent */
     overflow-y: auto; /* Enable vertical scrolling */
     margin-bottom: 10px;
-    margin-top: 60px;
+    margin-top: 10px;
     border-radius: 10px;
     width: 100%;
 }
@@ -162,231 +169,245 @@ input[type="checkbox"]{
     z-index: 1;
     padding: 10px;
 }
+/* Slide out to the left animation */
+@keyframes slideInLeft {
+    /*
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+    */
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+        
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
 
+/* Slide in from the right animation */
+@keyframes slideInRight {
+    /*
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+    */
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+        
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+/* Animation for shrinking and fading out */
+@keyframes shrinkToCenter {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
 
-    /* Slide out to the left animation */
-    @keyframes slideInLeft {
-        from { transform: translateX(-100%); }
-        to { transform: translateX(0); }
-    }
+.slide-in-left {
+    animation: slideInLeft 0.3s forwards;
+}
 
-    /* Slide in from the right animation */
-    @keyframes slideInRight {
-        from { transform: translateX(100%); }
-        to { transform: translateX(0); }
-    }
-    /* Animation for shrinking and fading out */
-    @keyframes shrinkToCenter {
-        0% {
-            transform: scale(1);
-            opacity: 1;
-        }
-        100% {
-            transform: scale(0);
-            opacity: 0;
-        }
-    }
-    
-    .slide-in-left {
-        animation: slideInLeft 0.5s forwards;
-    }
+.slide-in-right {
+    animation: slideInRight 0.3s forwards;
+}
+/* Class to trigger the animation */
+.shrink {
+    animation: shrinkToCenter 0.3s forwards;
+}
+.inputWrapper {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+}
+.inputWrapper input{
+    width: 30%;
+    font-size: medium;
+}
+.inputWrapper label{
+    width: 70%;
+}
+#inputWrapper0{
+    border-radius:10px 10px 0 0;
+}
+.selectedBox {
+    max-height: 100%; /* Make it fit within the parent */
+    overflow-y: auto; /* Enable vertical scrolling */
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    align-items: start;
+    justify-items:start ;
+    justify-content: space-around;
+}
+.newloanPresent {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    justify-content: space-around;
+}
+.yes {
+    padding:10px;
+    margin-top: 10px;
+    background-color: white;
+    border-radius:10px 10px 0 0;
+}
+.no {
+    padding:10px;
+    background-color: white;
+    border-radius:0 0 10px 10px;
+}
+.newloanPresentSelection {
 
-    .slide-in-right {
-        animation: slideInRight 0.5s forwards;
-    }
-    /* Class to trigger the animation */
-    .shrink {
-        animation: shrinkToCenter 0.5s forwards;
-    }
-    .inputWrapper {
-        background-color: white;
-        display: flex;
-        align-items: center;
-        padding: 5px;
-        width: 90%;
-    }
-    .inputWrapper input{
-        width: 30%;
-        font-size: medium;
-    }
-    .inputWrapper label{
-        width: 70%;
-    }
-    #inputWrapper0{
-        margin-top: 10px;
-        border-radius:10px 10px 0 0;
-    }
-    .selectedBox {
-        max-height: 100%; /* Make it fit within the parent */
-        overflow-y: auto; /* Enable vertical scrolling */
-        display: flex;
-        flex-direction: column;
-        margin: 5px;
-        align-items: center;
-        justify-items:center ;
-        justify-content: space-around;
-    }
-    .newloanPresent {
-        display: flex;
-        flex-direction: column;
-        margin: 5px;
-        justify-content: space-around;
-    }
-    .yes {
-        padding:10px;
-        margin-top: 10px;
-        background-color: white;
-        border-radius:10px 10px 0 0;
-    }
-    .no {
-        padding:10px;
-        background-color: white;
-        border-radius:0 0 10px 10px;
-    }
-    .newloanPresentSelection {
-        max-height: 100%; /* Make it fit within the parent */
-        overflow-y: auto; /* Enable vertical scrolling */
-        margin-bottom: 10px;
-        margin-top: 60px;
-        border-radius: 10px;
-        width: 100%;
-    }
-    .checkboxDivNewloan{
-        background-color: white;
-        padding:5px;
-    }
-    #newloan0 {
-        padding:5px;
-        border-radius:10px 10px 0 0;
-    }
-    #newloan8{
-        border-radius:0 0 10px 10px;
-    }
-    #textheaderNewloan {
-        position: absolute;
-        top: 0;
-        z-index: 1;
-        padding: 10px;
-    }
+    max-height: 100%; /* Make it fit within the parent */
+    overflow-y: hidden; /* Enable vertical scrolling */
+    margin-bottom: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+.checkboxDivNewloan{
+    background-color: white;
+    padding:5px;
+}
+#newloan0 {
+    padding:5px;
+    border-radius:10px 10px 0 0;
+}
+#newloan8{
+    border-radius:0 0 10px 10px;
+}
+#textheaderNewloan {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    padding: 10px;
+}
 
-    .inputWrapperNewloan {
-        background-color: white;
-        display: flex;
-        align-items: center;
-        padding: 5px;
-        width: 90%;
-    }
-    .inputWrapperNewloan input{
-        width: 30%;
-        font-size: medium;
-    }
-    .inputWrapperNewloan label{
-        width: 70%;
-    }
-    #inputWrapperNewloan0{
-        margin-top: 10px;
-        border-radius:10px 10px 0 0;
-    }
-    .selectedBoxNewloan{
-        max-height: 100%; /* Make it fit within the parent */
-        overflow-y: auto; /* Enable vertical scrolling */
-        display: flex;
-        flex-direction: column;
-        margin: 5px;
-        align-items: center;
-        justify-items:center ;
-        justify-content: space-around; 
-    }
-    .settleloanPresentSelection {
-        max-height: 100%; /* Make it fit within the parent */
-        overflow-y: auto; /* Enable vertical scrolling */
-        margin-bottom: 10px;
-        margin-top: 60px;
-        border-radius: 10px;
-        width: 100%;
-    }
-    .checkboxDivSettleloan{
-        background-color: white;
-        padding:5px;
-    }
-    #settleloan0 {
-        padding:5px;
-        border-radius:10px 10px 0 0;
-    }
-    #settleloan8{
-        border-radius:0 0 10px 10px;
-    }
-    #textheadersettleloan {
-        position: absolute;
-        top: 0;
-        z-index: 1;
-        padding: 10px;
-    }
-    .inputWrapperSettleloan {
-        background-color: white;
-        display: flex;
-        align-items: center;
-        padding: 5px;
-        width: 90%;
+.inputWrapperNewloan {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+}
+.inputWrapperNewloan input{
+    width: 30%;
+    font-size: medium;
+}
+.inputWrapperNewloan label{
+    width: 70%;
+}
+#inputWrapperNewloan0{
+    border-radius:10px 10px 0 0;
+}
+.selectedBoxNewloan{
+    max-height: 100%; /* Make it fit within the parent */
+    overflow-y: auto; /* Enable vertical scrolling */
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    align-items: center;
+    justify-items:center ;
+    justify-content: space-around; 
+}
+.settleloanPresentSelection {
+    max-height: 100%; /* Make it fit within the parent */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-bottom: 10px;
+    margin-top: 60px;
+    border-radius: 10px;
+    width: 100%;
+}
+.checkboxDivSettleloan{
+    background-color: white;
+    padding:5px;
+}
+#settleloan0 {
+    padding:5px;
+    border-radius:10px 10px 0 0;
+}
+#settleloan8{
+    border-radius:0 0 10px 10px;
+}
+#textheadersettleloan {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    padding: 10px;
+}
+.inputWrapperSettleloan {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+}
+.inputWrapperSettleloan input{
+    width: 30%;
+    font-size: medium;
+}
+.inputWrapperSettleloan label{
+    width: 70%;
+}
+#inputWrapperSettleloan0{
+    border-radius:10px 10px 0 0;
+}
+.selectedBoxSettleloan{
+    max-height: 100%; /* Make it fit within the parent */
+    overflow-y: auto; /* Enable vertical scrolling */
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    align-items: center;
+    justify-items:center ;
+    justify-content: space-around; 
+}
 
-    }
-    .inputWrapperSettleloan input{
-        width: 30%;
-        font-size: medium;
-    }
-    .inputWrapperSettleloan label{
-        width: 70%;
-    }
-    #inputWrapperSettleloan0{
-        margin-top: 10px;
-        border-radius:10px 10px 0 0;
-    }
-    .selectedBoxSettleloan{
-        max-height: 100%; /* Make it fit within the parent */
-        overflow-y: auto; /* Enable vertical scrolling */
-        display: flex;
-        flex-direction: column;
-        margin: 5px;
-        align-items: center;
-        justify-items:center ;
-        justify-content: space-around; 
-    }
+.inputWrapperTax {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+}
+.inputWrapperTax input{
+    width: 30%;
+    font-size: medium;
+}
+.inputWrapperTax label{
+    width: 70%;
+}
+#inputWrapperTax0{
+    border-radius:10px 10px 0 0;
+}
 
-    .inputWrapperTax {
-        background-color: white;
-        display: flex;
-        align-items: center;
-        padding: 5px;
-        width: 90%;
-    }
-    .inputWrapperTax input{
-        width: 30%;
-        font-size: medium;
-    }
-    .inputWrapperTax label{
-        width: 70%;
-    }
-    #inputWrapperTax0{
-        margin-top: 10px;
-        border-radius:10px 10px 0 0;
-    }
-
-    .birthdateDiv{
-        width: 90%;
-    }
-    .birthdateForm {
-        display: flex;
-        align-items: center;
-        justify-items: center ;
-        justify-content: space-around;
-        width: 100%;
-
-    }
-    select, input[type="submit"] {
-        font-size: medium; /* Increase font size */
-        padding: 5px; /* Add padding for a larger clickable area */
-        margin-left: 5px; /* Add some margin for spacing */
-        width: 100%; /* Set a width for the select elements */
-        border-radius: 5px;
-        box-sizing: border-box; /* Ensure padding is included in the width */
-    }
+.birthdateDiv{
+    width: 90%;
+}
+.birthdateForm {
+    display: flex;
+    align-items: center;
+    justify-items: center ;
+    justify-content: space-around;
+    width: 100%;
+}
+select, input[type="submit"] {
+    font-size: medium; /* Increase font size */
+    padding: 5px; /* Add padding for a larger clickable area */
+    margin-left: 5px; /* Add some margin for spacing */
+    width: 100%; /* Set a width for the select elements */
+    border-radius: 5px;
+    box-sizing: border-box; /* Ensure padding is included in the width */
+}
