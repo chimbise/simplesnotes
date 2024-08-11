@@ -14,6 +14,26 @@ body {
     align-items: center;
 
 }
+.notification{
+    position: absolute;
+    top: 13%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: large;
+    background-color: yellow; /* Green background */
+    color: red;
+    padding: 16px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s ease; /* Animate opacity */
+    opacity: 0;
+    visibility: hidden; /* Hidden by default */
+}
+/* Show the notification */
+.notification.show {
+    visibility: visible;
+    opacity: 1;
+}
 .main {
     position: absolute;
     top: 50%;
@@ -213,17 +233,30 @@ input[type="checkbox"]{
         opacity: 0;
     }
 }
+/* Shake animation */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+/* Applying the shake effect to the div */
+.shake {
+    animation: shake 0.3s ease;
+}
 
 .slide-in-left {
-    animation: slideInLeft 0.3s forwards;
+    animation: slideInLeft 0.5s forwards;
 }
 
 .slide-in-right {
-    animation: slideInRight 0.3s forwards;
+    animation: slideInRight 0.5s forwards;
 }
 /* Class to trigger the animation */
 .shrink {
-    animation: shrinkToCenter 0.3s forwards;
+    animation: shrinkToCenter 0.5s forwards;
 }
 .inputWrapper {
     background-color: white;
@@ -324,9 +357,8 @@ input[type="checkbox"]{
 }
 .settleloanPresentSelection {
     max-height: 100%; /* Make it fit within the parent */
-    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-y: hidden; /* Enable vertical scrolling */
     margin-bottom: 10px;
-    margin-top: 60px;
     border-radius: 10px;
     width: 100%;
 }
@@ -341,12 +373,8 @@ input[type="checkbox"]{
 #settleloan8{
     border-radius:0 0 10px 10px;
 }
-#textheadersettleloan {
-    position: absolute;
-    top: 0;
-    z-index: 1;
-    padding: 10px;
-}
+
+
 .inputWrapperSettleloan {
     background-color: white;
     display: flex;
@@ -361,9 +389,7 @@ input[type="checkbox"]{
 .inputWrapperSettleloan label{
     width: 70%;
 }
-#inputWrapperSettleloan0{
-    border-radius:10px 10px 0 0;
-}
+
 .selectedBoxSettleloan{
     max-height: 100%; /* Make it fit within the parent */
     overflow-y: auto; /* Enable vertical scrolling */
@@ -374,6 +400,35 @@ input[type="checkbox"]{
     justify-items:center ;
     justify-content: space-around; 
 }
+
+
+
+
+.inputWrapperSettleloanBalance {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+}
+.inputWrapperSettleloanBalance input{
+    width: 30%;
+    font-size: medium;
+}
+.inputWrapperSettleloanBalance label{
+    width: 70%;
+}
+.selectedBoxSettleloanBalance{
+    max-height: 100%; /* Make it fit within the parent */
+    overflow-y: auto; /* Enable vertical scrolling */
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    align-items: center;
+    justify-items:center ;
+    justify-content: space-around; 
+}
+
 
 .inputWrapperTax {
     background-color: white;

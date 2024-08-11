@@ -14,6 +14,7 @@ var settleloan = 'no';
 var selectedNewLoanCode = []
 var selectedsettleLoanCode = []
 var taxCorrection = 'no'
+var taxPensionDeductions = [0,0];
 var maritalStatusValue = 'no'
 var birthdate = 0;
 
@@ -27,7 +28,23 @@ document.getElementById('next').addEventListener('click',()=>{
     direction = true;
     currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
     current = document.getElementById(currentDiv)
-    
+    if(basicAmount <= 0 ){
+        showNotification('basic amount cannot be 0 or less')
+        triggerShakeEffect()
+        return;
+    }else if (selectedNewLoanCode.length == 0 && currentDiv === 'newloanPresentSelection') {
+        showNotification('please SELECT a new loan')
+        triggerShakeEffect()
+        return;
+    }else if(hasZeroValue(NewLoanInputs) && currentDiv === 'selectedBoxNewloan'){
+        showNotification('please enter New loan installent')
+        triggerShakeEffect()
+        return;
+     }else if (selectedsettleLoanCode.length == 0 && currentDiv === 'settleloanPresentSelection') {
+        showNotification('please SELECT a loan you want to SETTLE')
+        triggerShakeEffect()
+      return;
+    }
     current.classList.add('shrink');
     setTimeout(() => {
         switch (currentDiv) {
@@ -73,6 +90,7 @@ document.getElementById('next').addEventListener('click',()=>{
                 if (!containerDiv.contains(current)) {
                     break;             
                  }else if(selectedAllowances.length == 0 ) {
+                    showNotification('No permanent Alowances selected')
                     containerDiv.removeChild(current);
                     createDeductionDiv()
                     break;
@@ -134,10 +152,18 @@ document.getElementById('next').addEventListener('click',()=>{
                 if (!containerDiv.contains(current)) {
                     break;             
                  }
+                 
                 containerDiv.removeChild(current);
                 createNumberInputsSettleloan(selectedsettleLoanCode)
                 break;
             case 'selectedBoxSettleloan':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(current);
+                createNumberInputsSettleloanBalances(selectedsettleLoanCode)
+                break;
+            case 'selectedBoxSettleloanBalance':
                 if (!containerDiv.contains(current)) {
                     break;             
                  }
@@ -168,11 +194,12 @@ document.getElementById('next').addEventListener('click',()=>{
                  }
                 containerDiv.removeChild(current);
                 getAge()
+                console.log(calculateMaxInstallment())
                 break;
             default:
                 break;
         }
-    }, 200);
+    }, 500);
 
 })
 document.getElementById('back').addEventListener('click',()=>{
@@ -280,13 +307,20 @@ document.getElementById('back').addEventListener('click',()=>{
                 containerDiv.removeChild(document.getElementById('selectedBoxSettleloan'));
                 createSettleLoanCodesOption()
                 break;
+            case 'selectedBoxSettleloanBalance':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                containerDiv.removeChild(document.getElementById('selectedBoxSettleloanBalance'));
+                createNumberInputsSettleloan(selectedsettleLoanCode)
+                break;
             case 'taxDiv':
                 if (!containerDiv.contains(current)) {
                     break;             
                  }
                 containerDiv.removeChild(document.getElementById('taxDiv'));
                 if (settleloan === 'yes') {
-                    createNumberInputsSettleloan(selectedsettleLoanCode)
+                    createNumberInputsSettleloanBalances(selectedsettleLoanCode)
                 } else {
                     createSettleLoanDiv()
                 }
@@ -319,9 +353,37 @@ document.getElementById('back').addEventListener('click',()=>{
             default:
                 break;
         }
-    }, 200);
-
+    }, 500);
 })
+function hasZeroValue(obj) {
+    // Iterate over the values of the object
+    for (let key in obj) {
+        if (obj[key] === 0 || obj[key] === '0' ||obj[key] === '') {
+            return true; // Return true if a value is 0
+        }
+    }
+    return false; // Return false if no value is 0
+}
+function showNotification(text) {
+    const notification = document.getElementById('notification');
+    notification.textContent = text;
+        notification.classList.add('show');
+    // Hide the notification after 3 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 2000);
+}
+function triggerShakeEffect() {
+    const div = document.getElementById('container');
+    div.classList.add('shake');
+
+    // Remove the shake class after the animation completes
+    div.addEventListener('animationend', () => {
+        div.classList.remove('shake');
+    }, { once: true });
+}
+
+
 function createBasicDiv() {
 
     
@@ -634,11 +696,6 @@ function bdfAllowanceSelection() {
     bdfAllowanceDiv.id = 'allowance';
     bdfAllowanceDiv.textContent = 'Select your PERMANENT ALLOWANCES(payslip)'
 
-    // const text = document.createElement('p');
-    // text.textContent = 'Select your PERMANENT ALLOWANCES(payslip)'
-    // text.id = 'textheader'
-    // bdfAllowanceDiv.appendChild(text)
-
     const newDiv = document.createElement('div');
     newDiv.className = 'newDiv';
     allowance.forEach((item, index) => {
@@ -662,10 +719,13 @@ function bdfAllowanceSelection() {
         newDiv.appendChild(checkboxDiv)
 
         checkbox.addEventListener('change', () => {
+            var f = item.replace(/\s+/g, '-').toLowerCase()
             if (checkbox.checked) {
                 selectedAllowances.push(checkbox.value)
+                allowanceInputs[f] = 0
             } else {
                 selectedAllowances = selectedAllowances.filter(item => item !== checkbox.value);
+                delete allowanceInputs[f]
             }
         });
 
@@ -688,6 +748,7 @@ function checkalreadySelected(array,section) {
         }
     })
 }
+var allowanceInputs = {}
 function createNumberInputs(array) {
     const container = document.createElement('div');
     container.className = 'selectedBox'
@@ -716,22 +777,25 @@ function createNumberInputs(array) {
         numberInput.id = `numberInput${index}`;
         numberInput.name = item.replace(/\s+/g, '-').toLowerCase(); // create a name based on the item
         numberInput.min = 0;
+        numberInput.max = 900000;
 
         wrapperDiv.appendChild(label);
         wrapperDiv.appendChild(numberInput);
 
         newDiv.appendChild(wrapperDiv);
+
+        numberInput.addEventListener('input', (event) => {
+            allowanceInputs[numberInput.name] =  event.target.value;
+        });
+        
+        if (numberInput.value != null) {
+            numberInput.value = allowanceInputs[numberInput.name];
+        } else {
+            numberInput.value = 0
+        }
     });
 
-    // document.getElementById(`numberInput${index}`).addEventListener('input', (event) => {
-    //     selectedAllowancesAmounts.push(event.target.value);
-    // });
 
-    // if (document.getElementById(`numberInput${index}`).value != null) {
-    //     document.getElementById(`numberInput${index}`).value = basicAmount;
-    // } else {
-    //     document.getElementById(`numberInput${index}`).value = 0
-    // }
     container.appendChild(newDiv)
     containerDiv.appendChild(container)
     if (direction) {
@@ -785,7 +849,7 @@ function createNewloanDiv() {
     const newloanDiv = document.createElement('div')
     newloanDiv.className = 'newloanPresent'
     newloanDiv.id = 'newloanPresent'
-    newloanDiv.textContent = 'Do you have a NEW LOAN(past 3 months) that has not deducted yet?'
+    newloanDiv.textContent = 'Do you have a NEW LOAN that has not deducted yet?(not for loans you want to settle)'
     newloanDiv.style.width = '90%'
 
     // Create the first radio input for Government
@@ -879,13 +943,17 @@ function createLoanCodesOption() {
 
         newDiv.appendChild(checkboxDiv)
         checkbox.addEventListener('change', () => {
+            var f = item.replace(/\s+/g, '-').toLowerCase()
             if (checkbox.checked) {
                 selectedNewLoanCode.push(checkbox.value)
+                NewLoanInputs[f] = 0
             } else {
                 selectedNewLoanCode = selectedNewLoanCode.filter(item => item !== checkbox.value);
+                delete NewLoanInputs[f]
             }
         })
     })
+    
 
     newloanPresentDiv.appendChild(newDiv)
     containerDiv.appendChild(newloanPresentDiv)
@@ -896,15 +964,7 @@ function createLoanCodesOption() {
         newloanPresentDiv.classList.add('slide-in-left');
     }
 }
-function getSelectedNewloans() {
-    const checkboxes = document.querySelectorAll('input[name="newloan"]:checked');
-    checkboxes.forEach(checkbox => {
-        if(!selectedNewLoanCode.includes(checkbox.value)){
-            selectedNewLoanCode.push(checkbox.value);
-        }
-    });
-    return selectedNewLoanCode
-}
+var NewLoanInputs = {}
 function createNumberInputsNewloan(array) {
     const container = document.createElement('div');
     container.className = 'selectedBoxNewloan'
@@ -938,6 +998,17 @@ function createNumberInputsNewloan(array) {
         wrapperDiv.appendChild(numberInput);
 
         newDiv.appendChild(wrapperDiv);
+
+        numberInput.addEventListener('input', (event) => {
+            NewLoanInputs[numberInput.name] =  event.target.value;
+            console.log(NewLoanInputs)
+        });
+        
+        if (numberInput.value != null) {
+            numberInput.value = NewLoanInputs[numberInput.name];
+        } else {
+            numberInput.value = 0
+        }
 
     });
 
@@ -1030,12 +1101,11 @@ function createSettleLoanCodesOption() {
     const newloanPresentDiv = document.createElement('div');
     newloanPresentDiv.className = 'settleloanPresentSelection';
     newloanPresentDiv.id = 'settleloanPresentSelection';
+    newloanPresentDiv.textContent = 'Select the LOAN CODE you want to SETTLE'
 
-    const text = document.createElement('p');
-    text.textContent = 'Select the LOAN CODE you want to SETTLE'
-    text.id = 'textheadersettleloan'
-    newloanPresentDiv.appendChild(text)
 
+    const newDiv = document.createElement('div');
+    newDiv.className = 'newDiv';
     allowance.forEach((item, index) => {
         const checkboxDiv = document.createElement('div')
         checkboxDiv.className = 'checkboxDivSettleloan'
@@ -1054,24 +1124,35 @@ function createSettleLoanCodesOption() {
         checkboxDiv.appendChild(label);
         checkboxDiv.appendChild(document.createElement('br'));
 
-        newloanPresentDiv.appendChild(checkboxDiv)
+        newDiv.appendChild(checkboxDiv)
         checkbox.addEventListener('change', () => {
+            var f = item.replace(/\s+/g, '-').toLowerCase()
             if (checkbox.checked) {
                 selectedsettleLoanCode.push(checkbox.value)
+                settleLoanInputs[f] = 0
+                settleLoanBalances[f] = 0
             } else {
                 selectedsettleLoanCode = selectedsettleLoanCode.filter(item => item !== checkbox.value);
+                delete settleLoanInputs[f]
             }
         });
     });
 
+    newloanPresentDiv.appendChild(newDiv)
     containerDiv.appendChild(newloanPresentDiv)
     checkalreadySelected(selectedsettleLoanCode,'settleloan')
+    if (direction) {
+        newloanPresentDiv.classList.add('slide-in-right');
+    } else {
+        newloanPresentDiv.classList.add('slide-in-left');
+    }
 }
+var settleLoanInputs = {}
 function createNumberInputsSettleloan(array){
     const container = document.createElement('div');
     container.className = 'selectedBoxSettleloan'
     container.id = 'selectedBoxSettleloan'
-    container.textContent = 'Enter INSTALLMENTS for the LOAN(s) TO BE SETTLED as shown in your payslip'
+    container.textContent = 'Enter INSTALLMENTS for the LOAN(s) TO BE SETTLED'
 
     const newDiv = document.createElement('div');
     newDiv.className = 'newDiv';
@@ -1100,6 +1181,15 @@ function createNumberInputsSettleloan(array){
         wrapperDiv.appendChild(numberInput);
 
         newDiv.appendChild(wrapperDiv);
+        numberInput.addEventListener('input', (event) => {
+            settleLoanInputs[numberInput.name] =  event.target.value;
+        });
+        
+        if (numberInput.value != null) {
+            numberInput.value = settleLoanInputs[numberInput.name];
+        } else {
+            numberInput.value = 0
+        }
 
     });
 
@@ -1112,6 +1202,61 @@ function createNumberInputsSettleloan(array){
     // } else {
     //     document.getElementById(`numberInput${index}`).value = 0
     // }
+    container.appendChild(newDiv)
+    containerDiv.appendChild(container)
+    if (direction) {
+        container.classList.add('slide-in-right');
+    } else {
+        container.classList.add('slide-in-left');
+    }
+}
+var settleLoanBalances = {}
+function createNumberInputsSettleloanBalances(array){
+    const container = document.createElement('div');
+    container.className = 'selectedBoxSettleloanBalance'
+    container.id = 'selectedBoxSettleloanBalance'
+    container.textContent = 'Enter your loan(s) SETTLEMENT BALANCE'
+
+    const newDiv = document.createElement('div');
+    newDiv.className = 'newDiv';
+    const lastIndex = array.length - 1;
+    array.forEach((item, index) => {
+        const wrapperDiv = document.createElement('div');
+        wrapperDiv.className = 'inputWrapperSettleloanBalance';
+        wrapperDiv.id = `inputWrapperSettleloanBalance${index}`;
+        if(index == 0&&index == lastIndex){
+            wrapperDiv.style.borderRadius = '10px'
+        }else if(index == lastIndex){
+            wrapperDiv.style.borderRadius = '0 0 10px 10px'
+        }
+
+        const label = document.createElement('label');
+        label.htmlFor = `inputWrapperSettleloanBalance${index}`;
+        label.textContent = item;
+
+        const numberInput = document.createElement('input');
+        numberInput.type = 'number';
+        numberInput.id = `inputWrapperSettleloanBalance${index}`;
+        numberInput.name = item.replace(/\s+/g, '-').toLowerCase(); // create a name based on the item
+        numberInput.min = 0;
+
+        wrapperDiv.appendChild(label);
+        wrapperDiv.appendChild(numberInput);
+
+        newDiv.appendChild(wrapperDiv);
+        numberInput.addEventListener('input', (event) => {
+            settleLoanBalances[numberInput.name] =  event.target.value;
+        });
+        
+        if (numberInput.value != null) {
+            numberInput.value = settleLoanBalances[numberInput.name];
+        } else {
+            numberInput.value = 0
+        }
+
+    });
+
+    
     container.appendChild(newDiv)
     containerDiv.appendChild(container)
     if (direction) {
@@ -1216,6 +1361,13 @@ function createTaxCorrectionInputs() {
         wrapperDiv.appendChild(numberInput);
 
         newDiv.appendChild(wrapperDiv);
+        numberInput.addEventListener('input', (event) => {
+            taxPensionDeductions[index] =  event.target.value;
+        });
+        
+        if (numberInput.value != null) {
+            numberInput.value = taxPensionDeductions[index];
+        }
 
     });
 
@@ -1374,4 +1526,51 @@ function getAge() {
     } else {
         birthdateDiv.classList.add('slide-in-left');
     }
+}
+
+function calculateTaxNonIndustrial() {
+    var tax = 0;
+    var permanentAllowance = Number(addPairs(allowanceInputs))
+    var one = Math.floor(Number(basicAmount) + permanentAllowance);
+    if (one > 0 && one < 7000) {
+        tax = 0.05 * one
+    } else if(one >=7000 && one < 10000) {
+        tax = 350 + 0.125*(one - 7000)
+    } else if(one >=10000 && one < 13000){
+        tax = 725 + 0.1875*(one - 10000)
+    } else{
+        tax = 1087.50 + 0.25(one - 13000 - Number(taxPensionDeductions[1]))
+    }
+    return Number(taxPensionDeductions[0])-tax
+}
+function addPairs(obj) {
+    var sum = 0;
+    for (let key in obj) {
+        sum += Number(obj[key])
+    }
+    return sum
+}
+
+function calculateMaxInstallment() {
+    var permanentAllowance = Number(addPairs(allowanceInputs));
+    console.log(allowanceInputs)
+    var otherLoans = addPairs(NewLoanInputs);
+    var adjBasicSalary = Number(basicAmount) + permanentAllowance;
+    var adjNettIncome = adjBasicSalary - otherLoans - Number(deductionAmount);
+    var taxx = 0;
+    if(taxCorrection==='yes'){
+        taxx = calculateTaxNonIndustrial();
+    }
+    var settleloans = addPairs(settleLoanInputs);
+    var n11 = adjNettIncome + taxx + settleloans;
+    var rule = 1300;
+    if (basicAmount <= 9019) {
+        rule = 600;
+    } else if(maritalStatusValue === 'yes') {
+        rule = 1500
+    }
+    var n13 = n11 - rule;
+   return [Number(basicAmount),permanentAllowance,adjBasicSalary,Number(deductionAmount),
+            otherLoans,adjNettIncome,
+            taxx,settleloans,n11,rule,n13]
 }
