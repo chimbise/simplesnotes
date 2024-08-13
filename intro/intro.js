@@ -21,12 +21,12 @@
   // const analytics = getAnalytics(app);
 
  // Primary variables
-var rt = 0.23; // Annual interest rate for 23%
+var rt = 0.20; // Annual interest rate for 20%
 //var c5 = rt / 12; // Monthly interest rate for 23%
 var b6 = rt / 12;// Monthly interest for 23%
 var term = 96; // Loan term for 96 months
 var b8 = 1.15; // Insurance
-var b9 = 0.025; // Collections fee
+var b9 = 0.0271; // Collections fee
 var c9 = 1 - b9; // Adjusted factor for collections fee
 var b10 = 1500; // Take-home married
 var b11 = 1300; // Take-home single
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }
   loanTermDropdown.addEventListener('change', updateLoanTerm);
 
-  const loanInterestDropdown = document.getElementById('loanInterestDropdown');
+  var loanInterestDropdown = document.getElementById('loanInterestDropdown');
   function updateLoanInterest() {
     rt = loanInterestDropdown.value;
     b6 = rt / 12;
