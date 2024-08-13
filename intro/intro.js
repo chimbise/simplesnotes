@@ -216,17 +216,7 @@
    var monthlyEmployerCollection = Number(i14.toFixed(2))
    var apr = 0;
  
-   if(loanInterestDropdown.options[loanInterestDropdown.selectedIndex].textContent === "Bots life"){
-     if(loanTerm == 84){
-       apr = calculateRate(loanTerm, -totalMonthlyInstalment, totalLoanAmount,0,0,0.1)*1200;
-     }else if(loanTerm == 96){
-       apr = Math.round((((l14+d14+e14)/loanAmount)/2920)*36500)
-     }else{
-       apr = calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount,0,0,0.1)*1200;
-     }
-   }else{
-     apr = calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount,0,0,0.1)*1200;
-   }
+    apr = calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount,0,0,0.1)*1200;
  
    document.getElementById('InterestRate').textContent  = interest;
    document.getElementById('LoanAmountRequested').textContent  = loanAmount+ '.00';
