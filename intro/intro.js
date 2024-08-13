@@ -98,15 +98,15 @@ function PMT(rate, nper, pv) {
 
 // Function to check value for AG14
 function checkValueAg(AE14) {
-    if (AE14 < 1140) {
-        return 1140;
+    if (AE14 < 1120) {
+        return 1120;
     } else {
         return AE14;
     }
 }
 function checkValueAg2(AE14) {
-  if (AE14 > 2929.8) {
-      return 2929.8;
+  if (AE14 > 2878.4) {
+      return 2878.4;
   } else {
       return AE14;
   }
@@ -114,16 +114,16 @@ function checkValueAg2(AE14) {
 
 // Function to check value for AH14
 function checkValueAh(AF14) {
-    if (AF14 < 280) {
-        return 280;
+    if (AF14 < 275.08) {
+        return 275.08;
     } else {
         return AF14;
     }
 }
 // Function to check value for AH14
 function checkValueAh2(AF14) {
-  if (AF14 > 2929.8) {
-      return 2929.8;
+  if (AF14 > 2878.4) {
+      return 2878.4;
   } else {
       return AF14;
   }                    
@@ -151,13 +151,13 @@ function totalMonthlyAmountDisplay(selectedLoanAmount){
       return null;
     }
     var c14 = loanAmountColumn[selectedLoanAmount.toString()]; // Example value for c14
-    var ae14 = c14 * 0.0114; // Calculate ae14
+    var ae14 = c14 * 0.0112; // Calculate ae14
       if (selectedLoanAmount >= 257500){
         var ag14 = checkValueAg2(ae14);
       }else{
         var ag14 = checkValueAg(ae14); // Calculate ag14
       }
-    var af14 = c14 * 0.0114; // Calculate af14
+    var af14 = c14 * 0.0112; // Calculate af14
       if (selectedLoanAmount >= 257500){
         var ah14 = checkValueAh2(af14)
       }else{
