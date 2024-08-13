@@ -21,12 +21,12 @@
   // const analytics = getAnalytics(app);
 
  // Primary variables
-var rt = 0.23; // Annual interest rate for 23%
+var rt = 0.20; // Annual interest rate for 20%
 //var c5 = rt / 12; // Monthly interest rate for 23%
 var b6 = rt / 12;// Monthly interest for 23%
 var term = 96; // Loan term for 96 months
 var b8 = 1.15; // Insurance
-var b9 = 0.025; // Collections fee
+var b9 = 0.0271; // Collections fee
 var c9 = 1 - b9; // Adjusted factor for collections fee
 var b10 = 1500; // Take-home married
 var b11 = 1300; // Take-home single
@@ -97,37 +97,57 @@ function PMT(rate, nper, pv) {
 }
 
 // Function to check value for AG14
+// function checkValueAg(AE14) {
+//     if (AE14 < 1120) {
+//         return 1120;
+//     } else {
+//         return AE14;
+//     }
+// }
 function checkValueAg(AE14) {
-    if (AE14 < 1140) {
-        return 1140;
-    } else {
-        return AE14;
-    }
-}
-function checkValueAg2(AE14) {
-  if (AE14 > 2929.8) {
-      return 2929.8;
-  } else {
+  if (AE14 < 1120) {
+      return 1120;
+  } else if (AE14 >= 2878.4) {
+    return 2878.4;
+  }else{
       return AE14;
   }
 }
 
+// function checkValueAg2(AE14) {
+//   if (AE14 >= 2878.4) {
+//       return 2878.4;
+//   } else {
+//       return AE14;
+//   }
+// }
+
 // Function to check value for AH14
+// function checkValueAh(AF14) {
+//     if (AF14 < 275.08) {
+//         return 275.08;
+//     } else {
+//         return AF14;
+//     }
+// }
+
 function checkValueAh(AF14) {
-    if (AF14 < 280) {
-        return 280;
-    } else {
-        return AF14;
-    }
-}
-// Function to check value for AH14
-function checkValueAh2(AF14) {
-  if (AF14 > 2929.8) {
-      return 2929.8;
+  if (AF14 < 275.08) {
+      return 275.08;
+  } else if (AF14 >= 2878.4) {
+    return 2878.4;
   } else {
       return AF14;
-  }                    
+  }  
 }
+// Function to check value for AH14
+// function checkValueAh2(AF14) {
+//   if (AF14 > 2878.4) {
+//       return 2878.4;
+//   } else {
+//       return AF14;
+//   }                    
+// }
 function findClosestKey(target) {
   var arr = loans;
   for (let i = 0; i < arr.length; i++) {
@@ -151,18 +171,18 @@ function totalMonthlyAmountDisplay(selectedLoanAmount){
       return null;
     }
     var c14 = loanAmountColumn[selectedLoanAmount.toString()]; // Example value for c14
-    var ae14 = c14 * 0.0114; // Calculate ae14
-      if (selectedLoanAmount >= 257500){
-        var ag14 = checkValueAg2(ae14);
-      }else{
+    var ae14 = c14 * 0.0112; // Calculate ae14
+      //if (selectedLoanAmount >= 257500){
+      //  var ag14 = checkValueAg2(ae14);
+      //}else{
         var ag14 = checkValueAg(ae14); // Calculate ag14
-      }
-    var af14 = c14 * 0.0114; // Calculate af14
-      if (selectedLoanAmount >= 257500){
-        var ah14 = checkValueAh2(af14)
-      }else{
+      //}
+    var af14 = c14 * 0.0112; // Calculate af14
+      //if (selectedLoanAmount >= 257500){
+      //  var ah14 = checkValueAh2(af14)
+     // }else{
         var ah14 = checkValueAh(af14); // Calculate ah14
-      }
+     // }
     d14 = ag14; // d14 is ag14
     e14 = ah14; // e14 is ah14
     f14 = c14 + d14 + e14; // Calculate f14
@@ -191,8 +211,8 @@ function viewLoanDetailsDiv(){
   var adminFee = Number(d14.toFixed(2))
   var processingFee = Number(e14.toFixed(2))
   var totalLoanAmount = Number(f14.toFixed(2));
-  var monthlyLoanInstalment = Number(g14.toFixed(2));
   var monthlyInsurancePremiumm = Number(h14.toFixed(2))
+  var monthlyLoanInstalment = Number(g14.toFixed(2))+monthlyInsurancePremiumm;
   var monthlyEmployerCollection = Number(i14.toFixed(2))
   var apr = 0;
 
@@ -215,7 +235,7 @@ function viewLoanDetailsDiv(){
   document.getElementById('TotalLoanAmount').textContent  = totalLoanAmount;
   document.getElementById('AnnualPercentageRate').textContent  = Number(apr.toFixed(2));
   document.getElementById('LoanTerm').textContent  = loanTerm;
-  document.getElementById('MonthlyInstalments').textContent  = monthlyLoanInstalment;
+  document.getElementById('MonthlyInstalments').textContent  = Number(monthlyLoanInstalment.toFixed(2));
   document.getElementById('MonthlyCreditLifePremium').textContent  = monthlyInsurancePremiumm;
   document.getElementById('MonthlyCollectionFee').textContent  = monthlyEmployerCollection;
   document.getElementById('TotalMonthlyInstalments').textContent  = totalMonthlyInstalment;
@@ -276,7 +296,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }
   loanTermDropdown.addEventListener('change', updateLoanTerm);
 
-  const loanInterestDropdown = document.getElementById('loanInterestDropdown');
+  var loanInterestDropdown = document.getElementById('loanInterestDropdown');
   function updateLoanInterest() {
     rt = loanInterestDropdown.value;
     b6 = rt / 12;
@@ -308,7 +328,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         c9 = 1 - 0.0268;
         break;
       case "Bpopf":
-        c9 = 1 - 0.0306;
+        //c9 = 1 - 0.0306;
+        c9 = 1 - 0.0280;
         break;
       case "botusafe 20%":
         c9 = 1 - 0.0271;
