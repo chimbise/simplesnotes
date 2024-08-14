@@ -198,7 +198,7 @@
  
      var totalMonthlyAmount = Number((j14 + i14).toFixed(2));
      actualInstalment.textContent = "Actual Instalment: "+ totalMonthlyAmount;
- 
+
  
    return totalMonthlyAmount; // Output the total monthly amount
  }

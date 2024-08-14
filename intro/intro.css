@@ -52,7 +52,7 @@ body {
 }
 .slider-container span {
     border: 2px solid  rgb(107, 255, 107); /* You can adjust the border thickness and color */
-    background-color: rgb(107, 255, 107);
+    background-color: #6bff6b;
     cursor: pointer;
     width: 40px;
     height: 40px; /* Add height to ensure it's a square */
