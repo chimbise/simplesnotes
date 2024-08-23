@@ -466,3 +466,8 @@ select, input[type="submit"] {
     border-radius: 5px;
     box-sizing: border-box; /* Ensure padding is included in the width */
 }
+
+
+.test{
+    display: none;
+}

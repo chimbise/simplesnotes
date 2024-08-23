@@ -163,9 +163,6 @@
  
  function totalMonthlyAmountDisplay(selectedLoanAmount){
    loanAmountSlider.value = selectedLoanAmount;
- 
-     //loan max
-     
      // Initialize variables for calculations
      if(selectedLoanAmount.toString()==="undefined"||selectedLoanAmount.toString()==="NaN"){
        return null;
@@ -479,3 +476,4 @@
    }
  });
  
+

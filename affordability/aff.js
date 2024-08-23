@@ -1,3 +1,182 @@
+async function fillPdf() {
+    // Fetch the PDF file from the img folder
+    const overview = await fetch('../img/overview.pdf');
+    const affordability = await fetch('../img/affordability.pdf');
+    // const blil = await fetch('../img/blil.pdf');
+    // const tawuOdc = await fetch('../img/tawuOdc.pdf');
+    // const govOdc = await fetch('../img/govOdc.pdf');
+    // const bpopf = await fetch('../img/bpopf.pdf');
+    // const botsLife = await fetch('../img/botsLife.pdf');
+
+
+
+    const pdfBytesoverview = await overview.arrayBuffer();
+    const pdfBytesaffordability = await affordability.arrayBuffer();
+    // const pdfBytesblil = await blil.arrayBuffer();
+    // const pdfBytestawuOdc = await tawuOdc.arrayBuffer();
+    // const pdfBytesgovOdc = await govOdc.arrayBuffer();
+    // const pdfBytesbpopf = await bpopf.arrayBuffer();
+    // const pdfBytesbotsLife = await botsLife.arrayBuffer();
+
+    // Load the PDFDocument
+    const pdfDocoverview = await PDFLib.PDFDocument.load(pdfBytesoverview);
+    const pdfDocaffordability = await PDFLib.PDFDocument.load(pdfBytesaffordability);
+    // const pdfDocblil = await PDFLib.PDFDocument.load(pdfBytesblil);
+    // const pdfDoctawuOdc = await PDFLib.PDFDocument.load(pdfBytestawuOdc);
+    // const pdfDocgovOdc = await PDFLib.PDFDocument.load(pdfBytesgovOdc);
+    // const pdfDocbpopf = await PDFLib.PDFDocument.load(pdfBytesbpopf);
+    // const pdfDocbotsLife = await PDFLib.PDFDocument.load(pdfBytesbotsLife);
+
+    // Get the form containing all fields
+    const formoverview = pdfDocoverview.getForm();
+    const formaffordability = pdfDocaffordability.getForm();
+    // const formblil = pdfDocblil.getForm();
+    // const formtawu = pdfDoctawuOdc.getForm();
+    // const formgov = pdfDocgovOdc.getForm();
+    // const formbpopf = pdfDocbpopf.getForm();
+    // const formbotsLife = pdfDocbotsLife.getForm();
+
+    
+    //test data
+    const loanAmount = formoverview.getTextField('loanAmount');
+    loanAmount.setText('100000');
+    const adjNetIncome = formaffordability.getTextField('adjNetIncome');
+    adjNetIncome.setText('100000');
+
+
+    function fillOverview(){
+        const loanAmount = formoverview.getTextField('loanAmount');
+        loanAmount.setText('100000');
+        const installment = formoverview.getTextField('installment');
+        installment.setText('100000');
+        const term = formoverview.getTextField('term');
+        term.setText('100000');
+        const netSalary = formoverview.getTextField('netSalary');
+        netSalary.setText('100000');
+        const b2c = formoverview.getTextField('b2c');
+        b2c.setText('100000');
+        const date = formoverview.getTextField('date');
+        date.setText('100000');
+        const customerSignature = formoverview.getTextField('customerSignature');
+        customerSignature.setText('100000');
+        const managerSignature = formoverview.getTextField('managerSignature');
+        managerSignature.setText('100000');
+
+
+    }
+    function fillaffordability(){
+
+        const customerName = formaffordability.getTextField('customerName');
+        customerName.setText('100000');
+        const all1 = formaffordability.getTextField('all1');
+        all1.setText('100000');
+        const all2 = formaffordability.getTextField('all2');
+        all2.setText('100000');
+        const all3 = formaffordability.getTextField('all3');
+        all3.setText('100000');
+        const all4 = formaffordability.getTextField('all4');
+        all4.setText('100000');
+        const all5 = formaffordability.getTextField('all5');
+        all5.setText('100000');
+        const all6 = formaffordability.getTextField('all6');
+        all6.setText('100000');
+        const allowance1 = formaffordability.getTextField('allowance1');
+        allowance1.setText('100000');
+        const allowance2 = formaffordability.getTextField('allowance2');
+        allowance2.setText('100000');
+        const allowance3 = formaffordability.getTextField('allowance3');
+        allowance3.setText('100000');
+        const allowance4 = formaffordability.getTextField('allowance4');
+        allowance4.setText('100000');
+        const allowance5 = formaffordability.getTextField('allowance5');
+        allowance5.setText('100000');
+        const allowance6 = formaffordability.getTextField('allowance6');
+        allowance6.setText('100000');
+        const adjNetIncome = formaffordability.getTextField('adjNetIncome');
+        adjNetIncome.setText('100000');
+        const taxCorrection = formaffordability.getTextField('taxCorrection');
+        taxCorrection.setText('100000');
+        const settleloans = formaffordability.getTextField('settleloans');
+        settleloans.setText('100000');
+        const adjNetIncome2 = formaffordability.getTextField('adjNetIncome2');
+        adjNetIncome2.setText('100000');
+        const rule = formaffordability.getTextField('rule');
+        rule.setText('100000');
+        const maxQualify = formaffordability.getTextField('maxQualify');
+        maxQualify.setText('100000');
+        const installment = formaffordability.getTextField('installment');
+        installment.setText('100000');
+        const term = formaffordability.getTextField('term');
+        term.setText('100000');
+        const netSalary = formaffordability.getTextField('netSalary');
+        netSalary.setText('100000');
+        const loanAmount = formaffordability.getTextField('loanAmount');
+        loanAmount.setText('100000');
+        const blilpremium = formaffordability.getTextField('blilpremium');
+        blilpremium.setText('100000');
+        const settle1 = formaffordability.getTextField('settle1');
+        settle1.setText('100000');
+        const settle2 = formaffordability.getTextField('settle2');
+        settle2.setText('100000');
+        const settle3 = formaffordability.getTextField('settle3');
+        settle3.setText('100000');
+        const settle4 = formaffordability.getTextField('settle4');
+        settle4.setText('100000');
+        const settle5 = formaffordability.getTextField('settle5');
+        settle5.setText('100000');
+        const b2c = formaffordability.getTextField('b2c');
+        b2c.setText('100000');
+        const customerSignature = formaffordability.getTextField('customerSignature');
+        customerSignature.setText('100000');
+
+
+    }
+    function fillblil(){
+        const nameField = form.getTextField('loanAmount');
+        nameField.setText('100000');
+
+    }
+    function fillgovOdc(){
+        const nameField = form.getTextField('loanAmount');
+        nameField.setText('100000');
+
+    }
+    function filltawuOdc(){
+        const nameField = form.getTextField('loanAmount');
+        nameField.setText('100000');
+
+    }
+    function fillBotsLife(){
+        const nameField = form.getTextField('loanAmount');
+        nameField.setText('100000');
+
+    }
+    function fillBpopf(){
+        const nameField = form.getTextField('loanAmount');
+        nameField.setText('100000');
+
+    }
+    
+
+
+    formoverview.flatten();
+    formaffordability.flatten();
+    const filledPdfBytes = await pdfDocoverview.save();
+    const filledPdfBytes1 = await pdfDocaffordability.save();
+
+
+    // Trigger the download of the filled PDF
+    const blob = new Blob([filledPdfBytes,filledPdfBytes1], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'filled-form.pdf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+};
+  
+
 var basicAmount = 0;
 var workPlace = 'none'
 var department = 'none'
@@ -25,6 +204,12 @@ var currentDiv = ''
 var current = ''
 
 document.getElementById('next').addEventListener('click',()=>{
+    fillPdf().then(() => {
+        console.log('PDF filled successfully!');
+      }).catch(err => {
+        console.error('Error filling PDF:', err);
+      });
+
     direction = true;
     currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
     current = document.getElementById(currentDiv)
@@ -194,7 +379,12 @@ document.getElementById('next').addEventListener('click',()=>{
                  }
                 containerDiv.removeChild(current);
                 getAge()
-                console.log(calculateMaxInstallment())
+                break;
+            case 'birthdateDiv':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                 }
+                showOptions()
                 break;
             default:
                 break;
@@ -202,6 +392,69 @@ document.getElementById('next').addEventListener('click',()=>{
     }, 500);
 
 })
+function showOptions() {
+    // Create a Date object for your birthday
+    const birthday = new Date(`${yearValue}-${monthValue}-${dayValue}`);
+    const sixtiethBirthday = new Date(birthday);
+    if(productMaxYear === 'botsLife'||productMaxYear === 'bpopf'||productMaxYear === 'dikgosana') {
+        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 75);
+    } else{
+        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 60);
+    }
+    const today = new Date();
+
+    const monthsUntilSixty = monthsDifference(today, sixtiethBirthday);
+    console.log(monthsUntilSixty)
+
+
+    if (monthsUntilSixty>=96) {
+        term = 96;
+    } else if(monthsUntilSixty>=84) {
+        term = 84;
+    } else if(monthsUntilSixty>=72) {
+        term = 72;
+    } else if(monthsUntilSixty>=60) {
+        term = 60;
+    } else if(monthsUntilSixty>=54) {
+        term = 54
+    } else if(monthsUntilSixty>=48) {
+        term = 48
+    } else if(monthsUntilSixty>=30) {
+        term = 30
+    } else if(monthsUntilSixty>=24) {
+        term = 24
+    } else if(monthsUntilSixty>=18) {
+        term = 18
+    } else if(monthsUntilSixty>=12) {
+        term = 12;
+    } else if(monthsUntilSixty>=6) {
+        term = 6
+    } else {
+        showNotification("client does not qualify")
+        return 
+    }
+
+
+    var calMax = calculateMaxInstallment()
+    console.log(term)
+    var MaxLoan = findClosestKey(calMax[10])
+    console.log("maxloan: " + MaxLoan)
+}
+function monthsDifference(startDate, endDate) {
+    // Calculate the difference in years and months
+    let yearsDifference = endDate.getFullYear() - startDate.getFullYear();
+    let monthsDifference = endDate.getMonth() - startDate.getMonth();
+
+    // Calculate total months difference
+    let totalMonths = (yearsDifference * 12) + monthsDifference;
+
+    // Adjust if endDate is before startDate in the current month
+    if (endDate.getDate() < startDate.getDate()) {
+        totalMonths--;
+    }
+
+    return totalMonths - 3;
+}
 document.getElementById('back').addEventListener('click',()=>{
     direction = false;
     currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
@@ -493,8 +746,6 @@ function createWorkDiv() {
 
 }
 function createGovDepartmentDiv() {
-    
-
     const departmentDiv = document.createElement('div')
     departmentDiv.className = 'department'
     departmentDiv.id = 'department'
@@ -1442,6 +1693,9 @@ function maritalStatus() {
         maritalDiv.classList.add('slide-in-left');
     }
 }
+var dayValue = 1
+var monthValue = 1
+var yearValue = new Date().getFullYear() - 75;
 function getAge() {
     // Create the basic div
     const birthdateDiv = document.createElement('div');
@@ -1520,12 +1774,27 @@ function getAge() {
         form.appendChild(document.createElement('br'));
 
         birthdateDiv.appendChild(form)   
-    containerDiv.appendChild(birthdateDiv)
-    if (direction) {
-        birthdateDiv.classList.add('slide-in-right');
-    } else {
-        birthdateDiv.classList.add('slide-in-left');
-    }
+        containerDiv.appendChild(birthdateDiv)
+
+        document.getElementById('day').addEventListener('change',(event)=>{
+            dayValue = event.target.value;
+            console.log(dayValue)
+        });
+        document.getElementById('month').addEventListener('change', (event)=>{
+            monthValue = event.target.value;
+            console.log(monthValue)
+        });
+        document.getElementById('year').addEventListener('change', (event)=>{
+            yearValue = event.target.value;
+            console.log(yearValue)
+        });
+
+
+        if (direction) {
+            birthdateDiv.classList.add('slide-in-right');
+        } else {
+            birthdateDiv.classList.add('slide-in-left');
+        }
 }
 
 function calculateTaxNonIndustrial() {
@@ -1574,3 +1843,111 @@ function calculateMaxInstallment() {
             otherLoans,adjNettIncome,
             taxx,settleloans,n11,rule,n13]
 }
+
+function findClosestKey(target) {
+    var arr = loans; 
+    for (let i = 0; i < arr.length; i++) {
+        var realMonthly = totalMonthlyAmountDisplay(arr[i]);
+        var difference = realMonthly - target;
+        if(difference == 0){
+            return [realMonthly,arr[i]]
+        }else if (difference > 0) {
+            return [totalMonthlyAmountDisplay(arr[i-1]),arr[i-1]]
+        }
+    }
+  }
+  var startLoanAmount = 5000;
+  var maxLoanAmount = 700000;
+  var loans = [];
+  var loanAmountColumn = {}; // Loan amount column
+
+ // Loop to populate the loan amount column
+ for (var loanAmount = startLoanAmount; loanAmount <= maxLoanAmount; loanAmount += 500) {
+    loans.push(loanAmount)
+    var ckey = loanAmount.toString();
+    loanAmountColumn[ckey] = loanAmount;
+}
+
+
+  var rt = 0.20; // Annual interest rate for 20%
+  var b6 = rt / 12;// Monthly interest for 23%
+  var b9 = 0.0271; // Collections fee
+  var c9 = 1 - b9; // Adjusted factor for collections fee
+  var term = 96; // Loan term for 96 months
+
+  var d14 = 0; // d14 is ag14
+  var e14 = 0; // e14 is ah14
+  var f14 = 0; // Calculate f14
+  var g14 = 0; // Calculate g14
+  var h14 = 0; // Calculate h14
+  var j14 = 0; // Calculate j14
+  var b8 = 1.15; // Insurance
+  var i14 = 0; // Calculate i14
+  var l14 = 0;
+
+
+  function totalMonthlyAmountDisplay(selectedLoanAmount){
+      // Initialize variables for calculations
+      if(selectedLoanAmount.toString()==="undefined"||selectedLoanAmount.toString()==="NaN"){
+        return null;
+      }
+      var c14 = loanAmountColumn[selectedLoanAmount.toString()]; // Example value for c14
+      var ae14 = c14 * 0.0112; // Calculate ae14
+        //if (selectedLoanAmount >= 257500){
+        //  var ag14 = checkValueAg2(ae14);
+        //}else{
+      var ag14 = checkValueAg(ae14); // Calculate ag14
+      
+        //}
+      var af14 = c14 * 0.0112; // Calculate af14
+        //if (selectedLoanAmount >= 257500){
+        //  var ah14 = checkValueAh2(af14)
+       // }else{
+          var ah14 = checkValueAh(af14); // Calculate ah14
+       // }
+      d14 = ag14; // d14 is ag14
+      e14 = ah14; // e14 is ah14
+      f14 = c14 + d14 + e14; // Calculate f14
+      g14 = -PMT(b6, term, f14); // Calculate g14
+      h14 = f14 / 1000 * b8; // Calculate h14
+      j14 = g14 + h14; // Calculate j14
+      i14 = j14 / c9 - j14; // Calculate i14
+  
+      //total interest
+      l14 = (g14*term)-f14;
+  
+      // Calculate total monthly amount+
+  
+      var totalMonthlyAmount = Number((j14 + i14).toFixed(2));
+      //console.log("Actual Instalment: "+ totalMonthlyAmount)
+ 
+  
+    return totalMonthlyAmount; // Output the total monthly amount
+  }
+  function checkValueAg(AE14) {
+    if (AE14 < 1120) {
+        return 1120;
+    } else if (AE14 >= 2878.4) {
+      return 2878.4;
+    }else{
+        return AE14;
+    }
+  }
+  function checkValueAh(AF14) {
+    if (AF14 < 275.08) {
+        return 275.08;
+    } else if (AF14 >= 2878.4) {
+      return 2878.4;
+    } else {
+        return AF14;
+    }  
+  }
+  function PMT(rate, nper, pv) {
+    if (rate === 0) {
+        return -(pv / nper); // If rate is 0, just return the principal divided by the number of periods
+    } else {
+        var pvif = Math.pow(1 + rate, nper);
+        var pmt = pv * rate * pvif / (pvif - 1);
+        return -pmt; // Negate the result to match the Excel PMT function behavior
+    }
+  }

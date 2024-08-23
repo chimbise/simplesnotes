@@ -1,0 +1,16 @@
+{
+  "name": "chemachema",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "aff.js",
+  "scripts": {
+    "start": "node aff.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  }
+}
