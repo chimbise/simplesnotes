@@ -809,6 +809,13 @@ document.getElementById('next').addEventListener('click',()=>{
                 if (!containerDiv.contains(current)) {
                     break;             
                  }
+                containerDiv.removeChild(current);
+                selectQualifyingProduct();
+                break;
+            case 'productDiv':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                    }
                 showOptions()
                 break;
             default:
@@ -817,70 +824,7 @@ document.getElementById('next').addEventListener('click',()=>{
     }, 500);
 
 })
-var productMaxYear = 'all'
-function showOptions() {
-    // Create a Date object for your birthday
-    const birthday = new Date(`${yearValue}-${monthValue}-${dayValue}`);
-    const sixtiethBirthday = new Date(birthday);
-    if(productMaxYear === 'botsLife'||productMaxYear === 'bpopf'||productMaxYear === 'dikgosana') {
-        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 75);
-    } else{
-        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 60);
-    }
-    const today = new Date();
 
-    const monthsUntilSixty = monthsDifference(today, sixtiethBirthday);
-    console.log(monthsUntilSixty)
-
-
-    if (monthsUntilSixty>=96) {
-        term = 96;
-    } else if(monthsUntilSixty>=84) {
-        term = 84;
-    } else if(monthsUntilSixty>=72) {
-        term = 72;
-    } else if(monthsUntilSixty>=60) {
-        term = 60;
-    } else if(monthsUntilSixty>=54) {
-        term = 54
-    } else if(monthsUntilSixty>=48) {
-        term = 48
-    } else if(monthsUntilSixty>=30) {
-        term = 30
-    } else if(monthsUntilSixty>=24) {
-        term = 24
-    } else if(monthsUntilSixty>=18) {
-        term = 18
-    } else if(monthsUntilSixty>=12) {
-        term = 12;
-    } else if(monthsUntilSixty>=6) {
-        term = 6
-    } else {
-        showNotification("client does not qualify")
-        return 
-    }
-
-
-    var calMax = calculateMaxInstallment()
-    console.log(term)
-    var MaxLoan = findClosestKey(calMax[10])
-    console.log("maxloan: " + MaxLoan)
-}
-function monthsDifference(startDate, endDate) {
-    // Calculate the difference in years and months
-    let yearsDifference = endDate.getFullYear() - startDate.getFullYear();
-    let monthsDifference = endDate.getMonth() - startDate.getMonth();
-
-    // Calculate total months difference
-    let totalMonths = (yearsDifference * 12) + monthsDifference;
-
-    // Adjust if endDate is before startDate in the current month
-    if (endDate.getDate() < startDate.getDate()) {
-        totalMonths--;
-    }
-
-    return totalMonths - 3;
-}
 document.getElementById('back').addEventListener('click',()=>{
     direction = false;
     currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
@@ -1032,6 +976,13 @@ document.getElementById('back').addEventListener('click',()=>{
                 }
                 containerDiv.removeChild(document.getElementById('birthdateDiv'));
                 maritalStatus()
+                break;
+            case 'productDiv':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                }
+                containerDiv.removeChild(document.getElementById('productDiv'));
+                getAge();
                 break;
             default:
                 break;
@@ -1309,6 +1260,7 @@ function createGovDepartmentDiv() {
 }
 function resetSelectedArrays() {
     selectedAllowances = [];
+    allowanceInputs = []
 }
 function createCouncilDepartmentDiv() {
     const departmentDiv = document.createElement('div')
@@ -2270,6 +2222,71 @@ function maritalStatus() {
         maritalDiv.classList.add('slide-in-left');
     }
 }
+var productValue = 0.20;
+function selectQualifyingProduct() {
+    const productDiv = document.createElement('div')
+    productDiv.className = 'productDiv'
+    productDiv.id = 'productDiv'
+    productDiv.textContent = 'Select qualifying product'
+    productDiv.style.width = '90%'
+
+    const optDiv = document.createElement('div')
+    optDiv.className = 'botusafe20'
+    const bot20Input = document.createElement('input');
+    bot20Input.setAttribute('type', 'radio');
+    bot20Input.setAttribute('name', 'product');
+    bot20Input.setAttribute('id', 'product');
+    bot20Input.setAttribute('value', '0.20');
+    const bot20Label = document.createElement('label');
+    bot20Label.setAttribute('for', 'product');
+    bot20Label.textContent = 'botusafe 20%';
+    optDiv.appendChild(bot20Input)
+    optDiv.appendChild(bot20Label)
+
+    const opt2 = document.createElement('div')
+    opt2.className = 'botusafe23'
+    const bot23Input = document.createElement('input');
+    bot23Input.setAttribute('type', 'radio');
+    bot23Input.setAttribute('name', 'product');
+    bot23Input.setAttribute('id', 'product');
+    bot23Input.setAttribute('value', '0.23');
+    const bot23Label = document.createElement('label');
+    bot23Label.setAttribute('for', 'product');
+    bot23Label.textContent = 'botusafe 23%';
+    opt2.appendChild(bot23Input)
+    opt2.appendChild(bot23Label)
+
+
+    // Append the radio inputs before the labels to the parent div
+    productDiv.appendChild(optDiv);
+    productDiv.appendChild(opt2);
+
+   
+    containerDiv.appendChild(productDiv)
+     // Add change event listeners to the radio buttons
+     bot20Input.addEventListener('change', (event)=>{
+        productValue = event.target.value;
+        b6 = Number(productValue)/12;
+    });
+    bot23Input.addEventListener('change', (event)=>{
+        productValue = event.target.value;
+        b6 = Number(productValue)/12;
+    });
+
+    // Set initial value for checked
+    if (productValue === 0.20) {
+        bot20Input.setAttribute('checked', 'yes');
+    } else if(productValue === 0.23) {
+        bot23Input.setAttribute('checked','yes')
+    }
+
+    if (direction) {
+        productDiv.classList.add('slide-in-right');
+    } else {
+        productDiv.classList.add('slide-in-left');
+    }
+
+}
 var dayValue = 1
 var monthValue = 1
 var yearValue = new Date().getFullYear() - 75;
@@ -2374,6 +2391,7 @@ function getAge() {
         }
 }
 
+
 function calculateTaxNonIndustrial() {
     var tax = 0;
     var permanentAllowance = Number(addPairs(allowanceInputs))
@@ -2395,6 +2413,100 @@ function addPairs(obj) {
         sum += Number(obj[key])
     }
     return sum
+}
+var productMaxYear = 'all'
+function showOptions() {
+
+    optionsDiv.style.width = '90%'
+    // Create a Date object for your birthday
+    const birthday = new Date(`${yearValue}-${monthValue}-${dayValue}`);
+    const sixtiethBirthday = new Date(birthday);
+    if(productMaxYear === 'botsLife'||productMaxYear === 'bpopf'||productMaxYear === 'dikgosana') {
+        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 75);
+    } else{
+        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 60);
+    }
+    const today = new Date();
+
+    const monthsUntilSixty = monthsDifference(today, sixtiethBirthday);
+    console.log(monthsUntilSixty)
+
+
+    if (monthsUntilSixty>=96) {
+        term = 96;
+    } else if(monthsUntilSixty>=84) {
+        term = 84;
+    } else if(monthsUntilSixty>=72) {
+        term = 72;
+    } else if(monthsUntilSixty>=60) {
+        term = 60;
+    } else if(monthsUntilSixty>=54) {
+        term = 54
+    } else if(monthsUntilSixty>=48) {
+        term = 48
+    } else if(monthsUntilSixty>=30) {
+        term = 30
+    } else if(monthsUntilSixty>=24) {
+        term = 24
+    } else if(monthsUntilSixty>=18) {
+        term = 18
+    } else if(monthsUntilSixty>=12) {
+        term = 12;
+    } else if(monthsUntilSixty>=6) {
+        term = 6
+    } else {
+        showNotification("client does not qualify")
+        return 
+    }
+
+    var calMax = calculateMaxInstallment()
+    console.log(term)
+    var MaxLoan = findClosestKey(calMax[10])
+    console.log("maxloan: " + MaxLoan)
+
+    // const optionsDiv = document.createElement('div')
+    // optionsDiv.className = 'optionsDiv'
+    // optionsDiv.id = 'optionsDiv'
+    // optionsDiv.textContent = 'Your loan Overview'
+     // <br><br>
+    // <iframe id="pdf-preview" style="width: 100%; height: 100%;" ></iframe>
+    // <br><br>
+    // <button id="download-pdf" >Download PDF</button>
+
+    // // Display the PDF in an iframe
+    // const iframe = document.getElementById('pdf-preview');
+    // iframe.src = url;
+    // iframe.hidden = false;
+
+    // // Show the download button
+    // const downloadButton = document.getElementById('download-pdf');
+    // downloadButton.hidden = false;
+
+    // // Handle download on button click
+    // downloadButton.onclick = function() {
+    //     const a = document.createElement('a');
+    //     a.href = url;
+    //     a.download = 'filled-form-locked.pdf';
+    //     document.body.appendChild(a);
+    //     a.click();
+    //     document.body.removeChild(a);
+    // };
+
+}
+function monthsDifference(startDate, endDate) {
+    // Calculate the difference in years and months
+    let yearsDifference = endDate.getFullYear() - startDate.getFullYear();
+    let monthsDifference = endDate.getMonth() - startDate.getMonth();
+
+    // Calculate total months difference
+    let totalMonths = (yearsDifference * 12) + monthsDifference;
+
+    // Adjust if endDate is before startDate in the current month
+    if (endDate.getDate() < startDate.getDate()) {
+        totalMonths--;
+    }
+
+    return totalMonths - 3;
 }
 
 function calculateMaxInstallment() {
