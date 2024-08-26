@@ -2458,7 +2458,6 @@ function showOptions() {
         showNotification("client does not qualify")
         return 
     }
-
     var calMax = calculateMaxInstallment()
     console.log(term)
     var MaxLoan = findClosestKey(calMax[10])
