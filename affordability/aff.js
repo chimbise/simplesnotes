@@ -596,9 +596,6 @@ async function fillPdf() {
         // customerSignature1
         // bankSignature
     }
-    
-
-  
 
 var basicAmount = 0;
 var workPlace = 'none'
@@ -619,7 +616,6 @@ var taxCorrection = 'no'
 var taxPensionDeductions = [0,0];
 var maritalStatusValue = 'no'
 var birthdate = 0;
-
 
 const containerDiv = document.querySelector('.container');
 createBasicDiv()
@@ -648,8 +644,12 @@ document.getElementById('next').addEventListener('click',()=>{
         showNotification('please enter New loan installent')
         triggerShakeEffect()
         return;
-     }else if (selectedsettleLoanCode.length == 0 && currentDiv === 'settleloanPresentSelection') {
+    }else if (selectedsettleLoanCode.length == 0 && currentDiv === 'settleloanPresentSelection') {
         showNotification('please SELECT a loan you want to SETTLE')
+        triggerShakeEffect()
+      return;
+    }else if (dayValue === '') {
+        showNotification('please SELECT a valid birthdate')
         triggerShakeEffect()
       return;
     }
@@ -824,7 +824,6 @@ document.getElementById('next').addEventListener('click',()=>{
     }, 500);
 
 })
-
 document.getElementById('back').addEventListener('click',()=>{
     direction = false;
     currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
@@ -975,6 +974,9 @@ document.getElementById('back').addEventListener('click',()=>{
                     break;             
                 }
                 containerDiv.removeChild(document.getElementById('birthdateDiv'));
+                if (dayValue === '' || dayValue === 'Day') {
+                    dayValue = 'Day';
+                }
                 maritalStatus()
                 break;
             case 'productDiv':
@@ -1016,8 +1018,6 @@ function triggerShakeEffect() {
         div.classList.remove('shake');
     }, { once: true });
 }
-
-
 function createBasicDiv() {
 
     
@@ -2287,10 +2287,12 @@ function selectQualifyingProduct() {
     }
 
 }
-var dayValue = 1
-var monthValue = 1
-var yearValue = new Date().getFullYear() - 75;
+var dayValue = 'Day';
+let monthValue;
+let yearValue;
 function getAge() {
+    
+    console.log(dayValue)
     // Create the basic div
     const birthdateDiv = document.createElement('div');
     birthdateDiv.className = 'birthdateDiv'
@@ -2305,10 +2307,10 @@ function getAge() {
         daySelect.setAttribute('id', 'day');
         daySelect.setAttribute('name', 'day');
         daySelect.required = true;
-
+        
         let dayOption = document.createElement('option');
-        dayOption.value = '';
         dayOption.textContent = 'Day';
+        //dayOption.value = '';
         daySelect.appendChild(dayOption);
 
         for (let i = 1; i <= 31; i++) {
@@ -2316,6 +2318,11 @@ function getAge() {
             dayOption.value = i;
             dayOption.textContent = i;
             daySelect.appendChild(dayOption);
+        }
+        if(dayValue === 'Day' || dayValue === ''){
+            dayValue = '';
+        } else{
+            daySelect.value = dayValue; // Preselect the option that matches dayValue
         }
         form.appendChild(daySelect);
 
@@ -2372,6 +2379,9 @@ function getAge() {
 
         document.getElementById('day').addEventListener('change',(event)=>{
             dayValue = event.target.value;
+            if(dayValue === 'Day' || dayValue === ''){
+                dayValue = '';
+            } else
             console.log(dayValue)
         });
         document.getElementById('month').addEventListener('change', (event)=>{
@@ -2390,8 +2400,6 @@ function getAge() {
             birthdateDiv.classList.add('slide-in-left');
         }
 }
-
-
 function calculateTaxNonIndustrial() {
     var tax = 0;
     var permanentAllowance = Number(addPairs(allowanceInputs))
@@ -2441,19 +2449,19 @@ function showOptions() {
     } else if(monthsUntilSixty>=60) {
         term = 60;
     } else if(monthsUntilSixty>=54) {
-        term = 54
+        term = 54;
     } else if(monthsUntilSixty>=48) {
-        term = 48
+        term = 48;
     } else if(monthsUntilSixty>=30) {
-        term = 30
+        term = 30;
     } else if(monthsUntilSixty>=24) {
-        term = 24
+        term = 24;
     } else if(monthsUntilSixty>=18) {
-        term = 18
+        term = 18;
     } else if(monthsUntilSixty>=12) {
         term = 12;
     } else if(monthsUntilSixty>=6) {
-        term = 6
+        term = 6;
     } else {
         showNotification("client does not qualify")
         return 
@@ -2467,7 +2475,7 @@ function showOptions() {
     // optionsDiv.className = 'optionsDiv'
     // optionsDiv.id = 'optionsDiv'
     // optionsDiv.textContent = 'Your loan Overview'
-     // <br><br>
+    // <br><br>
     // <iframe id="pdf-preview" style="width: 100%; height: 100%;" ></iframe>
     // <br><br>
     // <button id="download-pdf" >Download PDF</button>
@@ -2507,7 +2515,6 @@ function monthsDifference(startDate, endDate) {
 
     return totalMonths - 3;
 }
-
 function calculateMaxInstallment() {
     var permanentAllowance = Number(addPairs(allowanceInputs));
     console.log(allowanceInputs)
@@ -2531,7 +2538,6 @@ function calculateMaxInstallment() {
             otherLoans,adjNettIncome,
             taxx,settleloans,n11,rule,n13]
 }
-
 function findClosestKey(target) {
     var arr = loans; 
     for (let i = 0; i < arr.length; i++) {
@@ -2555,8 +2561,6 @@ function findClosestKey(target) {
     var ckey = loanAmount.toString();
     loanAmountColumn[ckey] = loanAmount;
 }
-
-
   var rt = 0.20; // Annual interest rate for 20%
   var b6 = rt / 12;// Monthly interest for 23%
   var b9 = 0.0271; // Collections fee
@@ -2572,7 +2576,6 @@ function findClosestKey(target) {
   var b8 = 1.15; // Insurance
   var i14 = 0; // Calculate i14
   var l14 = 0;
-
 
   function totalMonthlyAmountDisplay(selectedLoanAmount){
       // Initialize variables for calculations
