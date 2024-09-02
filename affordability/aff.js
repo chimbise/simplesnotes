@@ -53,11 +53,16 @@ async function fillPdf() {
     const formfcbApp2 = pdfDocfcbApp2.getForm();
     const formfcbApp3 = pdfDocfcbApp3.getForm();
 
-
+    // real data for affordability
+    var calMax = calculateMaxInstallment()
+    console.log(calMax)
+    var MaxLoan = findClosestKey(calMax[10])
+    console.log("maxloan: " + MaxLoan)
     
     //test data
-    const loanAmount = formoverview.getTextField('loanAmount');
-    loanAmount.setText('100000');
+    fillOverview(formoverview,calMax,MaxLoan)
+
+
     const adjNetIncome = formaffordability.getTextField('adjNetIncome');
     adjNetIncome.setText('100000');
     const birthdate = formblil.getTextField('birthdate');
@@ -79,7 +84,7 @@ async function fillPdf() {
     const beneficiaryCellNumber = formfcbApp3.getTextField('beneficiaryCellNumber');
     beneficiaryCellNumber.setText('74650235');
 
-
+    // 
     formblil.flatten();
     formoverview.flatten();
     formaffordability.flatten();
@@ -138,90 +143,116 @@ async function fillPdf() {
     const blob11 = new Blob([filledPdfBytes10], { type: 'application/pdf' });
     const url11 = URL.createObjectURL(blob11);
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'overview.pdf';
-    document.body.appendChild(a);
 
-    const b = document.createElement('a');
-    b.href = url2;
-    b.download = 'affordability.pdf';
-    document.body.appendChild(b);
+    const optionsDiv = document.createElement('div')
+    optionsDiv.className = 'optionsDiv'
+    optionsDiv.id = 'optionsDiv'
+    optionsDiv.style.width = '90%'
+    optionsDiv.style.height = '90%'
 
-    const c = document.createElement('a');
-    c.href = url3;
-    c.download = 'blil.pdf';
-    document.body.appendChild(c);
+    // Display the PDF in an iframe
+    const iframe = document.createElement('iframe');
+    iframe.style.width = '100%'
+    iframe.style.height = '100%'
+    iframe.style.backgroundColor = 'white'
+    iframe.src = url;
+   // iframe.hidden = false;
+   
 
-    const d = document.createElement('a');
-    d.href = url4;
-    d.download = 'govOdc.pdf';
-    document.body.appendChild(d);
+    // Show the download button
+    const downloadButton = document.createElement('button');
+   // downloadButton.hidden = false;
 
-    const e = document.createElement('a');
-    e.href = url5;
-    e.download = 'tawuOdc.pdf';
-    document.body.appendChild(e);
+   optionsDiv.appendChild(iframe)
+   optionsDiv.appendChild(downloadButton)
+   // // Handle download on button click
+   downloadButton.onclick = function() {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'overview.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+    containerDiv.appendChild(optionsDiv)
 
-    const f = document.createElement('a');
-    f.href = url6;
-    f.download = 'bpopfOdc.pdf';
-    document.body.appendChild(f);
+    // const b = document.createElement('a');
+    // b.href = url2;
+    // b.download = 'affordability.pdf';
+    // document.body.appendChild(b);
 
-    const g = document.createElement('a');
-    g.href = url7;
-    g.download = 'botsLifeOdc.pdf';
-    document.body.appendChild(g);
+    // const c = document.createElement('a');
+    // c.href = url3;
+    // c.download = 'blil.pdf';
+    // document.body.appendChild(c);
 
-    const h = document.createElement('a');
-    h.href = url8;
-    h.download = 'declaration.pdf';
-    document.body.appendChild(h);
+    // const d = document.createElement('a');
+    // d.href = url4;
+    // d.download = 'govOdc.pdf';
+    // document.body.appendChild(d);
 
-    const k = document.createElement('a');
-    k.href = url11;
-    k.download = 'fcbpg3.pdf';
-    document.body.appendChild(k);
+    // const e = document.createElement('a');
+    // e.href = url5;
+    // e.download = 'tawuOdc.pdf';
+    // document.body.appendChild(e);
 
-    const j = document.createElement('a');
-    j.href = url10;
-    j.download = 'fcbpg2.pdf';
-    document.body.appendChild(j);
+    // const f = document.createElement('a');
+    // f.href = url6;
+    // f.download = 'bpopfOdc.pdf';
+    // document.body.appendChild(f);
 
-    const i = document.createElement('a');
-    i.href = url9;
-    i.download = 'fcbpg1.pdf';
-    document.body.appendChild(i);
+    // const g = document.createElement('a');
+    // g.href = url7;
+    // g.download = 'botsLifeOdc.pdf';
+    // document.body.appendChild(g);
+
+    // const h = document.createElement('a');
+    // h.href = url8;
+    // h.download = 'declaration.pdf';
+    // document.body.appendChild(h);
+
+    // const k = document.createElement('a');
+    // k.href = url11;
+    // k.download = 'fcbpg3.pdf';
+    // document.body.appendChild(k);
+
+    // const j = document.createElement('a');
+    // j.href = url10;
+    // j.download = 'fcbpg2.pdf';
+    // document.body.appendChild(j);
+
+    // const i = document.createElement('a');
+    // i.href = url9;
+    // i.download = 'fcbpg1.pdf';
+    // document.body.appendChild(i);
 
 
-    a.click();
-    b.click();
-    c.click();
-    d.click();
-    e.click();
-    f.click();
-    g.click();
-    h.click();
-    i.click()
-    j.click()
-    k.click()
+    // b.click();
+    // c.click();
+    // d.click();
+    // e.click();
+    // f.click();
+    // g.click();
+    // h.click();
+    // i.click()
+    // j.click()
+    // k.click()
 
 
-    document.body.removeChild(a);
-    document.body.removeChild(b);
-    document.body.removeChild(c);
-    document.body.removeChild(d);
-    document.body.removeChild(e);
-    document.body.removeChild(f);
-    document.body.removeChild(g);
-    document.body.removeChild(h);
-    document.body.removeChild(i);
-    document.body.removeChild(j);
-    document.body.removeChild(k);
+    // document.body.removeChild(b);
+    // document.body.removeChild(c);
+    // document.body.removeChild(d);
+    // document.body.removeChild(e);
+    // document.body.removeChild(f);
+    // document.body.removeChild(g);
+    // document.body.removeChild(h);
+    // document.body.removeChild(i);
+    // document.body.removeChild(j);
+    // document.body.removeChild(k);
 
 
 };
-    function fillOverview(form){
+    function fillOverview(form, aff, over){
         const loanAmount = form.getTextField('loanAmount');
         loanAmount.setText('100000');
         const installment = form.getTextField('installment');
@@ -234,6 +265,8 @@ async function fillPdf() {
         b2c.setText('100000');
         const date = form.getTextField('date');
         date.setText('100000');
+        const name = form.getTextField('customerName')
+        name.setText('Tips!')
         const customerSignature = form.getTextField('customerSignature');
         customerSignature.setText('100000');
         const managerSignature = form.getTextField('managerSignature');
@@ -648,7 +681,7 @@ document.getElementById('next').addEventListener('click',()=>{
         showNotification('please SELECT a loan you want to SETTLE')
         triggerShakeEffect()
       return;
-    }else if (dayValue === '') {
+    }else if (dayValue === '' || monthValue === '' || yearValue === '') {
         showNotification('please SELECT a valid birthdate')
         triggerShakeEffect()
       return;
@@ -801,22 +834,23 @@ document.getElementById('next').addEventListener('click',()=>{
             case 'maritalDiv':
                 if (!containerDiv.contains(current)) {
                     break;             
-                 }
+                    }
                 containerDiv.removeChild(current);
                 getAge()
                 break;
             case 'birthdateDiv':
-                if (!containerDiv.contains(current)) {
+                if(!containerDiv.contains(current)){
                     break;             
-                 }
+                    }
                 containerDiv.removeChild(current);
                 selectQualifyingProduct();
                 break;
             case 'productDiv':
-                if (!containerDiv.contains(current)) {
-                    break;             
+                if(!containerDiv.contains(current)){
+                    break;
                     }
-                showOptions()
+                containerDiv.removeChild(current);
+                fillPdf()
                 break;
             default:
                 break;
@@ -976,6 +1010,12 @@ document.getElementById('back').addEventListener('click',()=>{
                 containerDiv.removeChild(document.getElementById('birthdateDiv'));
                 if (dayValue === '' || dayValue === 'Day') {
                     dayValue = 'Day';
+                }
+                if(monthValue === '' || monthValue === 'Month'){
+                    monthValue = 'Month';
+                }
+                if(yearValue === '' || yearValue === 'Year'){
+                    yearValue = 'Year';
                 }
                 maritalStatus()
                 break;
@@ -2223,7 +2263,51 @@ function maritalStatus() {
     }
 }
 var productValue = 0.20;
+var productMaxYear = 'all'
+
 function selectQualifyingProduct() {
+
+        // Create a Date object for your birthday
+        const birthday = new Date(`${yearValue}-${monthValue}-${dayValue}`);
+        const sixtiethBirthday = new Date(birthday);
+        if(productMaxYear === 'botsLife'||productMaxYear === 'bpopf'||productMaxYear === 'dikgosana') {
+            sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 75);
+        } else{
+            sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 60);
+        }
+        const today = new Date();
+    
+        const monthsUntilSixty = monthsDifference(today, sixtiethBirthday);
+        if (monthsUntilSixty>=96) {
+            term = 96;
+        } else if(monthsUntilSixty>=84) {
+            term = 84;
+        } else if(monthsUntilSixty>=72) {
+            term = 72;
+        } else if(monthsUntilSixty>=60) {
+            term = 60;
+        } else if(monthsUntilSixty>=54) {
+            term = 54;
+        } else if(monthsUntilSixty>=48) {
+            term = 48;
+        } else if(monthsUntilSixty>=30) {
+            term = 30;
+        } else if(monthsUntilSixty>=24) {
+            term = 24;
+        } else if(monthsUntilSixty>=18) {
+            term = 18;
+        } else if(monthsUntilSixty>=12) {
+            term = 12;
+        } else if(monthsUntilSixty>=6) {
+            term = 6;
+        } else {
+            showNotification("client does not qualify due to Age")
+            return;
+        }
+    
+    
+
+
     const productDiv = document.createElement('div')
     productDiv.className = 'productDiv'
     productDiv.id = 'productDiv'
@@ -2235,7 +2319,7 @@ function selectQualifyingProduct() {
     const bot20Input = document.createElement('input');
     bot20Input.setAttribute('type', 'radio');
     bot20Input.setAttribute('name', 'product');
-    bot20Input.setAttribute('id', 'product');
+    bot20Input.setAttribute('id', 'botusafe20');
     bot20Input.setAttribute('value', '0.20');
     const bot20Label = document.createElement('label');
     bot20Label.setAttribute('for', 'product');
@@ -2248,7 +2332,7 @@ function selectQualifyingProduct() {
     const bot23Input = document.createElement('input');
     bot23Input.setAttribute('type', 'radio');
     bot23Input.setAttribute('name', 'product');
-    bot23Input.setAttribute('id', 'product');
+    bot23Input.setAttribute('id', 'botusafe23');
     bot23Input.setAttribute('value', '0.23');
     const bot23Label = document.createElement('label');
     bot23Label.setAttribute('for', 'product');
@@ -2263,21 +2347,21 @@ function selectQualifyingProduct() {
 
    
     containerDiv.appendChild(productDiv)
-     // Add change event listeners to the radio buttons
-     bot20Input.addEventListener('change', (event)=>{
-        productValue = event.target.value;
-        b6 = Number(productValue)/12;
+    // Add change event listeners to the radio buttons
+    bot20Input.addEventListener('change', (event)=>{
+        productValue = Number(event.target.value);
+        b6 = productValue/12;
     });
     bot23Input.addEventListener('change', (event)=>{
-        productValue = event.target.value;
-        b6 = Number(productValue)/12;
+        productValue = Number(event.target.value);
+        b6 = productValue/12;
     });
 
     // Set initial value for checked
     if (productValue === 0.20) {
-        bot20Input.setAttribute('checked', 'yes');
+        bot20Input.checked = true;
     } else if(productValue === 0.23) {
-        bot23Input.setAttribute('checked','yes')
+        bot23Input.checked = true;
     }
 
     if (direction) {
@@ -2288,12 +2372,10 @@ function selectQualifyingProduct() {
 
 }
 var dayValue = 'Day';
-let monthValue;
-let yearValue;
+var monthValue = 'Month';
+let yearValue = 'Year';
 function getAge() {
-    
-    console.log(dayValue)
-    // Create the basic div
+        // Create the basic div
     const birthdateDiv = document.createElement('div');
     birthdateDiv.className = 'birthdateDiv'
     birthdateDiv.id = 'birthdateDiv'
@@ -2348,6 +2430,11 @@ function getAge() {
             monthOption.textContent = month;
             monthSelect.appendChild(monthOption);
         });
+        if(monthValue === 'Month' || monthValue === ''){
+            monthValue = '';
+        } else{
+            monthSelect.value = monthValue; // Preselect the option that matches dayValue
+        }
         form.appendChild(monthSelect);
 
         // Create the year select element
@@ -2368,6 +2455,11 @@ function getAge() {
             yearOption.textContent = i;
             yearSelect.appendChild(yearOption);
         }
+        if(yearValue === 'Year' || yearValue === ''){
+            yearValue = '';
+        } else{
+            yearSelect.value = yearValue; // Preselect the option that matches dayValue
+        }
         form.appendChild(yearSelect);
 
         // Line break
@@ -2381,15 +2473,21 @@ function getAge() {
             dayValue = event.target.value;
             if(dayValue === 'Day' || dayValue === ''){
                 dayValue = '';
-            } else
+            }
             console.log(dayValue)
         });
         document.getElementById('month').addEventListener('change', (event)=>{
             monthValue = event.target.value;
+            if(monthValue === 'Month' || monthValue === ''){
+                monthValue = '';
+            }
             console.log(monthValue)
         });
         document.getElementById('year').addEventListener('change', (event)=>{
             yearValue = event.target.value;
+            if(yearValue === 'Year' || yearValue === ''){
+                yearValue = '';
+            }
             console.log(yearValue)
         });
 
@@ -2422,84 +2520,6 @@ function addPairs(obj) {
     }
     return sum
 }
-var productMaxYear = 'all'
-function showOptions() {
-
-    optionsDiv.style.width = '90%'
-    // Create a Date object for your birthday
-    const birthday = new Date(`${yearValue}-${monthValue}-${dayValue}`);
-    const sixtiethBirthday = new Date(birthday);
-    if(productMaxYear === 'botsLife'||productMaxYear === 'bpopf'||productMaxYear === 'dikgosana') {
-        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 75);
-    } else{
-        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 60);
-    }
-    const today = new Date();
-
-    const monthsUntilSixty = monthsDifference(today, sixtiethBirthday);
-    console.log(monthsUntilSixty)
-
-
-    if (monthsUntilSixty>=96) {
-        term = 96;
-    } else if(monthsUntilSixty>=84) {
-        term = 84;
-    } else if(monthsUntilSixty>=72) {
-        term = 72;
-    } else if(monthsUntilSixty>=60) {
-        term = 60;
-    } else if(monthsUntilSixty>=54) {
-        term = 54;
-    } else if(monthsUntilSixty>=48) {
-        term = 48;
-    } else if(monthsUntilSixty>=30) {
-        term = 30;
-    } else if(monthsUntilSixty>=24) {
-        term = 24;
-    } else if(monthsUntilSixty>=18) {
-        term = 18;
-    } else if(monthsUntilSixty>=12) {
-        term = 12;
-    } else if(monthsUntilSixty>=6) {
-        term = 6;
-    } else {
-        showNotification("client does not qualify")
-        return 
-    }
-    var calMax = calculateMaxInstallment()
-    console.log(term)
-    var MaxLoan = findClosestKey(calMax[10])
-    console.log("maxloan: " + MaxLoan)
-
-    // const optionsDiv = document.createElement('div')
-    // optionsDiv.className = 'optionsDiv'
-    // optionsDiv.id = 'optionsDiv'
-    // optionsDiv.textContent = 'Your loan Overview'
-    // <br><br>
-    // <iframe id="pdf-preview" style="width: 100%; height: 100%;" ></iframe>
-    // <br><br>
-    // <button id="download-pdf" >Download PDF</button>
-
-    // // Display the PDF in an iframe
-    // const iframe = document.getElementById('pdf-preview');
-    // iframe.src = url;
-    // iframe.hidden = false;
-
-    // // Show the download button
-    // const downloadButton = document.getElementById('download-pdf');
-    // downloadButton.hidden = false;
-
-    // // Handle download on button click
-    // downloadButton.onclick = function() {
-    //     const a = document.createElement('a');
-    //     a.href = url;
-    //     a.download = 'filled-form-locked.pdf';
-    //     document.body.appendChild(a);
-    //     a.click();
-    //     document.body.removeChild(a);
-    // };
-
-}
 function monthsDifference(startDate, endDate) {
     // Calculate the difference in years and months
     let yearsDifference = endDate.getFullYear() - startDate.getFullYear();
@@ -2522,7 +2542,7 @@ function calculateMaxInstallment() {
     var adjBasicSalary = Number(basicAmount) + permanentAllowance;
     var adjNettIncome = adjBasicSalary - otherLoans - Number(deductionAmount);
     var taxx = 0;
-    if(taxCorrection==='yes'){
+    if(taxCorrection === 'yes'){
         taxx = calculateTaxNonIndustrial();
     }
     var settleloans = addPairs(settleLoanInputs);
