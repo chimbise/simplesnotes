@@ -61,10 +61,10 @@ async function fillPdf() {
     
     //test data
     fillOverview(formoverview,calMax,MaxLoan)
+    fillaffordability(formaffordability)
 
-
-    const adjNetIncome = formaffordability.getTextField('adjNetIncome');
-    adjNetIncome.setText('100000');
+    // const adjNetIncome = formaffordability.getTextField('adjNetIncome');
+    // adjNetIncome.setText('100000');
     const birthdate = formblil.getTextField('birthdate');
     birthdate.setText('100000');
     const date = formgov.getTextField('date');
@@ -157,13 +157,20 @@ async function fillPdf() {
     iframe.style.backgroundColor = 'white'
     iframe.src = url;
    // iframe.hidden = false;
-   
+   // Display the PDF in an iframe
+   const iframe2 = document.createElement('iframe');
+   iframe2.style.width = '100%'
+   iframe2.style.height = '100%'
+   iframe2.style.backgroundColor = 'white'
+   iframe2.src = url2;
 
     // Show the download button
     const downloadButton = document.createElement('button');
    // downloadButton.hidden = false;
 
    optionsDiv.appendChild(iframe)
+   optionsDiv.appendChild(iframe)
+
    optionsDiv.appendChild(downloadButton)
    // // Handle download on button click
    downloadButton.onclick = function() {
@@ -254,27 +261,50 @@ async function fillPdf() {
 };
     function fillOverview(form, aff, over){
         const loanAmount = form.getTextField('loanAmount');
-        loanAmount.setText('100000');
+        loanAmount.setText(over[1].toString());
+        loanAmount.setFontSize(16);
+
         const installment = form.getTextField('installment');
-        installment.setText('100000');
-        const term = form.getTextField('term');
-        term.setText('100000');
+        installment.setText(over[0].toString());
+        installment.setFontSize(16);
+
+        const termr = form.getTextField('term');
+        termr.setText(term.toString());
+        termr.setFontSize(16);
+
         const netSalary = form.getTextField('netSalary');
-        netSalary.setText('100000');
+            var net = aff[8]-over[0]
+            console.log(aff[8] + '  ' +over[0]+'   '+net)
+        netSalary.setText(Number(net).toFixed(2).toString());
+        netSalary.setFontSize(16);
+
         const b2c = form.getTextField('b2c');
-        b2c.setText('100000');
+            var settle = addPairs(settleLoanBalances)
+        b2c.setText((over[1]-2*over[2]-settle).toString());
+        b2c.setFontSize(16);
+
         const date = form.getTextField('date');
-        date.setText('100000');
+        var s = today.getDay() +'/'+ today.getMonth() + '/' + today.getFullYear()
+        date.setText(s.toString());
+        date.setFontSize(16);
+
         const name = form.getTextField('customerName')
-        name.setText('Tips!')
+        name.setFontSize(16)
+        //name.setText('Tips!')
+
         const customerSignature = form.getTextField('customerSignature');
-        customerSignature.setText('100000');
+        customerSignature.setFontSize(16)
+        //customerSignature.setText('100000');
+
         const managerSignature = form.getTextField('managerSignature');
-        managerSignature.setText('100000');
+        managerSignature.setFontSize(16)
+        //managerSignature.setText('100000');
     }
     function fillaffordability(form){
         const customerName = form.getTextField('customerName');
-        customerName.setText('100000');
+        customerName.setText('tips!');
+        const basicSalary = form.getTextField('basicSalary')
+        basicSalary.setText('basic salary')
         const all1 = form.getTextField('all1');
         all1.setText('100000');
         const all2 = form.getTextField('all2');
@@ -303,8 +333,10 @@ async function fillPdf() {
         adjNetIncome.setText('100000');
         const taxCorrection = form.getTextField('taxCorrection');
         taxCorrection.setText('100000');
-        const settleloans = form.getTextField('settleloans');
-        settleloans.setText('100000');
+        // const settleloans = form.getTextField('setleloans');
+        // settleloans.setText('100000');
+        const adjNetIncome1 = form.getTextField('adjNetIncome');
+        adjNetIncome1.setText('100000');
         const adjNetIncome2 = form.getTextField('adjNetIncome2');
         adjNetIncome2.setText('100000');
         const rule = form.getTextField('rule');
@@ -2264,7 +2296,7 @@ function maritalStatus() {
 }
 var productValue = 0.20;
 var productMaxYear = 'all'
-
+const today = new Date();
 function selectQualifyingProduct() {
 
         // Create a Date object for your birthday
@@ -2275,7 +2307,6 @@ function selectQualifyingProduct() {
         } else{
             sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 60);
         }
-        const today = new Date();
     
         const monthsUntilSixty = monthsDifference(today, sixtiethBirthday);
         if (monthsUntilSixty>=96) {
@@ -2556,17 +2587,18 @@ function calculateMaxInstallment() {
     var n13 = n11 - rule;
    return [Number(basicAmount),permanentAllowance,adjBasicSalary,Number(deductionAmount),
             otherLoans,adjNettIncome,
-            taxx,settleloans,n11,rule,n13]
+            taxx,settleloans,Number(n11.toFixed(2)),rule,n13]
 }
 function findClosestKey(target) {
     var arr = loans; 
     for (let i = 0; i < arr.length; i++) {
         var realMonthly = totalMonthlyAmountDisplay(arr[i]);
-        var difference = realMonthly - target;
+        var difference = realMonthly[0] - target;
         if(difference == 0){
-            return [realMonthly,arr[i]]
+            return [realMonthly[0],arr[i]]
         }else if (difference > 0) {
-            return [totalMonthlyAmountDisplay(arr[i-1]),arr[i-1]]
+            var t = totalMonthlyAmountDisplay(arr[i-1])
+            return [t[0],arr[i-1],t[1]]
         }
     }
   }
@@ -2631,9 +2663,9 @@ function findClosestKey(target) {
   
       var totalMonthlyAmount = Number((j14 + i14).toFixed(2));
       //console.log("Actual Instalment: "+ totalMonthlyAmount)
- 
+      var loanDetails = Number(h14.toFixed(2)); 
   
-    return totalMonthlyAmount; // Output the total monthly amount
+    return [totalMonthlyAmount,loanDetails]; // Output the total monthly amount
   }
   function checkValueAg(AE14) {
     if (AE14 < 1120) {
