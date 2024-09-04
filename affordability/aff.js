@@ -1058,6 +1058,12 @@ document.getElementById('back').addEventListener('click',()=>{
                 containerDiv.removeChild(document.getElementById('productDiv'));
                 getAge();
                 break;
+            case 'optionsDiv':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                }
+                containerDiv.removeChild(document.getElementById('optionsDiv'));
+                selectQualifyingProduct();
             default:
                 break;
         }
