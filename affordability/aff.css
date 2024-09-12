@@ -42,7 +42,7 @@ body {
     background: #8dc63f; /* Gradient background */
     border-radius: 10px;
     width: 80%;
-    height: 50%;
+    height: 80%;
     padding: 10px;
 }
 .span-button {
@@ -480,4 +480,28 @@ select, input[type="submit"] {
     padding:10px;
     background-color: white;
     border-radius:0 0 10px 10px;
+}
+.optionsDiv{
+    display:flex ;
+    flex-direction: column;
+    overflow-y: auto; /* Enable vertical scrolling */
+
+}
+.chooseLoanDiv{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-around;
+    height: 100%;
+
+}
+.l6xers{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 5px;
+    justify-items: center;
+    width: 100%;
+    background-color: aliceblue;
+    border-radius: 10px;
 }
