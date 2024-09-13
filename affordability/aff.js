@@ -775,8 +775,8 @@ document.getElementById('next').addEventListener('click',()=>{
                     break;             
                  }
                 containerDiv.removeChild(document.getElementById('basic'));
-                chooseLoan()
-                //createWorkDiv()
+                //chooseLoan()
+                createWorkDiv()
                 break;
             case 'workPlace':
                 if (!containerDiv.contains(current)) {
