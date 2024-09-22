@@ -59,12 +59,14 @@ async function fillPdf() {
     });
 
     // real data for affordability
-    var calMax = calculateMaxInstallment()
-    console.log(calMax)
-    var MaxLoan = findClosestKey(calMax[10])
-    console.log("maxloan: " + MaxLoan)
     
-    //test data
+    //var MaxLoan = findClosestKey(calMax[10])
+    //console.log("maxloan: " + MaxLoan)
+
+    
+
+
+    
     fillOverview(formoverview,calMax,MaxLoan)
     fillaffordability(formaffordability,calMax,MaxLoan)
 
@@ -161,25 +163,25 @@ async function fillPdf() {
     iframe.style.height = '100%'
     iframe.style.backgroundColor = 'white'
     iframe.src = url;
-   // iframe.hidden = false;
-   // Display the PDF in an iframe
-   const iframe2 = document.createElement('iframe');
-   iframe2.style.width = '100%'
-   iframe2.style.height = '100%'
-   iframe2.style.backgroundColor = 'white'
-   iframe2.src = url2;
+// iframe.hidden = false;
+// Display the PDF in an iframe
+const iframe2 = document.createElement('iframe');
+iframe2.style.width = '100%'
+iframe2.style.height = '100%'
+iframe2.style.backgroundColor = 'white'
+iframe2.src = url2;
 
     // Show the download button
     const downloadButton = document.createElement('button');
-   // downloadButton.hidden = false;
+// downloadButton.hidden = false;
 
-   optionsDiv.appendChild(iframe)
-   optionsDiv.appendChild(iframe2)
+optionsDiv.appendChild(iframe)
+optionsDiv.appendChild(iframe2)
 
 
-   optionsDiv.appendChild(downloadButton)
-   // // Handle download on button click
-   downloadButton.onclick = function() {
+optionsDiv.appendChild(downloadButton)
+// // Handle download on button click
+downloadButton.onclick = function() {
         const a = document.createElement('a');
         const b = document.createElement('a');
 
@@ -272,445 +274,442 @@ async function fillPdf() {
 
 
 }
-    function fillOverview(form, aff, over){
-        const loanAmount = form.getTextField('loanAmount');
-        loanAmount.setText(over[1].toString());
-        loanAmount.setFontSize(16);
+function fillOverview(form, aff, over){
+    const loanAmount = form.getTextField('loanAmount');
+    loanAmount.setText(loan.toString());
+    loanAmount.setFontSize(16);
 
-        const installment = form.getTextField('installment');
-        installment.setText(over[0].toString());
-        installment.setFontSize(16);
+    const installmentz = form.getTextField('installment');
+    installmentz.setText(installment.toString());
+    installmentz.setFontSize(16);
 
-        const termr = form.getTextField('term');
-        termr.setText(term.toString());
-        termr.setFontSize(16);
+    const termr = form.getTextField('term');
+    termr.setText(term.toString());
+    termr.setFontSize(16);
 
-        const netSalary = form.getTextField('netSalary');
-            var net = aff[8]-over[0]
-            console.log(aff[8] + '  ' +over[0]+'   '+net)
-        netSalary.setText(Number(net).toFixed(2).toString());
-        netSalary.setFontSize(16);
+    const netSalary = form.getTextField('netSalary');
+        ///var net = aff[8]-over[0]
+        //console.log(aff[8] + '  ' +over[0]+'   '+net)
+    netSalary.setText(Number(net).toFixed(2).toString());
+    netSalary.setFontSize(16);
 
-        const b2c = form.getTextField('b2c');
-            var settle = addPairs(settleLoanBalances)
-        b2c.setText(Number(over[1]-2*over[2]-settle).toFixed(2).toString());
-        b2c.setFontSize(16);
+    const b2cz = form.getTextField('b2c');
+        //var settle = addPairs(settleLoanBalances)
+    b2cz.setText(Number(b2c).toFixed(2).toString());
+    b2cz.setFontSize(16);
 
-        const date = form.getTextField('date');
-        var s = today.getDay() +'/'+ today.getMonth() + '/' + today.getFullYear()
+    const date = form.getTextField('date');
+    var s = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
 
-        date.setText(s.toString());
-        date.setFontSize(16);
+    date.setText(s.toString());
+    date.setFontSize(16);
 
-        const name = form.getTextField('customerName')
-        name.setFontSize(16)
-        name.setText('')
+    const name = form.getTextField('customerName')
+    name.setFontSize(16)
+    name.setText('')
 
-        const customerSignature = form.getTextField('customerSignature');
-        customerSignature.setFontSize(16)
-        //customerSignature.setText('100000');
+    const customerSignature = form.getTextField('customerSignature');
+    customerSignature.setFontSize(16)
+    //customerSignature.setText('100000');
 
-        const managerSignature = form.getTextField('managerSignature');
-        managerSignature.setFontSize(16)
-        //managerSignature.setText('100000');
-    }
-    function fillaffordability(form,aff,over){
+    const managerSignature = form.getTextField('managerSignature');
+    managerSignature.setFontSize(16)
+    //managerSignature.setText('100000');
+}
+function fillaffordability(form,aff,over){
 
-        // return [Number(basicAmount),permanentAllowance,adjBasicSalary,Number(deductionAmount),
-        //     otherLoans,adjNettIncome,
-        //     taxx,settleloans,Number(n11.toFixed(2)),rule,n13]
-
-
-
-        const customerName = form.getTextField('customerName');
-        customerName.setText('MOTHUSI JEFF MOTINGWA');
-        const brokerName = form.getTextField('brokerName');
-        brokerName.setText('Ashley')
-        const basicSalary = form.getTextField('basicSalary')
-        basicSalary.setText(aff[0].toString())
-
-      
-        var index = 0;
-        for (let allowance in allowanceInputs) {
-            
-            if (allowanceInputs.hasOwnProperty(allowance)) {
-                const allField = form.getTextField(`all${parseInt(index) + 1}`);  // Dynamic field 'allX'
-                allField.setText(allowance);  // Set the current index as the text for 'allX'
-                
-                const allowanceField = form.getTextField(`allowance${parseInt(index) + 1}`);  // Dynamic field 'allowanceX'
-                allowanceField.setText(allowanceInputs[allowance]);  // Set the value from allowanceInputs for 'allowanceX'
-            }
-            index +=1;
-        }
-   
-        const adjBasicSalary = form.getTextField('adjBasicSalary');
-        adjBasicSalary.setText(aff[2].toString());
-
-
-        const deductions = form.getTextField('deductions');
-        deductions.setText(aff[3].toString());
-
-        const otherLoans = form.getTextField('otherLoans');
-        otherLoans.setText(aff[4].toString());
-
-        const adjNetIncome = form.getTextField('adjNetIncome');
-        adjNetIncome.setText(Number(aff[5]).toFixed(2));
-
-        const taxCorrection = form.getTextField('taxCorrection');
-        taxCorrection.setText(aff[6].toString());
-
-        const settleLoans = form.getTextField('settleLoans');
-        settleLoans.setText(aff[7].toString());
-        
-        const adjNetIncome2 = form.getTextField('adjNetIncome2');
-        adjNetIncome2.setText(aff[8].toString());
-
-        const rule = form.getTextField('rule');
-        rule.setText(aff[9].toString());
-
-        const maxQualify = form.getTextField('maxQualify');
-        maxQualify.setText(Number(aff[10]).toFixed(2).toString());
+    // return [Number(basicAmount),permanentAllowance,adjBasicSalary,Number(deductionAmount),
+    //     otherLoans,adjNettIncome,
+    //     taxx,settleloans,Number(n11.toFixed(2)),rule,n13]
 
 
 
-        const loanAmount = form.getTextField('loanAmount');
-        loanAmount.setText(over[1].toString());
-        loanAmount.setFontSize(12);
-
-        const installment = form.getTextField('installment');
-        installment.setText(over[0].toString());
-        installment.setFontSize(12);
-
-        const termr = form.getTextField('term');
-        termr.setText(term.toString());
-        termr.setFontSize(12);
-
-        const netSalary = form.getTextField('netSalary');
-            var net = aff[8]-over[0]
-            console.log(aff[8] + '  ' +over[0]+'   '+net)
-        netSalary.setText(Number(net).toFixed(2).toString());
-        netSalary.setFontSize(12);
-
-        const b2c = form.getTextField('b2c');
-            var settle = addPairs(settleLoanBalances)
-            b2c.setText(Number(over[1]-2*over[2]-settle).toFixed(2).toString());
-            b2c.setFontSize(12);
-
-
-        const blilpremium = form.getTextField('blilpremium');
-        blilpremium.setText(over[2].toString());
+    const customerName = form.getTextField('customerName');
+    customerName.setText('');
+    const brokerName = form.getTextField('brokerName');
+    brokerName.setText('')
+    const basicSalary = form.getTextField('basicSalary')
+    basicSalary.setText(aff[0].toString())
 
     
-
-        var index2 = 0;
-        for (let settle in settleLoanBalances) {
-            index2 +=1;
-            if (settleLoanBalances.hasOwnProperty(settle)) {
-                // const allField = form.getTextField(`set${parseInt(index2)}`);  // Dynamic field 'allX'
-                // allField.setText(settle);  // Set the current index as the text for 'allX'
-                
-                const allowanceField = form.getTextField(`settle${parseInt(index2)}`);  // Dynamic field 'allowanceX'
-                allowanceField.setText(settleLoanBalances[settle]);  // Set the value from allowanceInputs for 'allowanceX'
-            }
+    var index = 0;
+    for (let allowance in allowanceInputs) {
+        
+        if (allowanceInputs.hasOwnProperty(allowance)) {
+            const allField = form.getTextField(`all${parseInt(index) + 1}`);  // Dynamic field 'allX'
+            allField.setText(allowance);  // Set the current index as the text for 'allX'
+            
+            const allowanceField = form.getTextField(`allowance${parseInt(index) + 1}`);  // Dynamic field 'allowanceX'
+            allowanceField.setText(allowanceInputs[allowance]);  // Set the value from allowanceInputs for 'allowanceX'
         }
-
-        const customerSignature = form.getTextField('customerSignature');
-        //customerSignature.setText('customerSignature');
+        index +=1;
     }
-    function fillblil(){
-        const bankName = form.getTextField('bankName');
-        bankName.setText('First Capital BAnk');
-        const firstName = form.getTextField('firstName');
-        //firstName.setText('100000');
-        const surname = form.getTextField('surname');
-        //surname.setText('100000');
-        const nationality = form.getTextField('nationality');
-        nationality.setText('Motswana');
-        const addressLine1 = form.getTextField('addressLine1');
-        //addressLine1.setText('100000');
-        const addressLine2 = form.getTextField('addressLine2');
-        //addressLine2.setText('100000');
-        const occupation = form.getTextField('occupation');
-        //occupation.setText('100000');
-        const accType = form.getTextField('accType');
-        //accType.setText('100000');
-        const cellNo = form.getTextField('cellNo');
-        //cellNo.setText('100000');
-        const workNo = form.getTextField('workNo');
-        //workNo.setText('100000');
-        const male = form.getTextField('male');
-        //male.setText('100000');
-        const female = form.getTextField('female');
-        //female.setText('100000');
-        const repaymentFrequency = form.getTextField('repaymentFrequency');
-        repaymentFrequency.setText('M');
-        const termr = form.getTextField('loanTerm');
-        termr.setText(term.toString());
 
-        const totalLoanAmount = form.getTextField('totalLoanAmount');
-        totalLoanAmount.setText('100000');
+    const adjBasicSalary = form.getTextField('adjBasicSalary');
+    adjBasicSalary.setText(aff[2].toString());
 
-        const customerSignature = form.getTextField('customerSignature');
-        customerSignature.setText('100000');
-        const bankSignature = form.getTextField('bankSignature');
-        bankSignature.setText('100000');
-        const date1 = form.getTextField('date1');
-        date1.setText('100000');
-        const date = form.getTextField('date');
-        date.setText('100000');
-        const omang = form.getTextField('omang');
-        //omang.setText('100000');
-        const birthdate = form.getTextField('birthdate');
-        birthdate.setText('100000');
+
+    const deductions = form.getTextField('deductions');
+    deductions.setText(aff[3].toString());
+
+    const otherLoans = form.getTextField('otherLoans');
+    otherLoans.setText(aff[4].toString());
+
+    const adjNetIncome = form.getTextField('adjNetIncome');
+    adjNetIncome.setText(Number(aff[5]).toFixed(2));
+
+    const taxCorrection = form.getTextField('taxCorrection');
+    taxCorrection.setText(aff[6].toString());
+
+    const settleLoans = form.getTextField('settleLoans');
+    settleLoans.setText(aff[7].toString());
+    
+    const adjNetIncome2 = form.getTextField('adjNetIncome2');
+    adjNetIncome2.setText(aff[8].toString());
+
+    const rule = form.getTextField('rule');
+    rule.setText(aff[9].toString());
+
+    const maxQualify = form.getTextField('maxQualify');
+    maxQualify.setText(Number(aff[10]).toFixed(2).toString());
+
+
+
+    const loanAmountz = form.getTextField('loanAmount');
+    loanAmountz.setText(loan.toString());
+    loanAmountz.setFontSize(12);
+
+    const installmentz = form.getTextField('installment');
+    installmentz.setText(installment.toString());
+    installmentz.setFontSize(12);
+
+    const termr = form.getTextField('term');
+    termr.setText(term.toString());
+    termr.setFontSize(12);
+
+    const netSalary = form.getTextField('netSalary');
+        //var net = aff[8]-over[0]
+        //console.log(aff[8] + '  ' +over[0]+'   '+net)
+    netSalary.setText(Number(net).toFixed(2).toString());
+    netSalary.setFontSize(12);
+
+    const b2cz = form.getTextField('b2c');
+        //var settle = addPairs(settleLoanBalances)
+        b2cz.setText(Number(b2c).toFixed(2).toString());
+        b2cz.setFontSize(12);
+
+
+    const blilpremium = form.getTextField('blilpremium');
+    blilpremium.setText(2*(h14.toFixed(2)).toString());
+
+    var index2 = 0;
+    for (let settle in settleLoanBalances) {
+        index2 +=1;
+        if (settleLoanBalances.hasOwnProperty(settle)) {
+            // const allField = form.getTextField(`set${parseInt(index2)}`);  // Dynamic field 'allX'
+            // allField.setText(settle);  // Set the current index as the text for 'allX'
+            
+            const allowanceField = form.getTextField(`settle${parseInt(index2)}`);  // Dynamic field 'allowanceX'
+            allowanceField.setText(settleLoanBalances[settle]);  // Set the value from allowanceInputs for 'allowanceX'
+        }
     }
-    function fillgovOdc(form){
-        const date = form.getTextField('date');
+
+    const customerSignature = form.getTextField('customerSignature');
+    //customerSignature.setText('customerSignature');
+}
+function fillblil(){
+    const bankName = form.getTextField('bankName');
+    bankName.setText('First Capital BAnk');
+    const firstName = form.getTextField('firstName');
+    //firstName.setText('100000');
+    const surname = form.getTextField('surname');
+    //surname.setText('100000');
+    const nationality = form.getTextField('nationality');
+    nationality.setText('Motswana');
+    const addressLine1 = form.getTextField('addressLine1');
+    //addressLine1.setText('100000');
+    const addressLine2 = form.getTextField('addressLine2');
+    //addressLine2.setText('100000');
+    const occupation = form.getTextField('occupation');
+    //occupation.setText('100000');
+    const accType = form.getTextField('accType');
+    //accType.setText('100000');
+    const cellNo = form.getTextField('cellNo');
+    //cellNo.setText('100000');
+    const workNo = form.getTextField('workNo');
+    //workNo.setText('100000');
+    const male = form.getTextField('male');
+    //male.setText('100000');
+    const female = form.getTextField('female');
+    //female.setText('100000');
+    const repaymentFrequency = form.getTextField('repaymentFrequency');
+    repaymentFrequency.setText('M');
+    const termr = form.getTextField('loanTerm');
+    termr.setText(term.toString());
+
+    const totalLoanAmount = form.getTextField('totalLoanAmount');
+    totalLoanAmount.setText('100000');
+
+    const customerSignature = form.getTextField('customerSignature');
+    customerSignature.setText('100000');
+    const bankSignature = form.getTextField('bankSignature');
+    bankSignature.setText('100000');
+    const date1 = form.getTextField('date1');
+    date1.setText('100000');
+    const date = form.getTextField('date');
+    date.setText('100000');
+    const omang = form.getTextField('omang');
+    //omang.setText('100000');
+    const birthdate = form.getTextField('birthdate');
+    birthdate.setText('100000');
+}
+function fillgovOdc(form){
+    const date = form.getTextField('date');
+    date.setText('100000');
+    const omangNumber = form.getTextField('omangNumber');
+    omangNumber.setText('100000');
+    const customerName = form.getTextField('customerName');
+    customerName.setText('100000');
+    const omangNumber2 = form.getTextField('omangNumber2');
+    omangNumber2.setText('100000');
+    const ministry = form.getTextField('ministry');
+    ministry.setText('100000');
+    const postOf = form.getTextField('postOf');
+    postOf.setText('100000');
+    const situated = form.getTextField('situated');
+    situated.setText('100000');
+    const residingAt = form.getTextField('residingAt');
+    residingAt.setText('100000');
+    const loanAmount = form.getTextField('loanAmount');
+    loanAmount.setText('100000');
+    const loanTerm = form.getTextField('loanTerm');
+    loanTerm.setText('100000');
+    const installment = form.getTextField('installment');
+    installment.setText('100000');
+    const loanTerm1 = form.getTextField('loanTerm1');
+    loanTerm1.setText('100000');
+    const loanTerm2 = form.getTextField('loanTerm2');
+    loanTerm2.setText('100000');
+    const gaborone = form.getTextField('gaborone');
+    gaborone.setText('100000');
+    const customerName1 = form.getTextField('customerName1');
+    customerName1.setText('100000');
+    const date2 = form.getTextField('date2');
+    date2.setText('100000');
+    const customerSignature = form.getTextField('customerSignature');
+    customerSignature.setText('100000');
+}
+function filltawuOdc(form){
+    const date = form.getTextField('date');
         date.setText('100000');
-        const omangNumber = form.getTextField('omangNumber');
+    const omangNumber = form.getTextField('omangNumber');
         omangNumber.setText('100000');
-        const customerName = form.getTextField('customerName');
+    const customerName = form.getTextField('customerName');
         customerName.setText('100000');
-        const omangNumber2 = form.getTextField('omangNumber2');
-        omangNumber2.setText('100000');
-        const ministry = form.getTextField('ministry');
-        ministry.setText('100000');
-        const postOf = form.getTextField('postOf');
-        postOf.setText('100000');
-        const situated = form.getTextField('situated');
-        situated.setText('100000');
-        const residingAt = form.getTextField('residingAt');
-        residingAt.setText('100000');
-        const loanAmount = form.getTextField('loanAmount');
-        loanAmount.setText('100000');
-        const loanTerm = form.getTextField('loanTerm');
-        loanTerm.setText('100000');
-        const installment = form.getTextField('installment');
-        installment.setText('100000');
-        const loanTerm1 = form.getTextField('loanTerm1');
-        loanTerm1.setText('100000');
-        const loanTerm2 = form.getTextField('loanTerm2');
-        loanTerm2.setText('100000');
-        const gaborone = form.getTextField('gaborone');
-        gaborone.setText('100000');
-        const customerName1 = form.getTextField('customerName1');
-        customerName1.setText('100000');
-        const date2 = form.getTextField('date2');
-        date2.setText('100000');
-        const customerSignature = form.getTextField('customerSignature');
-        customerSignature.setText('100000');
-    }
-    function filltawuOdc(form){
-        const date = form.getTextField('date');
-            date.setText('100000');
-        const omangNumber = form.getTextField('omangNumber');
-            omangNumber.setText('100000');
-        const customerName = form.getTextField('customerName');
-            customerName.setText('100000');
-        const place = form.getTextField('place');
-            place.setText('100000');
-        const institution = form.getTextField('institution');
-            institution.setText('100000');
-        const position = form.getTextField('position');
-            position.setText('100000');
-        const omangNumber1 = form.getTextField('omangNumber1');
-            omangNumber1.setText('100000');
-        const capitalBank = form.getTextField('capitalBank');
-            capitalBank.setText('Capital Bank');
-        const loanTerm = form.getTextField('loanTerm');
-            loanTerm.setText('100000');
-        const installment = form.getTextField('installment');
-            installment.setText('100000');
-        const loanTerm1 = form.getTextField('loanTerm1');
-            loanTerm1.setText('100000');
-        const date1 = form.getTextField('date1');
-            date1.setText('100000');
-        const customerSignature = form.getTextField('customerSignature');
-            customerSignature.setText('100000');
-
-    }
-    function fillBotsLife(form){
-        const date = form.getTextField('date');
-        date.setText('100000');
-        const omangNumber = form.getTextField('omangNumber');
-        omangNumber.setText('100000');
-        const customerName = form.getTextField('customerName');
-        customerName.setText('100000');
-        const residingAt = form.getTextField('residingAt');
-        residingAt.setText('100000');
-        const loanAmount = form.getTextField('loanAmount');
-        loanAmount.setText('100000');
-        const loanTerm = form.getTextField('loanTerm');
-        loanTerm.setText('100000');
-        const installment = form.getTextField('installment');
-        installment.setText('100000');
-        const loanTerm1 = form.getTextField('loanTerm1');
-        loanTerm1.setText('100000');
-        const loanTerm2 = form.getTextField('loanTerm2');
-        loanTerm2.setText('100000');
-        const installment1 = form.getTextField('installment1');
-        installment1.setText('100000');
-        const place = form.getTextField('place');
+    const place = form.getTextField('place');
         place.setText('100000');
-        const customerName1 = form.getTextField('customerName1');
-        customerName1.setText('100000');
-        const date1 = form.getTextField('date1');
-        date1.setText('100000');
-        const customerSignature = form.getTextField('customerSignature');
-        customerSignature.setText('100000');
-
-
-    }
-    function fillBpopf(form){
-        const date = form.getTextField('date');
-        date.setText('100000');
-        const omangNumber = form.getTextField('omangNumber');
-        omangNumber.setText('100000');
-        const customerName = form.getTextField('customerName');
-        customerName.setText('100000');
-        const residingAt = form.getTextField('residingAt');
-        residingAt.setText('100000');
-        const loanAmount = form.getTextField('loanAmount');
-        loanAmount.setText('100000');
-        const loanTerm = form.getTextField('loanTerm');
+    const institution = form.getTextField('institution');
+        institution.setText('100000');
+    const position = form.getTextField('position');
+        position.setText('100000');
+    const omangNumber1 = form.getTextField('omangNumber1');
+        omangNumber1.setText('100000');
+    const capitalBank = form.getTextField('capitalBank');
+        capitalBank.setText('Capital Bank');
+    const loanTerm = form.getTextField('loanTerm');
         loanTerm.setText('100000');
-        const installment = form.getTextField('installment');
+    const installment = form.getTextField('installment');
         installment.setText('100000');
-        const loanTerm1 = form.getTextField('loanTerm1');
+    const loanTerm1 = form.getTextField('loanTerm1');
         loanTerm1.setText('100000');
-        const loanTerm2 = form.getTextField('loanTerm2');
-        loanTerm2.setText('100000');
-        const installment1 = form.getTextField('installment1');
-        installment1.setText('100000');
-        const place = form.getTextField('place');
-        place.setText('100000');
-        const customerName1 = form.getTextField('customerName1');
-        customerName1.setText('100000');
-        const date1 = form.getTextField('date1');
+    const date1 = form.getTextField('date1');
         date1.setText('100000');
-        const customerSignature = form.getTextField('customerSignature');
+    const customerSignature = form.getTextField('customerSignature');
         customerSignature.setText('100000');
 
-    }
-    function fillDeclaration(form) {
-        const date = form.getTextField('date');
-            date.setText('100000');
-        const omangNumber = form.getTextField('omangNumber');
-            omangNumber.setText('100000');
-        const customerName = form.getTextField('customerName');
-            customerName.setText('100000');
-        const agentName = form.getTextField('agentName');
-            agentName.setText('100000');
-        const agentSignature = form.getTextField('agentSignature');
-        agentSignature.setText('100000');
-    }
-    function pg1(form) {
-        // streetName
-        // boxNumber
-        // cellNumber
-        // plotNumber
-        // city1
-        // ward
-        // officeNumber
-        // city
-        // email   
-        // occupation  
-        // omangNumber1
-        // employerAddress
-        // employmentDate
-        // basicSalary 
-        // deduction 
-        // payslipNetPay 
-        // accHolder   
-        // branchName 
-        // accNumber 
-        // branchCode 
-        // bankName
-        // accType
-        // refName 
-        // refName1 
-        // Street Name_2
-        // Plot Number
-        // refWard
-        // ref2Ward
-        // refCity
-        // refCity2
-        // refCellNumber
-        // refCellNumber2
-        // employerName
-        // department
-        const interestRate = form.getTextField('interestRate');
-        interestRate.setText('100000');
-        const loanAmount = form.getTextField('loanAmount');
-        loanAmount.setText('100000');
-        const adminFee = form.getTextField('adminFee');
-        adminFee.setText('100000');
-        const loanTerm = form.getTextField('loanTerm');
-        loanTerm.setText('100000');
-        const installmentOne = form.getTextField('installmentOne');
-        installmentOne.setText('100000');
-        const insurancePremium = form.getTextField('insurancePremium');
-        insurancePremium.setText('100000');
-        const processingFee = form.getTextField('processingFee');
-        processingFee.setText('100000');
-        const totalLoanAmount = form.getTextField('totalLoanAmount');
-        totalLoanAmount.setText('100000');
-        const apr = form.getTextField('apr');
-        apr.setText('100000');
-        const collectionFee = form.getTextField('collectionFee');
-        collectionFee.setText('100000');
-        const installment = form.getTextField('installment');
-        installment.setText('100000'); 
-         
-        // surname 
-        // firstName 
-        // title 
-        // omangNumber 
-        // birthdate 
-        // gender 
-        // Check Box3 -
-        // notMarried 
-        // marriedCOP
-        // marriedOCOP
-        // widowed 
-        // dirvoced -
-        // marriageDate
-        // othername
-    }
-    function pg2(form) {
-        // customerSignature
-        // agentSignature
-        // date1
-        // witness1
-        // Signature_3
-        const Signature_4 = form.getTextField('Signature_4');
-        Signature_4.setText('100000');
-        // date2
-        // date3
-        // date4
-        // agentName
-        // witness2
-        // customerName
-    }
-    function pg3(form) {
-        // beneficiaryName
-        // beneficiaryID
-        // beneficiaryBirthdate
-        // beneficiaryGender
-        // beneficiaryAddress
-        const beneficiaryCellNumber = form.getTextField('beneficiaryCellNumber');
-        beneficiaryCellNumber.setText('100000');
-        // title
-        // customerName1
-        // customerID 
-        // customerGender
-        // customerBirthdate
-        // customerAddress
-        // customerCellNumber
-        // workNumber
-        // customerSignature1
-        // bankSignature
-    }
+}
+function fillBotsLife(form){
+    const date = form.getTextField('date');
+    date.setText('100000');
+    const omangNumber = form.getTextField('omangNumber');
+    omangNumber.setText('100000');
+    const customerName = form.getTextField('customerName');
+    customerName.setText('100000');
+    const residingAt = form.getTextField('residingAt');
+    residingAt.setText('100000');
+    const loanAmount = form.getTextField('loanAmount');
+    loanAmount.setText('100000');
+    const loanTerm = form.getTextField('loanTerm');
+    loanTerm.setText('100000');
+    const installment = form.getTextField('installment');
+    installment.setText('100000');
+    const loanTerm1 = form.getTextField('loanTerm1');
+    loanTerm1.setText('100000');
+    const loanTerm2 = form.getTextField('loanTerm2');
+    loanTerm2.setText('100000');
+    const installment1 = form.getTextField('installment1');
+    installment1.setText('100000');
+    const place = form.getTextField('place');
+    place.setText('100000');
+    const customerName1 = form.getTextField('customerName1');
+    customerName1.setText('100000');
+    const date1 = form.getTextField('date1');
+    date1.setText('100000');
+    const customerSignature = form.getTextField('customerSignature');
+    customerSignature.setText('100000');
 
+
+}
+function fillBpopf(form){
+    const date = form.getTextField('date');
+    date.setText('100000');
+    const omangNumber = form.getTextField('omangNumber');
+    omangNumber.setText('100000');
+    const customerName = form.getTextField('customerName');
+    customerName.setText('100000');
+    const residingAt = form.getTextField('residingAt');
+    residingAt.setText('100000');
+    const loanAmount = form.getTextField('loanAmount');
+    loanAmount.setText('100000');
+    const loanTerm = form.getTextField('loanTerm');
+    loanTerm.setText('100000');
+    const installment = form.getTextField('installment');
+    installment.setText('100000');
+    const loanTerm1 = form.getTextField('loanTerm1');
+    loanTerm1.setText('100000');
+    const loanTerm2 = form.getTextField('loanTerm2');
+    loanTerm2.setText('100000');
+    const installment1 = form.getTextField('installment1');
+    installment1.setText('100000');
+    const place = form.getTextField('place');
+    place.setText('100000');
+    const customerName1 = form.getTextField('customerName1');
+    customerName1.setText('100000');
+    const date1 = form.getTextField('date1');
+    date1.setText('100000');
+    const customerSignature = form.getTextField('customerSignature');
+    customerSignature.setText('100000');
+
+}
+function fillDeclaration(form) {
+    const date = form.getTextField('date');
+        date.setText('100000');
+    const omangNumber = form.getTextField('omangNumber');
+        omangNumber.setText('100000');
+    const customerName = form.getTextField('customerName');
+        customerName.setText('100000');
+    const agentName = form.getTextField('agentName');
+        agentName.setText('100000');
+    const agentSignature = form.getTextField('agentSignature');
+    agentSignature.setText('100000');
+}
+function pg1(form) {
+    // streetName
+    // boxNumber
+    // cellNumber
+    // plotNumber
+    // city1
+    // ward
+    // officeNumber
+    // city
+    // email   
+    // occupation  
+    // omangNumber1
+    // employerAddress
+    // employmentDate
+    // basicSalary 
+    // deduction 
+    // payslipNetPay 
+    // accHolder   
+    // branchName 
+    // accNumber 
+    // branchCode 
+    // bankName
+    // accType
+    // refName 
+    // refName1 
+    // Street Name_2
+    // Plot Number
+    // refWard
+    // ref2Ward
+    // refCity
+    // refCity2
+    // refCellNumber
+    // refCellNumber2
+    // employerName
+    // department
+    const interestRate = form.getTextField('interestRate');
+    interestRate.setText('100000');
+    const loanAmount = form.getTextField('loanAmount');
+    loanAmount.setText('100000');
+    const adminFee = form.getTextField('adminFee');
+    adminFee.setText('100000');
+    const loanTerm = form.getTextField('loanTerm');
+    loanTerm.setText('100000');
+    const installmentOne = form.getTextField('installmentOne');
+    installmentOne.setText('100000');
+    const insurancePremium = form.getTextField('insurancePremium');
+    insurancePremium.setText('100000');
+    const processingFee = form.getTextField('processingFee');
+    processingFee.setText('100000');
+    const totalLoanAmount = form.getTextField('totalLoanAmount');
+    totalLoanAmount.setText('100000');
+    const apr = form.getTextField('apr');
+    apr.setText('100000');
+    const collectionFee = form.getTextField('collectionFee');
+    collectionFee.setText('100000');
+    const installment = form.getTextField('installment');
+    installment.setText('100000'); 
+        
+    // surname 
+    // firstName 
+    // title 
+    // omangNumber 
+    // birthdate 
+    // gender 
+    // Check Box3 -
+    // notMarried 
+    // marriedCOP
+    // marriedOCOP
+    // widowed 
+    // dirvoced -
+    // marriageDate
+    // othername
+}
+function pg2(form) {
+    // customerSignature
+    // agentSignature
+    // date1
+    // witness1
+    // Signature_3
+    const Signature_4 = form.getTextField('Signature_4');
+    Signature_4.setText('100000');
+    // date2
+    // date3
+    // date4
+    // agentName
+    // witness2
+    // customerName
+}
+function pg3(form) {
+    // beneficiaryName
+    // beneficiaryID
+    // beneficiaryBirthdate
+    // beneficiaryGender
+    // beneficiaryAddress
+    const beneficiaryCellNumber = form.getTextField('beneficiaryCellNumber');
+    beneficiaryCellNumber.setText('100000');
+    // title
+    // customerName1
+    // customerID 
+    // customerGender
+    // customerBirthdate
+    // customerAddress
+    // customerCellNumber
+    // workNumber
+    // customerSignature1
+    // bankSignature
+}
 var basicAmount = 0;
 var workPlace = 'none'
 var department = 'none'
@@ -933,16 +932,56 @@ document.getElementById('next').addEventListener('click',()=>{
                     }
                 containerDiv.removeChild(current);
                 chooseLoan()
-                fillPdf()
+                //fillPdf()
                 break;
+            case 'chooseLoanDiv':
+                if(!containerDiv.contains(current)){
+                    break;
+                    }
+                containerDiv.removeChild(current);
+                fillPdf()
             default:
                 break;
         }
     }, 500);
 
 })
+function updateTerm(x,value) {
+    value.textContent = x;
+}
+function updateInstallment(x,value){
+    value.textContent = installment;
+}
+function updateLoanAmount(x, value) {
+    value.textContent = loan;
+}
+
+function updateNetPay(x,value) {
+    value.textContent = net;
+}
+
+function updateB2c(x,value) {
+    value.textContent = b2c
+}
+var installment = 0;
+var net = 0;
+var b2c = 0;
+var loan = 0;
+
+var MaxLoan = 0;
+var calMax = 0;
 
 function chooseLoan() {
+    calMax = calculateMaxInstallment()
+    MaxLoan = findClosestKey(calMax[10])
+    installment = MaxLoan[0];
+    loan = MaxLoan[1];
+
+    net = Number(calMax[8]-MaxLoan[0]).toFixed(2)
+    
+    var settle3 = addPairs(settleLoanBalances)  ///make global
+    b2c = Number(MaxLoan[1]-2*MaxLoan[2]-settle3).toFixed(2);
+
     // Create the basic div
     const chooseLoanDiv = document.createElement('div');
     chooseLoanDiv.className = 'chooseLoanDiv'
@@ -966,7 +1005,7 @@ function chooseLoan() {
     const contain2 = document.createElement('div');
     contain2.className = 'l6xers'
         const Actual2 = document.createElement('div')
-        Actual2.textContent = '96'
+        Actual2.textContent = term.toString()
         const Actual22 = document.createElement('div')
         Actual22.style.display = 'flex'
         Actual22.style.flexDirection = 'column'
@@ -983,13 +1022,36 @@ function chooseLoan() {
         const Actual222 = document.createElement('div')
             const selectElement = document.createElement('select');
             // Create options (6, 12, 18, 24)
-            const options = [6, 12, 18, 24,30,36,48,60,72,84,96];
+            const options = [96,84,72,60,48,36,30,24,18,12,6];
             options.forEach(optionValue => {
                 const option = document.createElement('option');
                 option.value = optionValue;
                 option.textContent = optionValue;
                 selectElement.appendChild(option);
             });
+
+            //term
+            selectElement.addEventListener('change', (e)=>{
+                var change = e.target.value;
+                term = change;
+                calMax = calculateMaxInstallment()
+                MaxLoan = findClosestKey(calMax[10])
+                installment = MaxLoan[0];
+                loan = MaxLoan[1];
+
+
+                net = Number(calMax[8]-MaxLoan[0]).toFixed(2)
+                
+                var settle = addPairs(settleLoanBalances)  ///make global
+                b2c = Number(MaxLoan[1]-2*MaxLoan[2]-settle).toFixed(2);
+
+                updateTerm(change,Actual2)
+                updateInstallment(change,Actual4)
+                updateLoanAmount(change,Actual3)
+                updateNetPay(change,Actual5)
+                updateB2c(change,Actual6)
+            });
+
             // Apply some styling to the select element (optional)
             selectElement.style.padding = '5px';
             selectElement.style.margin = '5px';
@@ -1002,7 +1064,7 @@ function chooseLoan() {
     const contain3 = document.createElement('div');
     contain3.className = 'l6xers'
         const Actual3 = document.createElement('div')
-        Actual3.textContent = '10000'
+        Actual3.textContent = loan.toString();
         const Actual33 = document.createElement('div')
         Actual33.style.display = 'flex'
         Actual33.style.flexDirection = 'column'
@@ -1026,12 +1088,33 @@ function chooseLoan() {
             editableSpan.style.display = 'inline-block';
             editableSpan.style.textAlign = 'center';
 
-            // Add an event listener to ensure only numbers are entered
+            // loan amount
             editableSpan.addEventListener('input', function (e) {
-                const inputText = e.target.textContent;
-                if (isNaN(inputText)) {
-                    e.target.textContent = inputText.slice(0, -1);  // Remove non-numeric character
+                var number = e.target.textContent;
+                if (isNaN(number)) {
+                    number = number.slice(0, -1);  // Remove non-numeric character
                 }
+
+                if (isMultipleOf500AndInRange(number)) {
+                var t = totalMonthlyAmountDisplay(number);
+                installment = t[0];
+                loan = number;
+
+                calMax = calculateMaxInstallment()
+
+                net = Number(calMax[8] - installment).toFixed(2);
+
+                var settle = addPairs(settleLoanBalances)  ///make global
+                b2c = Number(loan - 2*t[1]-settle).toFixed(2);
+
+                updateTerm(term,Actual2)
+                updateInstallment(number,Actual4)
+                updateLoanAmount(number,Actual3)
+                updateNetPay(number,Actual5)
+                updateB2c(number,Actual6)
+
+                } 
+                
             });
 
             // Append the editable span to the container div
@@ -1043,7 +1126,7 @@ function chooseLoan() {
     const contain4 = document.createElement('div');
     contain4.className = 'l6xers'
     const Actual4 = document.createElement('div')
-        Actual4.textContent = '10000'
+        Actual4.textContent = installment.toString()
         const Actual44 = document.createElement('div')
         Actual44.style.display = 'flex'
         Actual44.style.flexDirection = 'column'
@@ -1067,12 +1150,28 @@ function chooseLoan() {
             editableSpanInstallment.style.display = 'inline-block';
             editableSpanInstallment.style.textAlign = 'center';
 
-            // Add an event listener to ensure only numbers are entered
+            // installment
             editableSpanInstallment.addEventListener('input', function (e) {
-                const inputText = e.target.textContent;
-                if (isNaN(inputText)) {
-                    e.target.textContent = inputText.slice(0, -1);  // Remove non-numeric character
+                var number = e.target.textContent;
+                if (isNaN(number)) {
+                    number = number.slice(0, -1);  // Remove non-numeric character
                 }
+                var result = findClosestKey(number);  //intalment, loanAmount, insurance
+                installment = result[0];
+                loan = result[1];
+
+                calMax = calculateMaxInstallment()
+
+                net = Number(calMax[8] - installment).toFixed(2);
+
+                var settle = addPairs(settleLoanBalances)  ///make global
+                b2c = Number(loan-2*result[2]-settle).toFixed(2);
+
+                updateTerm(term,Actual2)
+                updateInstallment(number,Actual4)
+                updateLoanAmount(number,Actual3)
+                updateNetPay(number,Actual5)
+                updateB2c(number,Actual6)
             });
 
             // Append the editable span to the container div
@@ -1084,7 +1183,7 @@ function chooseLoan() {
     const contain5 = document.createElement('div');
     contain5.className = 'l6xers'
     const Actual5 = document.createElement('div')
-        Actual5.textContent = '1300.01'
+        Actual5.textContent = net.toString()
         const Actual55 = document.createElement('div')
         Actual55.style.display = 'flex'
         Actual55.style.flexDirection = 'column'
@@ -1108,16 +1207,35 @@ function chooseLoan() {
             editableSpanNetSalary.style.display = 'inline-block';
             editableSpanNetSalary.style.textAlign = 'center';
 
-            // Add an event listener to ensure only numbers are entered
+            // Netsalary
             editableSpanNetSalary.addEventListener('input', function (e) {
-                const inputText = e.target.textContent;
-                if (isNaN(inputText)) {
-                    e.target.textContent = inputText.slice(0, -1);  // Remove non-numeric character
+                var number = e.target.textContent;
+                if (isNaN(number)) {
+                    number = number.slice(0, -1);  // Remove non-numeric character
                 }
+                calMax = calculateMaxInstallment()
+                    var t = calMax[8] - number
+                if(t >= rule && t <= calMax[8]){
+                    var result = findClosestKey(t);  //intalment, loanAmount, insurance
+                    installment = result[0];
+                    loan = result[1];
+
+                    net = Number(calMax[8] - installment).toFixed(2);
+
+                    var settle = addPairs(settleLoanBalances)  ///make global
+                    b2c = Number(loan-2*result[2]-settle).toFixed(2);
+                }
+
+                updateTerm(term,Actual2)
+                updateInstallment(number,Actual4)
+                updateLoanAmount(number,Actual3)
+                updateNetPay(number,Actual5)
+                updateB2c(number,Actual6)
+                
             });
 
             // Append the editable span to the container div
-            Actual555.appendChild(editableSpanNetSalary);
+        Actual555.appendChild(editableSpanNetSalary);
     contain5.appendChild(Actual5) 
     contain5.appendChild(Actual55) 
     contain5.appendChild(Actual555)
@@ -1126,7 +1244,7 @@ function chooseLoan() {
     const contain6 = document.createElement('div');
     contain6.className = 'l6xers'
     const Actual6 = document.createElement('div')
-    Actual6.textContent = '5300'
+    Actual6.textContent = b2c.toString();
     const Actual66 = document.createElement('div')
     Actual66.style.display = 'flex'
     Actual66.style.flexDirection = 'column'
@@ -1150,12 +1268,51 @@ function chooseLoan() {
         editableSpanB2C.style.display = 'inline-block';
         editableSpanB2C.style.textAlign = 'center';
 
-        // Add an event listener to ensure only numbers are entered
+        // B2c
         editableSpanB2C.addEventListener('input', function (e) {
-            const inputText = e.target.textContent;
-            if (isNaN(inputText)) {
-                e.target.textContent = inputText.slice(0, -1);  // Remove non-numeric character
-            }
+                var number = e.target.textContent;
+                if (isNaN(number)) {
+                    number = number.slice(0, -1);  // Remove non-numeric character
+                }
+                number = Number(number)
+                calMax = calculateMaxInstallment()
+                var result = findClosestKey(calMax[8]); 
+                //findClosestKey = intallment, loanAmount, insurance
+                var settle = addPairs(settleLoanBalances)  ///make global
+
+                var t = number + settle;
+                console.log(t)
+
+                t = Math.ceil(t / 500) * 500;
+                
+                var f = totalMonthlyAmountDisplay(t)
+                console.log(f)
+
+                var t2 = t + 2*f[1]
+
+                if((t-number+settle)<2*f[1]){
+                    t2 = Math.ceil(t2 / 500) * 500;
+                }else{
+                    t2 = t
+                }
+
+                if(number >= 1000 && t2 <= result[1]){
+                    console.log('here')
+                    f = totalMonthlyAmountDisplay(t2)
+                    installment = f[0];
+                    loan = t2;
+
+                    net = Number(calMax[8] - installment).toFixed(2);
+                    b2c = Number(loan-2*f[1]-settle).toFixed(2);
+                    
+                    updateTerm(term,Actual2)
+                    updateInstallment(number,Actual4)
+                    updateLoanAmount(number,Actual3)
+                    updateNetPay(number,Actual5)
+                    updateB2c(number,Actual6)
+                }
+
+                
         });
 
         // Append the editable span to the container div
@@ -1173,7 +1330,62 @@ function chooseLoan() {
     chooseLoanDiv.appendChild(contain6)
 
 containerDiv.appendChild(chooseLoanDiv)
+
+ 
 }
+function viewLoanDetailsDiv(){
+    var interest = rt*100//interest
+    var loanTerm = term//months
+    var loanAmount = loan;
+    var totalMonthlyInstalment = installment
+    var adminFee = Number(d14.toFixed(2))
+    var processingFee = Number(e14.toFixed(2))
+    var totalLoanAmount = Number(f14.toFixed(2));
+    var monthlyInsurancePremiumm = Number(h14.toFixed(2))
+    var monthlyLoanInstalment = Number(g14.toFixed(2))+monthlyInsurancePremiumm;
+    var monthlyEmployerCollection = Number(i14.toFixed(2))
+    var apr = 0;
+    apr = calculateRate(loanTerm, -totalMonthlyInstalment, loanAmount,0,0,0.1)*1200;
+}
+  function isMultipleOf500AndInRange(number) {
+    const isMultipleOf500 = number % 500 === 0;
+    const isInRange = number >= 5000 && number <= 700000;
+    return isMultipleOf500 && isInRange;
+  }
+  function calculateRate(nper, pmt, pv, fv, type, guess) {
+    // Tolerance for convergence
+    const tol = 1e-6;
+    // Maximum number of iterations
+    const maxIter = 100;
+    
+    let rate = guess;
+    let iter = 0;
+    
+    while (iter < maxIter) {
+      // Calculate the value of the function
+      const f = pv * Math.pow(1 + rate, nper) + pmt * (1 + rate * type) * (Math.pow(1 + rate, nper) - 1) / rate + fv;
+      
+      // Calculate the value of the derivative of the function
+      const df = pv * nper * Math.pow(1 + rate, nper - 1) + pmt * (1 + rate * type) * (nper * Math.pow(1 + rate, nper - 1) / rate - (Math.pow(1 + rate, nper) - 1) / Math.pow(rate, 2));
+      
+      // Update the estimate
+      const newRate = rate - f / df;
+      
+      // Check for convergence
+      if (Math.abs(newRate - rate) < tol) {
+        return rate;
+      }
+      
+      rate = newRate;
+      iter++;
+    }
+    
+    // Return the last estimate if no convergence
+    return rate;
+  }
+
+
+
 
 document.getElementById('back').addEventListener('click',()=>{
     direction = false;
@@ -1343,6 +1555,20 @@ document.getElementById('back').addEventListener('click',()=>{
                 containerDiv.removeChild(document.getElementById('productDiv'));
                 getAge();
                 break;
+            case 'chooseLoanDiv':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                }
+                containerDiv.removeChild(document.getElementById('optionsDiv'));
+                selectQualifyingProduct();
+                break;
+            // case 'optionsDiv':
+            //     if (!containerDiv.contains(current)) {
+            //         break;             
+            //     }
+            //     containerDiv.removeChild(document.getElementById('optionsDiv'));
+            //     selectQualifyingProduct();
+            //     break;
             case 'optionsDiv':
                 if (!containerDiv.contains(current)) {
                     break;             
@@ -1512,8 +1738,6 @@ function createGovDepartmentDiv() {
     bdfLabel.textContent = 'BDF';
     optDiv.appendChild(bdfInput)
     optDiv.appendChild(bdfLabel)
-    
-
 
     // Create the second radio input for Council
     const opt2 = document.createElement('div')
@@ -1543,30 +1767,28 @@ function createGovDepartmentDiv() {
     opt3.appendChild(educationInput)
     opt3.appendChild(educationLabel)
 
-     // Create the second radio input for other
-     const opt4 = document.createElement('div')
-     opt4.className ='otherSub'
-     const otherInput = document.createElement('input');
-     otherInput.setAttribute('type', 'radio');
-     otherInput.setAttribute('name', 'department');
-     otherInput.setAttribute('id', 'other');
+    // Create the second radio input for other
+    const opt4 = document.createElement('div')
+    opt4.className ='otherSub'
+    const otherInput = document.createElement('input');
+    otherInput.setAttribute('type', 'radio');
+    otherInput.setAttribute('name', 'department');
+    otherInput.setAttribute('id', 'other');
 
-     otherInput.disabled = true;
+    otherInput.disabled = true;
 
-     otherInput.setAttribute('value', 'other');
-     const otherLabel = document.createElement('label');
-     otherLabel.setAttribute('for', 'other');
-     otherLabel.textContent = 'other';
-     opt4.appendChild(otherInput)
-     opt4.appendChild(otherLabel)
-
+    otherInput.setAttribute('value', 'other');
+    const otherLabel = document.createElement('label');
+    otherLabel.setAttribute('for', 'other');
+    otherLabel.textContent = 'other';
+    opt4.appendChild(otherInput)
+    opt4.appendChild(otherLabel)
 
     // Append the radio inputs before the labels to the parent div
     departmentDiv.appendChild(optDiv);
     departmentDiv.appendChild(opt2);
     departmentDiv.appendChild(opt3);
     departmentDiv.appendChild(opt4);
-
 
     containerDiv.appendChild(departmentDiv)
 
@@ -1646,8 +1868,6 @@ function createCouncilDepartmentDiv() {
     optDiv.appendChild(publicOfficersInput)
     optDiv.appendChild(publicOfficersLabel)
     
-
-
     // Create the second radio input for Council
     const opt2 = document.createElement('div')
     opt2.className ='councilDeptSub'
@@ -1675,7 +1895,6 @@ function createCouncilDepartmentDiv() {
     landboardLabel.textContent = 'landboard';
     opt3.appendChild(landboardInput)
     opt3.appendChild(landboardLabel)
-
 
     // Append the radio inputs before the labels to the parent div
     departmentDiv.appendChild(optDiv);
@@ -1762,7 +1981,6 @@ function bdfAllowanceSelection() {
                 delete allowanceInputs[f]
             }
         });
-
     });
     bdfAllowanceDiv.appendChild(newDiv)
     containerDiv.appendChild(bdfAllowanceDiv)
@@ -1871,7 +2089,6 @@ function educationAllowanceSelection() {
                 delete allowanceInputs[f]
             }
         });
-
     });
     educationAllowanceDiv.appendChild(newDiv)
     containerDiv.appendChild(educationAllowanceDiv)
@@ -1938,7 +2155,6 @@ function createNumberInputs(array) {
         }
     });
 
-
     container.appendChild(newDiv)
     containerDiv.appendChild(container)
     if (direction) {
@@ -1948,7 +2164,6 @@ function createNumberInputs(array) {
     }
 }
 function createDeductionDiv() {
-
     // Create the basic div
     const deductionDiv = document.createElement('div');
     deductionDiv.className = 'deduction';
@@ -2009,8 +2224,6 @@ function createNewloanDiv() {
     optDiv.appendChild(yesInput)
     optDiv.appendChild(yesLabel)
     
-
-
     // Create the second radio input for Council
     const opt2 = document.createElement('div')
     opt2.className ='no'
@@ -2024,7 +2237,6 @@ function createNewloanDiv() {
     noLabel.textContent = 'no';
     opt2.appendChild(noInput)
     opt2.appendChild(noLabel)
-
 
     // Append the radio inputs before the labels to the parent div
     newloanDiv.appendChild(optDiv);
@@ -2052,17 +2264,14 @@ function createNewloanDiv() {
     } else {
         newloanDiv.classList.add('slide-in-left');
     }
-
 }
 function createLoanCodesOption() {
     const allowance =  ['boprita','bogowu','botusafe(capital bank)','botusafe(other)','TAWU',
         'letshego','bayport','BDF advance','other']
-
     const newloanPresentDiv = document.createElement('div');
     newloanPresentDiv.className = 'newloanPresentSelection';
     newloanPresentDiv.id = 'newloanPresentSelection';
     newloanPresentDiv.textContent = 'Select your NEW LOAN CODE'
-
 
     const newDiv = document.createElement('div');
     newDiv.className = 'newDiv';
@@ -2097,7 +2306,6 @@ function createLoanCodesOption() {
         })
     })
     
-
     newloanPresentDiv.appendChild(newDiv)
     containerDiv.appendChild(newloanPresentDiv)
     checkalreadySelected(selectedNewLoanCode,'newloan')
@@ -2152,18 +2360,7 @@ function createNumberInputsNewloan(array) {
         } else {
             numberInput.value = 0
         }
-
     });
-
-    // document.getElementById(`numberInput${index}`).addEventListener('input', (event) => {
-    //     selectedAllowancesAmounts.push(event.target.value);
-    // });
-
-    // if (document.getElementById(`numberInput${index}`).value != null) {
-    //     document.getElementById(`numberInput${index}`).value = basicAmount;
-    // } else {
-    //     document.getElementById(`numberInput${index}`).value = 0
-    // }
     container.appendChild(newDiv)
     containerDiv.appendChild(container)
     if (direction) {
@@ -2192,8 +2389,6 @@ function createSettleLoanDiv() {
     yesLabel.textContent = 'yes';
     optDiv.appendChild(yesInput)
     optDiv.appendChild(yesLabel)
-    
-
 
     // Create the second radio input for Council
     const opt2 = document.createElement('div')
@@ -2208,7 +2403,6 @@ function createSettleLoanDiv() {
     noLabel.textContent = 'no';
     opt2.appendChild(noInput)
     opt2.appendChild(noLabel)
-
 
     // Append the radio inputs before the labels to the parent div
     settleloanDiv.appendChild(optDiv);
@@ -2245,7 +2439,6 @@ function createSettleLoanCodesOption() {
     newloanPresentDiv.className = 'settleloanPresentSelection';
     newloanPresentDiv.id = 'settleloanPresentSelection';
     newloanPresentDiv.textContent = 'Select the LOAN CODE you want to SETTLE'
-
 
     const newDiv = document.createElement('div');
     newDiv.className = 'newDiv';
@@ -2335,7 +2528,6 @@ function createNumberInputsSettleloan(array){
         }
 
     });
-
 
     container.appendChild(newDiv)
     containerDiv.appendChild(container)
@@ -2664,10 +2856,12 @@ function selectQualifyingProduct() {
     // Add change event listeners to the radio buttons
     bot20Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
+        rt = productValue;
         b6 = productValue/12;
     });
     bot23Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
+        rt = productValue;
         b6 = productValue/12;
     });
 
@@ -2688,130 +2882,131 @@ function selectQualifyingProduct() {
 var dayValue = 'Day';
 var monthValue = 'Month';
 let yearValue = 'Year';
-function getAge() {
-        // Create the basic div
-        const birthdateDiv = document.createElement('div');
-        birthdateDiv.className = 'birthdateDiv'
-        birthdateDiv.id = 'birthdateDiv'
-        birthdateDiv.textContent = 'Enter your birthday'
-        // Create the form element
-        const form = document.createElement('form');
-        form.className = 'birthdateForm'
-       
-        // Create the day select element
-        const daySelect = document.createElement('select');
-        daySelect.setAttribute('id', 'day');
-        daySelect.setAttribute('name', 'day');
-        daySelect.required = true;
-        
-        let dayOption = document.createElement('option');
-        dayOption.textContent = 'Day';
-        //dayOption.value = '';
-        daySelect.appendChild(dayOption);
 
-        for (let i = 1; i <= 31; i++) {
-            dayOption = document.createElement('option');
-            dayOption.value = i;
-            dayOption.textContent = i;
-            daySelect.appendChild(dayOption);
-        }
+function getAge() {
+    // Create the basic div
+    const birthdateDiv = document.createElement('div');
+    birthdateDiv.className = 'birthdateDiv'
+    birthdateDiv.id = 'birthdateDiv'
+    birthdateDiv.textContent = 'Enter your birthday'
+    // Create the form element
+    const form = document.createElement('form');
+    form.className = 'birthdateForm'
+    
+    // Create the day select element
+    const daySelect = document.createElement('select');
+    daySelect.setAttribute('id', 'day');
+    daySelect.setAttribute('name', 'day');
+    daySelect.required = true;
+    
+    let dayOption = document.createElement('option');
+    dayOption.textContent = 'Day';
+    //dayOption.value = '';
+    daySelect.appendChild(dayOption);
+
+    for (let i = 1; i <= 31; i++) {
+        dayOption = document.createElement('option');
+        dayOption.value = i;
+        dayOption.textContent = i;
+        daySelect.appendChild(dayOption);
+    }
+    if(dayValue === 'Day' || dayValue === ''){
+        dayValue = '';
+    } else{
+        daySelect.value = dayValue; // Preselect the option that matches dayValue
+    }
+    form.appendChild(daySelect);
+
+    // Create the month select element
+    const monthSelect = document.createElement('select');
+    monthSelect.setAttribute('id', 'month');
+    monthSelect.setAttribute('name', 'month');
+    monthSelect.required = true;
+
+    let monthOption = document.createElement('option');
+    monthOption.value = '';
+    monthOption.textContent = 'Month';
+    monthSelect.appendChild(monthOption);
+
+    const months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    months.forEach((month, index) => {
+        monthOption = document.createElement('option');
+        monthOption.value = index + 1;
+        monthOption.textContent = month;
+        monthSelect.appendChild(monthOption);
+    });
+    if(monthValue === 'Month' || monthValue === ''){
+        monthValue = '';
+    } else{
+        monthSelect.value = monthValue; // Preselect the option that matches dayValue
+    }
+    form.appendChild(monthSelect);
+
+    // Create the year select element
+    const yearSelect = document.createElement('select');
+    yearSelect.setAttribute('id', 'year');
+    yearSelect.setAttribute('name', 'year');
+    yearSelect.required = true;
+
+    let yearOption = document.createElement('option');
+    yearOption.value = '';
+    yearOption.textContent = 'Year';
+    yearSelect.appendChild(yearOption);
+
+    const currentYear = new Date().getFullYear();
+    for (let i = currentYear - 16; i >= currentYear-75; i--) {
+        yearOption = document.createElement('option');
+        yearOption.value = i;
+        yearOption.textContent = i;
+        yearSelect.appendChild(yearOption);
+    }
+    if(yearValue === 'Year' || yearValue === ''){
+        yearValue = '';
+    } else{
+        yearSelect.value = yearValue; // Preselect the option that matches dayValue
+    }
+    form.appendChild(yearSelect);
+
+    // Line break
+    form.appendChild(document.createElement('br'));
+    form.appendChild(document.createElement('br'));
+
+    birthdateDiv.appendChild(form)   
+    containerDiv.appendChild(birthdateDiv)
+
+    document.getElementById('day').addEventListener('change',(event)=>{
+        dayValue = event.target.value;
         if(dayValue === 'Day' || dayValue === ''){
             dayValue = '';
-        } else{
-            daySelect.value = dayValue; // Preselect the option that matches dayValue
         }
-        form.appendChild(daySelect);
-
-        // Create the month select element
-        const monthSelect = document.createElement('select');
-        monthSelect.setAttribute('id', 'month');
-        monthSelect.setAttribute('name', 'month');
-        monthSelect.required = true;
-
-        let monthOption = document.createElement('option');
-        monthOption.value = '';
-        monthOption.textContent = 'Month';
-        monthSelect.appendChild(monthOption);
-
-        const months = [
-            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ];
-
-        months.forEach((month, index) => {
-            monthOption = document.createElement('option');
-            monthOption.value = index + 1;
-            monthOption.textContent = month;
-            monthSelect.appendChild(monthOption);
-        });
+        console.log(dayValue)
+    });
+    document.getElementById('month').addEventListener('change', (event)=>{
+        monthValue = event.target.value;
         if(monthValue === 'Month' || monthValue === ''){
             monthValue = '';
-        } else{
-            monthSelect.value = monthValue; // Preselect the option that matches dayValue
         }
-        form.appendChild(monthSelect);
-
-        // Create the year select element
-        const yearSelect = document.createElement('select');
-        yearSelect.setAttribute('id', 'year');
-        yearSelect.setAttribute('name', 'year');
-        yearSelect.required = true;
-
-        let yearOption = document.createElement('option');
-        yearOption.value = '';
-        yearOption.textContent = 'Year';
-        yearSelect.appendChild(yearOption);
-
-        const currentYear = new Date().getFullYear();
-        for (let i = currentYear - 16; i >= currentYear-75; i--) {
-            yearOption = document.createElement('option');
-            yearOption.value = i;
-            yearOption.textContent = i;
-            yearSelect.appendChild(yearOption);
-        }
+        console.log(monthValue)
+    });
+    document.getElementById('year').addEventListener('change', (event)=>{
+        yearValue = event.target.value;
         if(yearValue === 'Year' || yearValue === ''){
             yearValue = '';
-        } else{
-            yearSelect.value = yearValue; // Preselect the option that matches dayValue
         }
-        form.appendChild(yearSelect);
+        console.log(yearValue)
+    });
 
-        // Line break
-        form.appendChild(document.createElement('br'));
-        form.appendChild(document.createElement('br'));
-
-        birthdateDiv.appendChild(form)   
-        containerDiv.appendChild(birthdateDiv)
-
-        document.getElementById('day').addEventListener('change',(event)=>{
-            dayValue = event.target.value;
-            if(dayValue === 'Day' || dayValue === ''){
-                dayValue = '';
-            }
-            console.log(dayValue)
-        });
-        document.getElementById('month').addEventListener('change', (event)=>{
-            monthValue = event.target.value;
-            if(monthValue === 'Month' || monthValue === ''){
-                monthValue = '';
-            }
-            console.log(monthValue)
-        });
-        document.getElementById('year').addEventListener('change', (event)=>{
-            yearValue = event.target.value;
-            if(yearValue === 'Year' || yearValue === ''){
-                yearValue = '';
-            }
-            console.log(yearValue)
-        });
-
-
-        if (direction) {
-            birthdateDiv.classList.add('slide-in-right');
-        } else {
-            birthdateDiv.classList.add('slide-in-left');
-        }
+    if (direction) {
+        birthdateDiv.classList.add('slide-in-right');
+    } else {
+        birthdateDiv.classList.add('slide-in-left');
+    }
 }
+
 function calculateTaxNonIndustrial() {
     var tax = 0;
     var permanentAllowance = Number(addPairs(allowanceInputs))
@@ -2827,6 +3022,7 @@ function calculateTaxNonIndustrial() {
     }
     return Number(taxPensionDeductions[0])-tax
 }
+
 function addPairs(obj) {
     var sum = 0;
     for (let key in obj) {
@@ -2834,6 +3030,7 @@ function addPairs(obj) {
     }
     return sum
 }
+
 function monthsDifference(startDate, endDate) {
     // Calculate the difference in years and months
     let yearsDifference = endDate.getFullYear() - startDate.getFullYear();
@@ -2849,6 +3046,7 @@ function monthsDifference(startDate, endDate) {
 
     return totalMonths - 3;
 }
+var rule = 1300;
 function calculateMaxInstallment() {
     var permanentAllowance = Number(addPairs(allowanceInputs));
     console.log(allowanceInputs)
@@ -2861,7 +3059,6 @@ function calculateMaxInstallment() {
     }
     var settleloans = addPairs(settleLoanInputs);
     var n11 = adjNettIncome + taxx + settleloans;
-    var rule = 1300;
     if (basicAmount <= 9019) {
         rule = 600;
     } else if(maritalStatusValue === 'yes') {
@@ -2872,6 +3069,7 @@ function calculateMaxInstallment() {
             otherLoans,adjNettIncome,
             taxx,settleloans,Number(n11.toFixed(2)),rule,n13]
 }
+
 function findClosestKey(target) {
     var arr = loans; 
     for (let i = 0; i < arr.length; i++) {
@@ -2882,99 +3080,101 @@ function findClosestKey(target) {
         }else if (difference > 0) {
 
             var t = totalMonthlyAmountDisplay(arr[i-1])
-            return [t[0],arr[i-1],t[1]]
+            return [t[0],arr[i-1],t[1]]//intalment, loanAmount, insurance
         }
     }
-  }
-  var startLoanAmount = 5000;
-  var maxLoanAmount = 700000;
-  var loans = [];
-  var loanAmountColumn = {}; // Loan amount column
+}
 
- // Loop to populate the loan amount column
- for (var loanAmount = startLoanAmount; loanAmount <= maxLoanAmount; loanAmount += 500) {
+var startLoanAmount = 5000;
+var maxLoanAmount = 700000;
+var loans = [];
+var loanAmountColumn = {}; // Loan amount column
+
+// Loop to populate the loan amount column
+for (var loanAmount = startLoanAmount; loanAmount <= maxLoanAmount; loanAmount += 500) {
     loans.push(loanAmount)
     var ckey = loanAmount.toString();
     loanAmountColumn[ckey] = loanAmount;
 }
-  var rt = 0.20; // Annual interest rate for 20%
-  var b6 = rt / 12;// Monthly interest for 23%
-  var b9 = 0.0271; // Collections fee
-  var c9 = 1 - b9; // Adjusted factor for collections fee
-  var term = 96; // Loan term for 96 months
 
-  var d14 = 0; // d14 is ag14
-  var e14 = 0; // e14 is ah14
-  var f14 = 0; // Calculate f14
-  var g14 = 0; // Calculate g14
-  var h14 = 0; // Calculate h14
-  var j14 = 0; // Calculate j14
-  var b8 = 1.15; // Insurance
-  var i14 = 0; // Calculate i14
-  var l14 = 0;
+var rt = 0.20; // Annual interest rate for 20%
+var b6 = rt / 12;// Monthly interest for 23%
+var b9 = 0.0271; // Collections fee
+var c9 = 1 - b9; // Adjusted factor for collections fee
+var term = 96; // Loan term for 96 months
 
-  function totalMonthlyAmountDisplay(selectedLoanAmount){
-      // Initialize variables for calculations
-      if(selectedLoanAmount.toString()==="undefined"||selectedLoanAmount.toString()==="NaN"){
-        return null;
-      }
-      var c14 = loanAmountColumn[selectedLoanAmount.toString()]; // Example value for c14
-      var ae14 = c14 * 0.0112; // Calculate ae14
-        //if (selectedLoanAmount >= 257500){
-        //  var ag14 = checkValueAg2(ae14);
-        //}else{
-      var ag14 = checkValueAg(ae14); // Calculate ag14
-      
-        //}
-      var af14 = c14 * 0.0112; // Calculate af14
-        //if (selectedLoanAmount >= 257500){
-        //  var ah14 = checkValueAh2(af14)
-       // }else{
-          var ah14 = checkValueAh(af14); // Calculate ah14
-       // }
-      d14 = ag14; // d14 is ag14
-      e14 = ah14; // e14 is ah14
-      f14 = c14 + d14 + e14; // Calculate f14
-      g14 = -PMT(b6, term, f14); // Calculate g14
-      h14 = f14 / 1000 * b8; // Calculate h14
-      j14 = g14 + h14; // Calculate j14
-      i14 = j14 / c9 - j14; // Calculate i14
-  
-      //total interest
-      l14 = (g14*term)-f14;
-  
-      // Calculate total monthly amount+
-  
-      var totalMonthlyAmount = Number((j14 + i14).toFixed(2));
-      //console.log("Actual Instalment: "+ totalMonthlyAmount)
-      var loanDetails = Number(h14.toFixed(2)); 
-  
-    return [totalMonthlyAmount,loanDetails]; // Output the total monthly amount
-  }
-  function checkValueAg(AE14) {
-    if (AE14 < 1120) {
-        return 1120;
-    } else if (AE14 >= 2878.4) {
-      return 2878.4;
-    }else{
-        return AE14;
+var d14 = 0; // d14 is ag14
+var e14 = 0; // e14 is ah14
+var f14 = 0; // Calculate f14
+var g14 = 0; // Calculate g14
+var h14 = 0; // Calculate h14
+var j14 = 0; // Calculate j14
+var b8 = 1.15; // Insurance
+var i14 = 0; // Calculate i14
+var l14 = 0;
+
+function totalMonthlyAmountDisplay(selectedLoanAmount){
+    // Initialize variables for calculations
+    if(selectedLoanAmount.toString()==="undefined"||selectedLoanAmount.toString()==="NaN"){
+    return null;
     }
-  }
-  function checkValueAh(AF14) {
-    if (AF14 < 275.08) {
-        return 275.08;
-    } else if (AF14 >= 2878.4) {
-      return 2878.4;
-    } else {
-        return AF14;
-    }  
-  }
-  function PMT(rate, nper, pv) {
-    if (rate === 0) {
-        return -(pv / nper); // If rate is 0, just return the principal divided by the number of periods
-    } else {
-        var pvif = Math.pow(1 + rate, nper);
-        var pmt = pv * rate * pvif / (pvif - 1);
-        return -pmt; // Negate the result to match the Excel PMT function behavior
-    }
-  }
+    var c14 = loanAmountColumn[selectedLoanAmount.toString()]; // Example value for c14
+    var ae14 = c14 * 0.0112; // Calculate ae14
+    //if (selectedLoanAmount >= 257500){
+    //  var ag14 = checkValueAg2(ae14);
+    //}else{
+    var ag14 = checkValueAg(ae14); // Calculate ag14
+    
+    //}
+    var af14 = c14 * 0.0112; // Calculate af14
+    //if (selectedLoanAmount >= 257500){
+    //  var ah14 = checkValueAh2(af14)
+    // }else{
+        var ah14 = checkValueAh(af14); // Calculate ah14
+    // }
+    d14 = ag14; // d14 is ag14
+    e14 = ah14; // e14 is ah14
+    f14 = c14 + d14 + e14; // Calculate f14
+    g14 = -PMT(b6, term, f14); // Calculate g14
+    h14 = f14 / 1000 * b8; // Calculate h14
+    j14 = g14 + h14; // Calculate j14
+    i14 = j14 / c9 - j14; // Calculate i14
+
+    //total interest
+    l14 = (g14*term)-f14;
+
+    // Calculate total monthly amount+
+
+    var totalMonthlyAmount = Number((j14 + i14).toFixed(2));
+    //console.log("Actual Instalment: "+ totalMonthlyAmount)
+    var loanDetails = Number(h14.toFixed(2)); 
+
+return [totalMonthlyAmount,loanDetails]; // Output the total monthly amount
+}
+function checkValueAg(AE14) {
+if (AE14 < 1120) {
+    return 1120;
+} else if (AE14 >= 2878.4) {
+    return 2878.4;
+}else{
+    return AE14;
+}
+}
+function checkValueAh(AF14) {
+if (AF14 < 275.08) {
+    return 275.08;
+} else if (AF14 >= 2878.4) {
+    return 2878.4;
+} else {
+    return AF14;
+}  
+}
+function PMT(rate, nper, pv) {
+if (rate === 0) {
+    return -(pv / nper); // If rate is 0, just return the principal divided by the number of periods
+} else {
+    var pvif = Math.pow(1 + rate, nper);
+    var pmt = pv * rate * pvif / (pvif - 1);
+    return -pmt; // Negate the result to match the Excel PMT function behavior
+}
+}

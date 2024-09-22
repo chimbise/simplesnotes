@@ -64,6 +64,7 @@
    monthlyPayDiv.value = totalMonthlyAmountDisplay(value);
  }
  var monthlyPayDiv = document.getElementById('loanAmountMonthlySlider');
+
  monthlyPayDiv.addEventListener('input', function() {
  
    var number = monthlyPayDiv.value;
@@ -79,6 +80,7 @@
    showH3()
    totalMonthlyAmountDisplay(result[1]);
  });
+
  monthlyPayDiv.addEventListener('blur', function() {
  
    hideH3()
@@ -95,15 +97,7 @@
          return -pmt; // Negate the result to match the Excel PMT function behavior
      }
  }
- 
- // Function to check value for AG14
- // function checkValueAg(AE14) {
- //     if (AE14 < 1120) {
- //         return 1120;
- //     } else {
- //         return AE14;
- //     }
- // }
+
  function checkValueAg(AE14) {
    if (AE14 < 1120) {
        return 1120;
@@ -140,6 +134,7 @@
        return AF14;
    }  
  }
+ 
  // Function to check value for AH14
  // function checkValueAh2(AF14) {
  //   if (AF14 > 2878.4) {
@@ -148,6 +143,7 @@
  //       return AF14;
  //   }                    
  // }
+
  function findClosestKey(target) {
    var arr = loans;
    for (let i = 0; i < arr.length; i++) {
@@ -191,13 +187,11 @@
      //total interest
      l14 = (g14*term)-f14;
  
-     // Calculate total monthly amount+
- 
+     // Calculate total monthly amount 
      var totalMonthlyAmount = Number((j14 + i14).toFixed(2));
      actualInstalment.textContent = "Actual Instalment: "+ totalMonthlyAmount;
 
- 
-   return totalMonthlyAmount; // Output the total monthly amount
+    return totalMonthlyAmount; // Output the total monthly amount
  }
  
  function viewLoanDetailsDiv(){
@@ -227,6 +221,7 @@
    document.getElementById('MonthlyCollectionFee').textContent  = monthlyEmployerCollection;
    document.getElementById('TotalMonthlyInstalments').textContent  = totalMonthlyInstalment;
  }
+
  function calculateRate(nper, pmt, pv, fv, type, guess) {
    // Tolerance for convergence
    const tol = 1e-6;
@@ -334,8 +329,7 @@
      loanAmountSlider.value = value;
      updateMonthlyAmountDisplay(value);
    }
- 
-   
+    
    loanAmountSlider.addEventListener('input', function() {
      var number = loanAmountSlider.value;
      if (isMultipleOf500AndInRange(number)) {
@@ -367,8 +361,7 @@
      }
      updateLoanAmountDisplay(value);
  }
- 
- 
+  
    function decrement() {
      if(actualInstalment.classList !=='hidden'){
        monthlyPayDiv.blur()
@@ -454,10 +447,6 @@
    addEventListeners(decrementButton, decrement);
  
  });
- 
- 
- 
- 
  
  var viewLoanDetailsButton = document.getElementById("viewLoanDetails")
  
