@@ -1561,7 +1561,7 @@ document.getElementById('back').addEventListener('click',()=>{
                 if (!containerDiv.contains(current)) {
                     break;             
                 }
-                containerDiv.removeChild(document.getElementById('optionsDiv'));
+                containerDiv.removeChild(document.getElementById('chooseLoanDiv'));
                 selectQualifyingProduct();
                 break;
             case 'optionsDiv':
@@ -2773,6 +2773,7 @@ function maritalStatus() {
     }
 }
 var productValue = 0.20;
+var inputid = 'botusafe20'
 var productMaxYear = 'all'
 const today = new Date();
 function selectQualifyingProduct() {
@@ -2814,9 +2815,6 @@ function selectQualifyingProduct() {
             return;
         }
     
-    
-
-
     const productDiv = document.createElement('div')
     productDiv.className = 'productDiv'
     productDiv.id = 'productDiv'
@@ -2836,6 +2834,20 @@ function selectQualifyingProduct() {
     optDiv.appendChild(bot20Input)
     optDiv.appendChild(bot20Label)
 
+    
+    const opt4 = document.createElement('div')
+    opt4.className = 'tawu23'
+    const tawu23Input = document.createElement('input');
+    tawu23Input.setAttribute('type', 'radio');
+    tawu23Input.setAttribute('name', 'product');
+    tawu23Input.setAttribute('id', 'tawu23');
+    tawu23Input.setAttribute('value', '0.23');
+    const tawu23Label = document.createElement('label');
+    tawu23Label.setAttribute('for', 'product');
+    tawu23Label.textContent = 'tawu 23%';
+    opt4.appendChild(tawu23Input)
+    opt4.appendChild(tawu23Label)
+
     const opt2 = document.createElement('div')
     opt2.className = 'botusafe23'
     const bot23Input = document.createElement('input');
@@ -2849,31 +2861,106 @@ function selectQualifyingProduct() {
     opt2.appendChild(bot23Input)
     opt2.appendChild(bot23Label)
 
+    const opt5 = document.createElement('div')
+    opt5.className = 'tawu26'
+    const tawu26Input = document.createElement('input');
+    tawu26Input.setAttribute('type', 'radio');
+    tawu26Input.setAttribute('name', 'product');
+    tawu26Input.setAttribute('id', 'tawu26');
+    tawu26Input.setAttribute('value', '0.26');
+    const tawu26Label = document.createElement('label');
+    tawu26Label.setAttribute('for', 'product');
+    tawu26Label.textContent = 'tawu 26%';
+    opt5.appendChild(tawu26Input)
+    opt5.appendChild(tawu26Label)
+
+    const opt3 = document.createElement('div')
+    opt3.className = 'botusafe26'
+    const bot26Input = document.createElement('input');
+    bot26Input.setAttribute('type', 'radio');
+    bot26Input.setAttribute('name', 'product');
+    bot26Input.setAttribute('id', 'botusafe26');
+    bot26Input.setAttribute('value', '0.26');
+    const bot26Label = document.createElement('label');
+    bot26Label.setAttribute('for', 'product');
+    bot26Label.textContent = 'botusafe 26%';
+    opt3.appendChild(bot26Input)
+    opt3.appendChild(bot26Label)
+
 
     // Append the radio inputs before the labels to the parent div
     productDiv.appendChild(optDiv);
+    productDiv.appendChild(opt4);
     productDiv.appendChild(opt2);
+    productDiv.appendChild(opt5);
+    productDiv.appendChild(opt3);
 
-   
+
     containerDiv.appendChild(productDiv)
     // Add change event listeners to the radio buttons
     bot20Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
         rt = productValue;
         b6 = productValue/12;
+        c9 = 1 - 0.0271;
+        inputid = 'botusafe20'
+
     });
     bot23Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
         rt = productValue;
         b6 = productValue/12;
+        c9 = 1 - 0.0271;
+        inputid = 'botusafe23'
+
+    });
+    bot26Input.addEventListener('change', (event)=>{
+        productValue = Number(event.target.value);
+        rt = productValue;
+        b6 = productValue/12;
+        c9 = 1 - 0.0271;
+        inputid = 'botusafe26'
+
+    });
+    tawu23Input.addEventListener('change', (event)=>{
+        productValue = Number(event.target.value);
+        rt = productValue;
+        b6 = productValue/12;
+        c9 = 1 - 0.025;
+        inputid = 'tawu23'
+
+    });
+    tawu26Input.addEventListener('change', (event)=>{
+        productValue = Number(event.target.value);
+        rt = productValue;
+        b6 = productValue/12;
+        c9 = 1 - 0.025;
+        inputid = 'tawu26'
+
     });
 
     // Set initial value for checked
-    if (productValue === 0.20) {
-        bot20Input.checked = true;
-    } else if(productValue === 0.23) {
-        bot23Input.checked = true;
+    switch (inputid) {
+        case 'tawu26':
+            tawu26Input.checked = true;
+            break;
+        case 'tawu23':
+            tawu23Input.checked = true;
+            break;
+        case 'botusafe26':
+            bot26Input.checked = true;
+            break;
+        case 'botusafe23':
+            bot23Input.checked = true;
+            break;
+        case 'botusafe20':
+            bot20Input.checked = true;
+            break;
+    
+        default:
+            break;
     }
+
 
     if (direction) {
         productDiv.classList.add('slide-in-right');
