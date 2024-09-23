@@ -173,6 +173,7 @@ iframe2.src = url2;
 
     // Show the download button
     const downloadButton = document.createElement('button');
+    downloadButton.textContent = 'download'
 // downloadButton.hidden = false;
 
 optionsDiv.appendChild(iframe)
@@ -400,7 +401,8 @@ function fillaffordability(form,aff,over){
 
 
     const blilpremium = form.getTextField('blilpremium');
-    blilpremium.setText(2*(h14.toFixed(2)).toString());
+    var se = 2*(h14.toFixed(2))
+    blilpremium.setText(se.toString());
 
     var index2 = 0;
     for (let settle in settleLoanBalances) {
@@ -1015,7 +1017,7 @@ function chooseLoan() {
             minSpan.textContent = 'term'; 
             // Create the second span with text 'mx 96'
             const maxSpan = document.createElement('span');
-            maxSpan.textContent = 'max 96';
+            maxSpan.textContent = 'max '+term.toString();
             // Append the spans to the div
         Actual22.appendChild(minSpan);
         Actual22.appendChild(maxSpan);
@@ -1071,7 +1073,7 @@ function chooseLoan() {
             const amountSpan = document.createElement('span');
             amountSpan.textContent = 'loan Amount';
             const maxloan = document.createElement('span');
-            maxloan.textContent = 'max 10000';
+            maxloan.textContent = 'max '+ loan.toString();
             Actual33.appendChild(amountSpan);
             Actual33.appendChild(maxloan);
 
@@ -1131,9 +1133,9 @@ function chooseLoan() {
         Actual44.style.display = 'flex'
         Actual44.style.flexDirection = 'column'
             const installentSpan = document.createElement('span');
-            installentSpan.textContent = 'installent';
+            installentSpan.textContent = 'Max Installment'
             const maxInstallent = document.createElement('span');
-            maxInstallent.textContent = 'max 8963.45';
+            maxInstallent.textContent = installment.toString();
             Actual44.appendChild(installentSpan);
             Actual44.appendChild(maxInstallent);
 
@@ -1183,14 +1185,14 @@ function chooseLoan() {
     const contain5 = document.createElement('div');
     contain5.className = 'l6xers'
     const Actual5 = document.createElement('div')
-        Actual5.textContent = net.toString()
+        Actual5.textContent = net.toString();
         const Actual55 = document.createElement('div')
         Actual55.style.display = 'flex'
         Actual55.style.flexDirection = 'column'
             const netSalarySpan = document.createElement('span');
             netSalarySpan.textContent = 'Net Salary';
             const minNetsalary = document.createElement('span');
-            minNetsalary.textContent = 'min 1300.56';
+            minNetsalary.textContent = 'min '+net.toString();
             Actual55.appendChild(netSalarySpan);
             Actual55.appendChild(minNetsalary);
 
@@ -1251,7 +1253,7 @@ function chooseLoan() {
         const b2cSpan = document.createElement('span');
         b2cSpan.textContent = 'Disbursement';
         const maxb2cSpan = document.createElement('span');
-        maxb2cSpan.textContent = 'max 5300';
+        maxb2cSpan.textContent = b2c.toString();
         Actual66.appendChild(b2cSpan);
         Actual66.appendChild(maxb2cSpan);
 
@@ -1562,6 +1564,13 @@ document.getElementById('back').addEventListener('click',()=>{
                 containerDiv.removeChild(document.getElementById('optionsDiv'));
                 selectQualifyingProduct();
                 break;
+            case 'optionsDiv':
+                if (!containerDiv.contains(current)) {
+                    break;             
+                }
+                containerDiv.removeChild(document.getElementById('optionsDiv'));
+                chooseLoan();
+                break;
             // case 'optionsDiv':
             //     if (!containerDiv.contains(current)) {
             //         break;             
@@ -1569,12 +1578,6 @@ document.getElementById('back').addEventListener('click',()=>{
             //     containerDiv.removeChild(document.getElementById('optionsDiv'));
             //     selectQualifyingProduct();
             //     break;
-            case 'optionsDiv':
-                if (!containerDiv.contains(current)) {
-                    break;             
-                }
-                containerDiv.removeChild(document.getElementById('optionsDiv'));
-                selectQualifyingProduct();
             default:
                 break;
         }
