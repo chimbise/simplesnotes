@@ -412,7 +412,7 @@ function fillaffordability(form,aff,over){
             // allField.setText(settle);  // Set the current index as the text for 'allX'
             
             const allowanceField = form.getTextField(`settle${parseInt(index2)}`);  // Dynamic field 'allowanceX'
-            allowanceField.setText(settleLoanBalances[settle]);  // Set the value from allowanceInputs for 'allowanceX'
+            allowanceField.setText(settleLoanBalances[settle].toString());  // Set the value from allowanceInputs for 'allowanceX'
         }
     }
 
