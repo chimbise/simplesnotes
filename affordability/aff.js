@@ -157,32 +157,68 @@ async function fillPdf() {
     optionsDiv.style.width = '90%'
     optionsDiv.style.height = '90%'
 
-    // Display the PDF in an iframe
-    const iframe = document.createElement('iframe');
-    iframe.style.width = '100%'
-    iframe.style.height = '100%'
-    iframe.style.backgroundColor = 'white'
-    iframe.src = url;
-// iframe.hidden = false;
-// Display the PDF in an iframe
-const iframe2 = document.createElement('iframe');
-iframe2.style.width = '100%'
-iframe2.style.height = '100%'
-iframe2.style.backgroundColor = 'white'
-iframe2.src = url2;
+//     // Display the PDF in an iframe
+//     const iframe = document.createElement('iframe');
+//     iframe.style.width = '100%'
+//     iframe.style.height = '100%'
+//     iframe.style.backgroundColor = 'white'
+//     iframe.src = url;
+// // iframe.hidden = false;
+// // Display the PDF in an iframe
+// const iframe2 = document.createElement('iframe');
+// iframe2.style.width = '100%'
+// iframe2.style.height = '100%'
+// iframe2.style.backgroundColor = 'white'
+// iframe2.src = url2;
+// Create a container div for the checkboxes
+const container = document.createElement('div');
+container.style.display = 'flex';
+container.style.flexDirection = 'column'; // Align checkboxes vertically
 
-    // Show the download button
-    const downloadButton = document.createElement('button');
-    downloadButton.textContent = 'download'
+// Array of labels for the checkboxes
+const labels = ['overview', 'affordability', 'credit', 'odc'];
+
+// Loop through the labels to create checkboxes and their labels
+labels.forEach(labelText => {
+    const label = document.createElement('label');
+    label.style.display = 'flex';
+    label.style.alignItems = 'center'; // Align label and checkbox
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = labelText;
+    if (labelText === 'credit'||labelText === 'odc') {
+        checkbox.disabled = true; // Disable the checkbox
+    }
+    
+    // Add the checkbox and the label text to the label element
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode(labelText));
+    
+    // Append the label to the container
+    container.appendChild(label);
+});
+
+
+// Show the download button
+const downloadButton = document.createElement('button');
+downloadButton.textContent = 'download'
 // downloadButton.hidden = false;
 
-optionsDiv.appendChild(iframe)
-optionsDiv.appendChild(iframe2)
+// optionsDiv.appendChild(iframe)
+// optionsDiv.appendChild(iframe2)
+
+optionsDiv.appendChild(container)
 
 
 optionsDiv.appendChild(downloadButton)
 // // Handle download on button click
 downloadButton.onclick = function() {
+    // const checkedLabels = [];
+    
+    // Select all checkboxes
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+
         const a = document.createElement('a');
         const b = document.createElement('a');
 
@@ -195,14 +231,36 @@ downloadButton.onclick = function() {
         document.body.appendChild(a);
         document.body.appendChild(b);
 
-        a.click();
-        b.click();
-        
+        checkboxes.forEach(checkbox => {
+            // Check if the checkbox is checked
+            console.log(checkbox)
+            if (checkbox.checked) {
+                // Get the label text associated with the checkbox
+                const label = checkbox.id;
+                console.log(label)
+                switch (label) {
+                    case 'overview':
+                        a.click();
+                        break;
+                    case 'affordability':
+                        b.click();
+                        break;
+                    case 'life':
+                        
+                        break;
+                    case 'odc':
+                        
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
 
         document.body.removeChild(a);
         document.body.removeChild(b);
     };
-    containerDiv.appendChild(optionsDiv)
+containerDiv.appendChild(optionsDiv)
 
 
 
@@ -941,6 +999,7 @@ document.getElementById('next').addEventListener('click',()=>{
                     break;
                     }
                 containerDiv.removeChild(current);
+
                 fillPdf()
             default:
                 break;
@@ -1251,9 +1310,9 @@ function chooseLoan() {
     Actual66.style.display = 'flex'
     Actual66.style.flexDirection = 'column'
         const b2cSpan = document.createElement('span');
-        b2cSpan.textContent = 'Disbursement';
+        b2cSpan.textContent = 'net Loan Amount';
         const maxb2cSpan = document.createElement('span');
-        maxb2cSpan.textContent = b2c.toString();
+        maxb2cSpan.textContent = 'max '+ b2c.toString();
         Actual66.appendChild(b2cSpan);
         Actual66.appendChild(maxb2cSpan);
 
@@ -1385,9 +1444,6 @@ function viewLoanDetailsDiv(){
     // Return the last estimate if no convergence
     return rate;
   }
-
-
-
 
 document.getElementById('back').addEventListener('click',()=>{
     direction = false;
@@ -3201,7 +3257,7 @@ var h14 = 0; // Calculate h14
 var j14 = 0; // Calculate j14
 var b8 = 1.15; // Insurance
 var i14 = 0; // Calculate i14
-var l14 = 0;
+var l14 = 0; // calculate l14
 
 function totalMonthlyAmountDisplay(selectedLoanAmount){
     // Initialize variables for calculations
