@@ -67,8 +67,8 @@ async function fillPdf() {
 
 
     
-    fillOverview(formoverview,calMax,MaxLoan)
-    fillaffordability(formaffordability,calMax,MaxLoan)
+    fillOverview(formoverview)
+    fillaffordability(formaffordability,calMax)
 
     // const adjNetIncome = formaffordability.getTextField('adjNetIncome');
     // adjNetIncome.setText('100000');
@@ -260,10 +260,7 @@ downloadButton.onclick = function() {
         document.body.removeChild(a);
         document.body.removeChild(b);
     };
-containerDiv.appendChild(optionsDiv)
-
-
-
+    containerDiv.appendChild(optionsDiv)
     // const c = document.createElement('a');
     // c.href = url3;
     // c.download = 'blil.pdf';
@@ -309,7 +306,6 @@ containerDiv.appendChild(optionsDiv)
     // i.download = 'fcbpg1.pdf';
     // document.body.appendChild(i);
 
-
     // c.click();
     // d.click();
     // e.click();
@@ -320,7 +316,6 @@ containerDiv.appendChild(optionsDiv)
     // j.click()
     // k.click()
 
-
     // document.body.removeChild(c);
     // document.body.removeChild(d);
     // document.body.removeChild(e);
@@ -330,10 +325,14 @@ containerDiv.appendChild(optionsDiv)
     // document.body.removeChild(i);
     // document.body.removeChild(j);
     // document.body.removeChild(k);
-
+    if (direction) {
+        optionsDiv.classList.add('slide-in-right');
+    } else {
+        optionsDiv.classList.add('slide-in-left');
+    }
 
 }
-function fillOverview(form, aff, over){
+function fillOverview(form){
     const loanAmount = form.getTextField('loanAmount');
     loanAmount.setText(loan.toString());
     loanAmount.setFontSize(16);
@@ -375,7 +374,7 @@ function fillOverview(form, aff, over){
     managerSignature.setFontSize(16)
     //managerSignature.setText('100000');
 }
-function fillaffordability(form,aff,over){
+function fillaffordability(form,aff){
 
     // return [Number(basicAmount),permanentAllowance,adjBasicSalary,Number(deductionAmount),
     //     otherLoans,adjNettIncome,
@@ -999,8 +998,8 @@ document.getElementById('next').addEventListener('click',()=>{
                     break;
                     }
                 containerDiv.removeChild(current);
-
                 fillPdf()
+                break;
             default:
                 break;
         }
@@ -1390,8 +1389,12 @@ function chooseLoan() {
     chooseLoanDiv.appendChild(contain5)
     chooseLoanDiv.appendChild(contain6)
 
-containerDiv.appendChild(chooseLoanDiv)
-
+    containerDiv.appendChild(chooseLoanDiv)
+    if (direction) {
+        chooseLoanDiv.classList.add('slide-in-right');
+    } else {
+        chooseLoanDiv.classList.add('slide-in-left');
+}
  
 }
 function viewLoanDetailsDiv(){

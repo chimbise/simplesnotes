@@ -517,3 +517,10 @@ select, input[type="submit"] {
     background-color: aliceblue;
     border-radius: 10px;
 }
+.l6xers p, .l6xers span {
+    font-size: small; /* Custom font size for p and span inside .l6xers */
+}
+.l6xers > * {
+    flex-grow: 1; /* Make each sub-element grow equally */
+    text-align: center; /* Optional: center the content inside the sub-elements */
+}
