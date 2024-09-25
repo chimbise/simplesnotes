@@ -3168,7 +3168,7 @@ function calculateTaxNonIndustrial() {
     } else if(one >=10000 && one < 13000){
         tax = 725 + 0.1875*(one - 10000)
     } else{
-        tax = 1087.50 + 0.25*(one - 13000 - Number(taxPensionDeductions[1]))
+        tax = 1087.50 + 0.25*(Number(basicAmount) + permanentAllowance - 13000 - Number(taxPensionDeductions[1]))
     }
     return Number(taxPensionDeductions[0])-tax
 }
