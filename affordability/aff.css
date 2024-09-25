@@ -514,11 +514,12 @@ select, input[type="submit"] {
     margin: 5px;
     justify-items: center;
     width: 100%;
+    height: 40px;
     background-color: aliceblue;
     border-radius: 10px;
 }
-.l6xers p, .l6xers span {
-    font-size: small; /* Custom font size for p and span inside .l6xers */
+.l6xers div, .l6xers span {
+    font-size: medium; /* Custom font size for p and span inside .l6xers */
 }
 .l6xers > * {
     flex-grow: 1; /* Make each sub-element grow equally */

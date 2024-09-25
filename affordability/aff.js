@@ -1033,6 +1033,7 @@ var calMax = 0;
 
 function chooseLoan() {
     calMax = calculateMaxInstallment()
+
     MaxLoan = findClosestKey(calMax[10])
     installment = MaxLoan[0];
     loan = MaxLoan[1];
@@ -1117,8 +1118,8 @@ function chooseLoan() {
             selectElement.style.margin = '5px';
             selectElement.style.fontSize = '16px';            
         Actual222.appendChild(selectElement);
-    contain2.appendChild(Actual2) 
     contain2.appendChild(Actual22) 
+    contain2.appendChild(Actual2) 
     contain2.appendChild(Actual222) 
 
     const contain3 = document.createElement('div');
@@ -1179,8 +1180,8 @@ function chooseLoan() {
 
             // Append the editable span to the container div
         Actual333.appendChild(editableSpan);
-    contain3.appendChild(Actual3) 
     contain3.appendChild(Actual33) 
+    contain3.appendChild(Actual3) 
     contain3.appendChild(Actual333) 
 
     const contain4 = document.createElement('div');
@@ -1191,9 +1192,9 @@ function chooseLoan() {
         Actual44.style.display = 'flex'
         Actual44.style.flexDirection = 'column'
             const installentSpan = document.createElement('span');
-            installentSpan.textContent = 'Max Installment'
+            installentSpan.textContent = 'Installment'
             const maxInstallent = document.createElement('span');
-            maxInstallent.textContent = installment.toString();
+            maxInstallent.textContent = 'max '+installment.toString();
             Actual44.appendChild(installentSpan);
             Actual44.appendChild(maxInstallent);
 
@@ -1236,8 +1237,8 @@ function chooseLoan() {
 
             // Append the editable span to the container div
             Actual444.appendChild(editableSpanInstallment);
-    contain4.appendChild(Actual4) 
     contain4.appendChild(Actual44) 
+    contain4.appendChild(Actual4) 
     contain4.appendChild(Actual444)
 
     const contain5 = document.createElement('div');
@@ -1296,8 +1297,8 @@ function chooseLoan() {
 
             // Append the editable span to the container div
         Actual555.appendChild(editableSpanNetSalary);
-    contain5.appendChild(Actual5) 
     contain5.appendChild(Actual55) 
+    contain5.appendChild(Actual5) 
     contain5.appendChild(Actual555)
 
 
@@ -1309,7 +1310,7 @@ function chooseLoan() {
     Actual66.style.display = 'flex'
     Actual66.style.flexDirection = 'column'
         const b2cSpan = document.createElement('span');
-        b2cSpan.textContent = 'net Loan Amount';
+        b2cSpan.textContent = 'net Loan';
         const maxb2cSpan = document.createElement('span');
         maxb2cSpan.textContent = 'max '+ b2c.toString();
         Actual66.appendChild(b2cSpan);
@@ -1377,8 +1378,8 @@ function chooseLoan() {
 
         // Append the editable span to the container div
         Actual666.appendChild(editableSpanB2C);
-        contain6.appendChild(Actual6) 
         contain6.appendChild(Actual66) 
+        contain6.appendChild(Actual6) 
         contain6.appendChild(Actual666)
 
 
@@ -3224,7 +3225,7 @@ function findClosestKey(target) {
     for (let i = 0; i < arr.length; i++) {
         var realMonthly = totalMonthlyAmountDisplay(arr[i]);
         var difference = realMonthly[0] - target;
-        if(difference == 0){
+        if(difference == 0 || arr[i] == 700000){
             return [realMonthly[0],arr[i],realMonthly[1]]
         }else if (difference > 0) {
 
