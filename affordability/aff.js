@@ -2860,6 +2860,8 @@ function selectQualifyingProduct() {
             term = 54;
         } else if(monthsUntilSixty>=48) {
             term = 48;
+        } else if(monthsUntilSixty>=36){
+            term =36;
         } else if(monthsUntilSixty>=30) {
             term = 30;
         } else if(monthsUntilSixty>=24) {
