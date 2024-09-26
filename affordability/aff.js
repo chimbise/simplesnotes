@@ -53,7 +53,7 @@ async function fillPdf() {
     const formfcbApp2 = pdfDocfcbApp2.getForm();
     const formfcbApp3 = pdfDocfcbApp3.getForm();
 
-    const fields = formaffordability.getFields();
+    const fields = formblil.getFields();
     fields.forEach((field) => {
         console.log(`Field name: ${field.getName()}`);
     });
@@ -69,11 +69,12 @@ async function fillPdf() {
     
     fillOverview(formoverview)
     fillaffordability(formaffordability,calMax)
+    fillblil(formblil)
 
     // const adjNetIncome = formaffordability.getTextField('adjNetIncome');
     // adjNetIncome.setText('100000');
-    const birthdate = formblil.getTextField('birthdate');
-    birthdate.setText('100000');
+    // const birthdate = formblil.getTextField('birthdate');
+    // birthdate.setText('100000');
     const date = formgov.getTextField('date');
     date.setText('100000');
     const capitalBank = formtawu.getTextField('capitalBank');
@@ -176,7 +177,7 @@ container.style.display = 'flex';
 container.style.flexDirection = 'column'; // Align checkboxes vertically
 
 // Array of labels for the checkboxes
-const labels = ['overview', 'affordability', 'credit', 'odc'];
+const labels = ['overview', 'affordability', 'credit life', 'odc'];
 
 // Loop through the labels to create checkboxes and their labels
 labels.forEach(labelText => {
@@ -221,15 +222,20 @@ downloadButton.onclick = function() {
 
         const a = document.createElement('a');
         const b = document.createElement('a');
+        const c = document.createElement('a')
 
         a.href = url;
         b.href = url2;
+        c.href = url3;
 
         a.download = 'overview.pdf';
         b.download = 'affordability.pdf';
+        c.download = 'blil.pdf'
 
         document.body.appendChild(a);
         document.body.appendChild(b);
+        document.body.appendChild(c);
+
 
         checkboxes.forEach(checkbox => {
             // Check if the checkbox is checked
@@ -245,8 +251,8 @@ downloadButton.onclick = function() {
                     case 'affordability':
                         b.click();
                         break;
-                    case 'life':
-                        
+                    case 'credit life':
+                        c.click()
                         break;
                     case 'odc':
                         
@@ -259,6 +265,8 @@ downloadButton.onclick = function() {
 
         document.body.removeChild(a);
         document.body.removeChild(b);
+        document.body.removeChild(c);
+
     };
     containerDiv.appendChild(optionsDiv)
     // const c = document.createElement('a');
@@ -476,9 +484,9 @@ function fillaffordability(form,aff){
     const customerSignature = form.getTextField('customerSignature');
     //customerSignature.setText('customerSignature');
 }
-function fillblil(){
+function fillblil(form){
     const bankName = form.getTextField('bankName');
-    bankName.setText('First Capital BAnk');
+    bankName.setText('First Capital Bank');
     const firstName = form.getTextField('firstName');
     //firstName.setText('100000');
     const surname = form.getTextField('surname');
@@ -491,36 +499,39 @@ function fillblil(){
     //addressLine2.setText('100000');
     const occupation = form.getTextField('occupation');
     //occupation.setText('100000');
-    const accType = form.getTextField('accType');
+    //const accType = form.getTextField('accType');
     //accType.setText('100000');
-    const cellNo = form.getTextField('cellNo');
+    //const cellNo = form.getTextField('cellNo');
     //cellNo.setText('100000');
-    const workNo = form.getTextField('workNo');
+    //const workNo = form.getTextField('workNo');
     //workNo.setText('100000');
-    const male = form.getTextField('male');
+    //const male = form.getTextField('male');
     //male.setText('100000');
-    const female = form.getTextField('female');
+    //const female = form.getTextField('female');
     //female.setText('100000');
-    const repaymentFrequency = form.getTextField('repaymentFrequency');
-    repaymentFrequency.setText('M');
+    //const repaymentFrequency = form.getTextField('repaymentFrequency');
+    //repaymentFrequency.setText('M');
     const termr = form.getTextField('loanTerm');
     termr.setText(term.toString());
 
     const totalLoanAmount = form.getTextField('totalLoanAmount');
-    totalLoanAmount.setText('100000');
+    //totalLoanAmount.setText(totalLoanAmount.toString());
 
-    const customerSignature = form.getTextField('customerSignature');
-    customerSignature.setText('100000');
-    const bankSignature = form.getTextField('bankSignature');
-    bankSignature.setText('100000');
+    //const customerSignature = form.getTextField('customerSignature');
+    //customerSignature.setText('100000');
+    //const bankSignature = form.getTextField('bankSignature');
+    //bankSignature.setText('100000');
     const date1 = form.getTextField('date1');
-    date1.setText('100000');
-    const date = form.getTextField('date');
-    date.setText('100000');
-    const omang = form.getTextField('omang');
+    var s = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+    date1.setText(s.toString());
+    date1.setFontSize(16);
+
+    //const date = form.getTextField('date');
+    //date.setText('100000');
+    //const omang = form.getTextField('omang');
     //omang.setText('100000');
     const birthdate = form.getTextField('birthdate');
-    birthdate.setText('100000');
+    birthdate.setText(dayValue+'/'+monthValue+'/'+yearValue);
 }
 function fillgovOdc(form){
     const date = form.getTextField('date');
@@ -589,15 +600,21 @@ function filltawuOdc(form){
 }
 function fillBotsLife(form){
     const date = form.getTextField('date');
-    date.setText('100000');
-    const omangNumber = form.getTextField('omangNumber');
-    omangNumber.setText('100000');
+    var s = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+
+    date.setText(s.toString());
+    date.setFontSize(16);
+
+    const omangNumber = form.getTextField('omang');
+    //omangNumber.setText('100000');
     const customerName = form.getTextField('customerName');
-    customerName.setText('100000');
-    const residingAt = form.getTextField('residingAt');
-    residingAt.setText('100000');
-    const loanAmount = form.getTextField('loanAmount');
-    loanAmount.setText('100000');
+    //customerName.setText('100000');
+    const residingAt = form.getTextField('addressLine1');
+    //residingAt.setText('100000');
+    const residingAt2 = form.getTextField('addressLine2');
+    //residingAt2.setText('100000');
+    const loanAmount = form.getTextField('totalLoanAmount');
+    loanAmount.setText();
     const loanTerm = form.getTextField('loanTerm');
     loanTerm.setText('100000');
     const installment = form.getTextField('installment');
@@ -800,7 +817,6 @@ document.getElementById('next').addEventListener('click',()=>{
     //   }).catch(err => {
     //     console.error('Error filling PDF:', err);
     //   });
-
     direction = true;
     currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
     current = document.getElementById(currentDiv)
@@ -1027,6 +1043,7 @@ var installment = 0;
 var net = 0;
 var b2c = 0;
 var loan = 0;
+var totalLoanAmount = 0;
 
 var MaxLoan = 0;
 var calMax = 0;
@@ -3294,6 +3311,8 @@ function totalMonthlyAmountDisplay(selectedLoanAmount){
 
     //total interest
     l14 = (g14*term)-f14;
+    //
+    totalLoanAmount = Number(selectedLoanAmount + d14 + e14).toFixed(2);
 
     // Calculate total monthly amount+
 
