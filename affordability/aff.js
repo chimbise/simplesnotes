@@ -53,7 +53,7 @@ async function fillPdf() {
     const formfcbApp2 = pdfDocfcbApp2.getForm();
     const formfcbApp3 = pdfDocfcbApp3.getForm();
 
-    const fields = formblil.getFields();
+    const fields = formgov.getFields();
     fields.forEach((field) => {
         console.log(`Field name: ${field.getName()}`);
     });
@@ -70,11 +70,25 @@ async function fillPdf() {
     fillOverview(formoverview)
     fillaffordability(formaffordability,calMax)
     fillblil(formblil)
+    pg1(formfcbApp1)
+    var c = ''
+    switch (inputid) {
+        case 'tawu26':
+        case 'tawu23':
+            filltawuOdc()
+            c = 't'
+            break;
+        case 'botusafe26':
+        case 'botusafe23':
+        case 'botusafe20':
+            fillgovOdc()
+            c = 'g'
+            break;
+        default:
+            break;
+    }
 
-    // const adjNetIncome = formaffordability.getTextField('adjNetIncome');
-    // adjNetIncome.setText('100000');
-    // const birthdate = formblil.getTextField('birthdate');
-    // birthdate.setText('100000');
+    
     const date = formgov.getTextField('date');
     date.setText('100000');
     const capitalBank = formtawu.getTextField('capitalBank');
@@ -85,8 +99,6 @@ async function fillPdf() {
     loanTerm.setText('96');
     const agentName = formdeclaration.getTextField('agentName');
     agentName.setText('Thapelo Holonga');
-    const collectionFee = formfcbApp1.getTextField('collectionFee');
-    collectionFee.setText('56.68');
     const Signature_4 = formfcbApp2.getTextField('Signature_4');
     Signature_4.setText('t.h.');
     const beneficiaryCellNumber = formfcbApp3.getTextField('beneficiaryCellNumber');
@@ -177,7 +189,7 @@ container.style.display = 'flex';
 container.style.flexDirection = 'column'; // Align checkboxes vertically
 
 // Array of labels for the checkboxes
-const labels = ['overview', 'affordability', 'credit life', 'odc'];
+const labels = ['overview', 'affordability', 'credit life', 'odc', 'fcbApp1'];
 
 // Loop through the labels to create checkboxes and their labels
 labels.forEach(labelText => {
@@ -188,7 +200,7 @@ labels.forEach(labelText => {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.id = labelText;
-    if (labelText === 'credit'||labelText === 'odc') {
+    if (labelText === 'odc') {
         checkbox.disabled = true; // Disable the checkbox
     }
     
@@ -223,18 +235,31 @@ downloadButton.onclick = function() {
         const a = document.createElement('a');
         const b = document.createElement('a');
         const c = document.createElement('a')
+        const d = document.createElement('a')
+
 
         a.href = url;
         b.href = url2;
         c.href = url3;
+        e.href = url4;
+        f.href = url5;
+        d.href = url9;//pg1
 
         a.download = 'overview.pdf';
         b.download = 'affordability.pdf';
-        c.download = 'blil.pdf'
+        c.download = 'insurance.pdf';
+        d.download = 'page1.pdf';
+        d.download = 'odc.pdf';
+        d.download = 'odc.pdf';
+
 
         document.body.appendChild(a);
         document.body.appendChild(b);
         document.body.appendChild(c);
+        document.body.appendChild(d);
+        document.body.appendChild(e);
+        document.body.appendChild(f);
+
 
 
         checkboxes.forEach(checkbox => {
@@ -255,7 +280,18 @@ downloadButton.onclick = function() {
                         c.click()
                         break;
                     case 'odc':
-                        
+                        if (c === 'g') {
+                            e.click()
+                            document.body.removeChild(e);
+
+                        } else {
+                            f.click()
+                            document.body.removeChild(f);
+
+                        }
+                        break;
+                    case 'fcbApp1':
+                        d.click()
                         break;
                     default:
                         break;
@@ -266,6 +302,8 @@ downloadButton.onclick = function() {
         document.body.removeChild(a);
         document.body.removeChild(b);
         document.body.removeChild(c);
+        document.body.removeChild(d);
+
 
     };
     containerDiv.appendChild(optionsDiv)
@@ -484,118 +522,147 @@ function fillaffordability(form,aff){
     const customerSignature = form.getTextField('customerSignature');
     //customerSignature.setText('customerSignature');
 }
+
+
 function fillblil(form){
     const bankName = form.getTextField('bankName');
     bankName.setText('First Capital Bank');
+
     const firstName = form.getTextField('firstName');
     //firstName.setText('100000');
+
     const surname = form.getTextField('surname');
     //surname.setText('100000');
+
     const nationality = form.getTextField('nationality');
     nationality.setText('Motswana');
+
     const addressLine1 = form.getTextField('addressLine1');
     //addressLine1.setText('100000');
+
     const addressLine2 = form.getTextField('addressLine2');
     //addressLine2.setText('100000');
+
     const occupation = form.getTextField('occupation');
     //occupation.setText('100000');
-    //const accType = form.getTextField('accType');
-    //accType.setText('100000');
+
+    const accType = form.getCheckBox('accType');
+    accType.check();
+
     //const cellNo = form.getTextField('cellNo');
     //cellNo.setText('100000');
     //const workNo = form.getTextField('workNo');
     //workNo.setText('100000');
-    //const male = form.getTextField('male');
-    //male.setText('100000');
-    //const female = form.getTextField('female');
-    //female.setText('100000');
-    //const repaymentFrequency = form.getTextField('repaymentFrequency');
-    //repaymentFrequency.setText('M');
+
+    const male = form.getCheckBox('male');
+    const female = form.getCheckBox('female');
+    if (gender==='male') {
+        male.check();
+    } else {
+        female.check();
+    }
+
+    const repaymentFrequency = form.getCheckBox('repaymentFrequency');
+    repaymentFrequency.check();
+
     const termr = form.getTextField('loanTerm');
     termr.setText(term.toString());
 
     const totalLoanAmount = form.getTextField('totalLoanAmount');
-    //totalLoanAmount.setText(totalLoanAmount.toString());
+    totalLoanAmount.setText(Number(f14.toFixed(2)).toString());
+
+    const singlePremium = form.getTextField('singlePremium');
+    singlePremium.setText(h14.toFixed(2).toString());
 
     //const customerSignature = form.getTextField('customerSignature');
     //customerSignature.setText('100000');
+
     //const bankSignature = form.getTextField('bankSignature');
     //bankSignature.setText('100000');
-    const date1 = form.getTextField('date1');
-    var s = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
-    date1.setText(s.toString());
-    date1.setFontSize(16);
 
-    //const date = form.getTextField('date');
-    //date.setText('100000');
+    // const date1 = form.getTextField('date1');
+    // date1.setText(s.toString());
+
+    const date = form.getTextField('date');
+    var s = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+    date.setText(s.toString());
+
     //const omang = form.getTextField('omang');
     //omang.setText('100000');
+
     const birthdate = form.getTextField('birthdate');
     birthdate.setText(dayValue+'/'+monthValue+'/'+yearValue);
 }
 function fillgovOdc(form){
     const date = form.getTextField('date');
-    date.setText('100000');
-    const omangNumber = form.getTextField('omangNumber');
-    omangNumber.setText('100000');
-    const customerName = form.getTextField('customerName');
-    customerName.setText('100000');
-    const omangNumber2 = form.getTextField('omangNumber2');
-    omangNumber2.setText('100000');
-    const ministry = form.getTextField('ministry');
-    ministry.setText('100000');
-    const postOf = form.getTextField('postOf');
-    postOf.setText('100000');
-    const situated = form.getTextField('situated');
-    situated.setText('100000');
-    const residingAt = form.getTextField('residingAt');
-    residingAt.setText('100000');
+    var s = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+    date.setText(s.toString());    // const omangNumber = form.getTextField('omangNumber');
+    // omangNumber.setText('100000');
+    // const customerName = form.getTextField('customerName');
+    // customerName.setText('100000');
+    // const omangNumber2 = form.getTextField('omangNumber2');
+    // omangNumber2.setText('100000');
+    // const ministry = form.getTextField('ministry');
+    // ministry.setText('100000');
+    // const postOf = form.getTextField('postOf');
+    // postOf.setText('100000');
+    // const situated = form.getTextField('situated');
+    // situated.setText('100000');
+    // const residingAt = form.getTextField('residingAt');
+    // residingAt.setText('100000');
     const loanAmount = form.getTextField('loanAmount');
-    loanAmount.setText('100000');
+    loanAmount.setText(loan.toString());
     const loanTerm = form.getTextField('loanTerm');
-    loanTerm.setText('100000');
-    const installment = form.getTextField('installment');
-    installment.setText('100000');
+    loanTerm.setText(term.toString());
+    const installmentf = form.getTextField('installment');
+    installmentf.setText(installment.toString());
     const loanTerm1 = form.getTextField('loanTerm1');
-    loanTerm1.setText('100000');
+    loanTerm1.setText(term.toString());
     const loanTerm2 = form.getTextField('loanTerm2');
-    loanTerm2.setText('100000');
+    loanTerm2.setText(term.toString());
+
+    const loaner = form.getTextField('botlhaleInvestments');
+    gaborone.setText('BOTLHALE INVESTENTS (PTY)LTD');
+
     const gaborone = form.getTextField('gaborone');
-    gaborone.setText('100000');
-    const customerName1 = form.getTextField('customerName1');
-    customerName1.setText('100000');
+    gaborone.setText('Gaborone');
+    // const customerName1 = form.getTextField('customerName1');
+    // customerName1.setText('100000');
     const date2 = form.getTextField('date2');
     date2.setText('100000');
-    const customerSignature = form.getTextField('customerSignature');
-    customerSignature.setText('100000');
+    // const customerSignature = form.getTextField('customerSignature');
+    // customerSignature.setText('100000');
 }
 function filltawuOdc(form){
     const date = form.getTextField('date');
-        date.setText('100000');
-    const omangNumber = form.getTextField('omangNumber');
-        omangNumber.setText('100000');
-    const customerName = form.getTextField('customerName');
-        customerName.setText('100000');
-    const place = form.getTextField('place');
-        place.setText('100000');
-    const institution = form.getTextField('institution');
-        institution.setText('100000');
-    const position = form.getTextField('position');
-        position.setText('100000');
-    const omangNumber1 = form.getTextField('omangNumber1');
-        omangNumber1.setText('100000');
+    var s = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+    date.setText(s.toString());
+    // const omangNumber = form.getTextField('omangNumber');
+    //     omangNumber.setText('100000');
+    // const customerName = form.getTextField('customerName');
+    //     customerName.setText('100000');
+    // const place = form.getTextField('place');
+    //     place.setText('100000');
+    // const institution = form.getTextField('institution');
+    //     institution.setText('100000');
+    // const position = form.getTextField('position');
+    //     position.setText('100000');
+    // const omangNumber1 = form.getTextField('omangNumber1');
+    //     omangNumber1.setText('100000');
+
+   
     const capitalBank = form.getTextField('capitalBank');
-        capitalBank.setText('Capital Bank');
+        capitalBank.setText('First Capital Bank');
     const loanTerm = form.getTextField('loanTerm');
-        loanTerm.setText('100000');
-    const installment = form.getTextField('installment');
-        installment.setText('100000');
+        loanTerm.setText(term.toString());
+    const installmenta = form.getTextField('installment');
+        installmenta.setText(installment.toString());
     const loanTerm1 = form.getTextField('loanTerm1');
-        loanTerm1.setText('100000');
+        loanTerm1.setText(term.toString());
     const date1 = form.getTextField('date1');
-        date1.setText('100000');
-    const customerSignature = form.getTextField('customerSignature');
-        customerSignature.setText('100000');
+        date1.setText(s.toString());
+    // const customerSignature = form.getTextField('customerSignature');
+    //     customerSignature.setText('100000');
 
 }
 function fillBotsLife(form){
@@ -679,6 +746,7 @@ function fillDeclaration(form) {
     const agentSignature = form.getTextField('agentSignature');
     agentSignature.setText('100000');
 }
+var gender = 'male';
 function pg1(form) {
     // streetName
     // boxNumber
@@ -714,28 +782,34 @@ function pg1(form) {
     // refCellNumber2
     // employerName
     // department
+
+
+
     const interestRate = form.getTextField('interestRate');
-    interestRate.setText('100000');
+    var i = rt*100;
+    interestRate.setText(i.toString());
     const loanAmount = form.getTextField('loanAmount');
-    loanAmount.setText('100000');
+    loanAmount.setText(loan.toString());
     const adminFee = form.getTextField('adminFee');
-    adminFee.setText('100000');
+    adminFee.setText(Number(d14.toFixed(2)).toString());
     const loanTerm = form.getTextField('loanTerm');
-    loanTerm.setText('100000');
+    loanTerm.setText(term.toString());
     const installmentOne = form.getTextField('installmentOne');
-    installmentOne.setText('100000');
+    var c = g14 + h14
+    installmentOne.setText(c.toFixed(2).toString());
     const insurancePremium = form.getTextField('insurancePremium');
-    insurancePremium.setText('100000');
+    insurancePremium.setText(h14.toFixed(2).toString());
     const processingFee = form.getTextField('processingFee');
-    processingFee.setText('100000');
+    processingFee.setText(Number(e14.toFixed(2)).toString());
     const totalLoanAmount = form.getTextField('totalLoanAmount');
-    totalLoanAmount.setText('100000');
+    totalLoanAmount.setText(Number(f14.toFixed(2)).toString());
     const apr = form.getTextField('apr');
-    apr.setText('100000');
+    var j = calculateRate(term, -installment, loan,0,0,0.1)*1200;
+    apr.setText(j.toFixed(2).toString());
     const collectionFee = form.getTextField('collectionFee');
-    collectionFee.setText('100000');
-    const installment = form.getTextField('installment');
-    installment.setText('100000'); 
+    collectionFee.setText(Number(i14.toFixed(2)).toString());
+    const installmentz = form.getTextField('installment');
+    installmentz.setText(installment.toString()); 
         
     // surname 
     // firstName 
@@ -1025,18 +1099,18 @@ document.getElementById('next').addEventListener('click',()=>{
 function updateTerm(x,value) {
     value.textContent = x;
 }
-function updateInstallment(x,value){
+function updateInstallment(value){
     value.textContent = installment;
 }
-function updateLoanAmount(x, value) {
+function updateLoanAmount(value) {
     value.textContent = loan;
 }
 
-function updateNetPay(x,value) {
+function updateNetPay(value) {
     value.textContent = net;
 }
 
-function updateB2c(x,value) {
+function updateB2c(value) {
     value.textContent = b2c
 }
 var installment = 0;
@@ -1124,10 +1198,10 @@ function chooseLoan() {
                 b2c = Number(MaxLoan[1]-2*MaxLoan[2]-settle).toFixed(2);
 
                 updateTerm(change,Actual2)
-                updateInstallment(change,Actual4)
-                updateLoanAmount(change,Actual3)
-                updateNetPay(change,Actual5)
-                updateB2c(change,Actual6)
+                updateInstallment(Actual4)
+                updateLoanAmount(Actual3)
+                updateNetPay(Actual5)
+                updateB2c(Actual6)
             });
 
             // Apply some styling to the select element (optional)
@@ -1186,10 +1260,10 @@ function chooseLoan() {
                 b2c = Number(loan - 2*t[1]-settle).toFixed(2);
 
                 updateTerm(term,Actual2)
-                updateInstallment(number,Actual4)
-                updateLoanAmount(number,Actual3)
-                updateNetPay(number,Actual5)
-                updateB2c(number,Actual6)
+                updateInstallment(Actual4)
+                updateLoanAmount(Actual3)
+                updateNetPay(Actual5)
+                updateB2c(Actual6)
 
                 } 
                 
@@ -1246,10 +1320,10 @@ function chooseLoan() {
                 b2c = Number(loan-2*result[2]-settle).toFixed(2);
 
                 updateTerm(term,Actual2)
-                updateInstallment(number,Actual4)
-                updateLoanAmount(number,Actual3)
-                updateNetPay(number,Actual5)
-                updateB2c(number,Actual6)
+                updateInstallment(Actual4)
+                updateLoanAmount(Actual3)
+                updateNetPay(Actual5)
+                updateB2c(Actual6)
             });
 
             // Append the editable span to the container div
@@ -1305,10 +1379,10 @@ function chooseLoan() {
                 }
 
                 updateTerm(term,Actual2)
-                updateInstallment(number,Actual4)
-                updateLoanAmount(number,Actual3)
-                updateNetPay(number,Actual5)
-                updateB2c(number,Actual6)
+                updateInstallment(Actual4)
+                updateLoanAmount(Actual3)
+                updateNetPay(Actual5)
+                updateB2c(Actual6)
                 
             });
 
@@ -1384,10 +1458,10 @@ function chooseLoan() {
                     b2c = Number(loan-2*f[1]-settle).toFixed(2);
                     
                     updateTerm(term,Actual2)
-                    updateInstallment(number,Actual4)
-                    updateLoanAmount(number,Actual3)
-                    updateNetPay(number,Actual5)
-                    updateB2c(number,Actual6)
+                    updateInstallment(Actual4)
+                    updateLoanAmount(Actual3)
+                    updateNetPay(Actual5)
+                    updateB2c(Actual6)
                 }
 
                 
@@ -1415,6 +1489,7 @@ function chooseLoan() {
 }
  
 }
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 function viewLoanDetailsDiv(){
     var interest = rt*100//interest
     var loanTerm = term//months
@@ -3239,7 +3314,6 @@ function calculateMaxInstallment() {
             otherLoans,adjNettIncome,
             Math.floor(taxx * 100) / 100,settleloans,Number(n11.toFixed(2)),rule,n13]
 }
-
 function findClosestKey(target) {
     var arr = loans; 
     for (let i = 0; i < arr.length; i++) {
@@ -3254,19 +3328,16 @@ function findClosestKey(target) {
         }
     }
 }
-
 var startLoanAmount = 5000;
 var maxLoanAmount = 700000;
 var loans = [];
 var loanAmountColumn = {}; // Loan amount column
-
 // Loop to populate the loan amount column
 for (var loanAmount = startLoanAmount; loanAmount <= maxLoanAmount; loanAmount += 500) {
     loans.push(loanAmount)
     var ckey = loanAmount.toString();
     loanAmountColumn[ckey] = loanAmount;
 }
-
 var rt = 0.20; // Annual interest rate for 20%
 var b6 = rt / 12;// Monthly interest for 23%
 var b9 = 0.0271; // Collections fee
