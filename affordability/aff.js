@@ -3189,7 +3189,8 @@ function calculateTaxNonIndustrial() {
     } else{
         tax = 1087.50 + 0.25*(Number(basicAmount) + permanentAllowance - 13000 - Number(taxPensionDeductions[1]))
     }
-    return Number(taxPensionDeductions[0])-tax
+
+    return Number(taxPensionDeductions[0]) - Math.floor(tax * 100) / 100
 }
 
 function addPairs(obj) {
@@ -3234,9 +3235,9 @@ function calculateMaxInstallment() {
         rule = 1500
     }
     var n13 = n11 - rule;
-   return [Number(basicAmount),permanentAllowance,adjBasicSalary,Number(deductionAmount),
+   return [Number(basicAmount),permanentAllowance,Number(adjBasicSalary.toFixed(2)),Number(deductionAmount),
             otherLoans,adjNettIncome,
-            taxx,settleloans,Number(n11.toFixed(2)),rule,n13]
+            Math.floor(taxx * 100) / 100,settleloans,Number(n11.toFixed(2)),rule,n13]
 }
 
 function findClosestKey(target) {
