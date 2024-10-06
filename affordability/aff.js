@@ -75,13 +75,13 @@ async function fillPdf() {
     switch (inputid) {
         case 'tawu26':
         case 'tawu23':
-            filltawuOdc()
+            //filltawuOdc()
             c = 't'
             break;
         case 'botusafe26':
         case 'botusafe23':
         case 'botusafe20':
-            fillgovOdc()
+            //fillgovOdc()
             c = 'g'
             break;
         default:
@@ -236,6 +236,9 @@ downloadButton.onclick = function() {
         const b = document.createElement('a');
         const c = document.createElement('a')
         const d = document.createElement('a')
+        const e = document.createElement('a')
+        const f = document.createElement('a')
+
 
 
         a.href = url;
