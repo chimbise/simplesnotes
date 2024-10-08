@@ -2425,7 +2425,7 @@ function createNewloanDiv() {
 }
 function createLoanCodesOption() {
     const allowance =  ['boprita','bogowu','botusafe(capital bank)','botusafe(other)','TAWU',
-        'letshego','bayport','BDF advance','other']
+        'letshego','bayport','BDF advance','Express Credit','Saccos','minet','other 1','other 2','other 3']
     const newloanPresentDiv = document.createElement('div');
     newloanPresentDiv.className = 'newloanPresentSelection';
     newloanPresentDiv.id = 'newloanPresentSelection';
@@ -2591,7 +2591,7 @@ function createSettleLoanDiv() {
 }
 function createSettleLoanCodesOption() {
     const allowance =  ['boprita','bogowu','botusafe(capital bank)','botusafe(other)','TAWU',
-        'letshego','bayport','BDF advance','other']
+        'letshego','bayport','BDF advance','Express Credit','Saccos','minet','other 1','other 2','other 3']
 
     const newloanPresentDiv = document.createElement('div');
     newloanPresentDiv.className = 'settleloanPresentSelection';
@@ -2628,6 +2628,7 @@ function createSettleLoanCodesOption() {
             } else {
                 selectedsettleLoanCode = selectedsettleLoanCode.filter(item => item !== checkbox.value);
                 delete settleLoanInputs[f]
+                delete settleLoanBalances[f]
             }
         });
     });
