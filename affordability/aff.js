@@ -53,7 +53,7 @@ async function fillPdf() {
     const formfcbApp2 = pdfDocfcbApp2.getForm();
     const formfcbApp3 = pdfDocfcbApp3.getForm();
 
-    const fields = formgov.getFields();
+    const fields = formfcbApp1.getFields();
     fields.forEach((field) => {
         console.log(`Field name: ${field.getName()}`);
     });
@@ -71,38 +71,43 @@ async function fillPdf() {
     fillaffordability(formaffordability,calMax)
     fillblil(formblil)
     pg1(formfcbApp1)
-    var c = ''
+    var cg = ''
+
     switch (inputid) {
         case 'tawu26':
         case 'tawu23':
-            //filltawuOdc()
-            c = 't'
+            filltawuOdc(formtawu)
+            cg = 't'
             break;
         case 'botusafe26':
         case 'botusafe23':
         case 'botusafe20':
-            //fillgovOdc()
-            c = 'g'
+            fillgovOdc(formgov)
+            cg = 'g'
+            break;
+        case 'botusafe20':
+            fillBotsLifeOdc(formgov)
+            cg = 'g'
             break;
         default:
             break;
     }
 
     
-    const date = formgov.getTextField('date');
-    date.setText('100000');
-    const capitalBank = formtawu.getTextField('capitalBank');
-    capitalBank.setText('Capital Bank');
-    const installment = formbpopf.getTextField('installment');
-    installment.setText('100000');
-    const loanTerm = formbotsLife.getTextField('loanTerm');
-    loanTerm.setText('96');
-    const agentName = formdeclaration.getTextField('agentName');
-    agentName.setText('Thapelo Holonga');
-    const Signature_4 = formfcbApp2.getTextField('Signature_4');
-    Signature_4.setText('t.h.');
-    const beneficiaryCellNumber = formfcbApp3.getTextField('beneficiaryCellNumber');
-    beneficiaryCellNumber.setText('74650235');
+    // const date = formgov.getTextField('date');
+    // date.setText('100000');
+    // const capitalBank = formtawu.getTextField('capitalBank');
+    // capitalBank.setText('Capital Bank');
+    // const installment = formbpopf.getTextField('installment');
+    // installment.setText('100000');
+    // const loanTerm = formbotsLife.getTextField('loanTerm');
+    // loanTerm.setText('96');
+    // const agentName = formdeclaration.getTextField('agentName');
+    // agentName.setText('Thapelo Holonga');
+    // const Signature_4 = formfcbApp2.getTextField('Signature_4');
+    // Signature_4.setText('t.h.');
+    // const beneficiaryCellNumber = formfcbApp3.getTextField('beneficiaryCellNumber');
+    // beneficiaryCellNumber.setText('74650235');
 
     // 
     formblil.flatten();
@@ -201,7 +206,7 @@ labels.forEach(labelText => {
     checkbox.type = 'checkbox';
     checkbox.id = labelText;
     if (labelText === 'odc') {
-        checkbox.disabled = true; // Disable the checkbox
+        //checkbox.disabled = true; // Disable the checkbox
     }
     
     // Add the checkbox and the label text to the label element
@@ -252,8 +257,8 @@ downloadButton.onclick = function() {
         b.download = 'affordability.pdf';
         c.download = 'insurance.pdf';
         d.download = 'page1.pdf';
-        d.download = 'odc.pdf';
-        d.download = 'odc.pdf';
+        e.download = 'odc.pdf';
+        f.download = 'odc.pdf';
 
 
         document.body.appendChild(a);
@@ -271,7 +276,6 @@ downloadButton.onclick = function() {
             if (checkbox.checked) {
                 // Get the label text associated with the checkbox
                 const label = checkbox.id;
-                console.log(label)
                 switch (label) {
                     case 'overview':
                         a.click();
@@ -283,7 +287,8 @@ downloadButton.onclick = function() {
                         c.click()
                         break;
                     case 'odc':
-                        if (c === 'g') {
+                            console.log(c)
+                        if (cg === 'g') {
                             e.click()
                             document.body.removeChild(e);
 
@@ -615,24 +620,22 @@ function fillgovOdc(form){
     // residingAt.setText('100000');
     const loanAmount = form.getTextField('loanAmount');
     loanAmount.setText(loan.toString());
-    const loanTerm = form.getTextField('loanTerm');
-    loanTerm.setText(term.toString());
     const installmentf = form.getTextField('installment');
     installmentf.setText(installment.toString());
-    const loanTerm1 = form.getTextField('loanTerm1');
+    const loanTerm1 = form.getTextField('loanTerm');
     loanTerm1.setText(term.toString());
-    const loanTerm2 = form.getTextField('loanTerm2');
+    const loanTerm2 = form.getTextField('loanTerm1');
     loanTerm2.setText(term.toString());
 
     const loaner = form.getTextField('botlhaleInvestments');
-    gaborone.setText('BOTLHALE INVESTENTS (PTY)LTD');
+    loaner.setText('BOTLHALE INVESTENTS (PTY)LTD');
 
-    const gaborone = form.getTextField('gaborone');
+    const gaborone = form.getTextField('Gaborone');
     gaborone.setText('Gaborone');
     // const customerName1 = form.getTextField('customerName1');
     // customerName1.setText('100000');
     const date2 = form.getTextField('date2');
-    date2.setText('100000');
+    date2.setText(s.toString());    // const omangNumber = form.getTextField('omangNumber');
     // const customerSignature = form.getTextField('customerSignature');
     // customerSignature.setText('100000');
 }
@@ -653,7 +656,9 @@ function filltawuOdc(form){
     // const omangNumber1 = form.getTextField('omangNumber1');
     //     omangNumber1.setText('100000');
 
-   
+
+    const place = form.getTextField('place');
+    place.setText('Gaborone');
     const capitalBank = form.getTextField('capitalBank');
         capitalBank.setText('First Capital Bank');
     const loanTerm = form.getTextField('loanTerm');
@@ -664,6 +669,7 @@ function filltawuOdc(form){
         loanTerm1.setText(term.toString());
     const date1 = form.getTextField('date1');
         date1.setText(s.toString());
+        
     // const customerSignature = form.getTextField('customerSignature');
     //     customerSignature.setText('100000');
 
@@ -751,6 +757,56 @@ function fillDeclaration(form) {
 }
 var gender = 'male';
 function pg1(form) {
+
+    const streetName2 = form.getTextField('Street Name_2');
+//     Field name: Street Name_2
+// aff.js:59 Field name: Plot Number
+// aff.js:59 Field name: officeNumber
+// aff.js:59 Field name: Check Box3
+// aff.js:59 Field name: surname
+// aff.js:59 Field name: firstname
+// aff.js:59 Field name: othername
+// aff.js:59 Field name: title
+// aff.js:59 Field name: omangNumber
+// aff.js:59 Field name: birthdate
+// aff.js:59 Field name: gender
+// aff.js:59 Field name: streetName
+// aff.js:59 Field name: plotNumber
+// aff.js:59 Field name: ward
+// aff.js:59 Field name: city
+// aff.js:59 Field name: boxNumber
+// aff.js:59 Field name: city1
+// aff.js:59 Field name: email
+// aff.js:59 Field name: cellNumber
+// aff.js:59 Field name: employerName
+// aff.js:59 Field name: department
+// aff.js:59 Field name: employerAddress
+// aff.js:59 Field name: occupation
+// aff.js:59 Field name: omangNumber1
+// aff.js:59 Field name: employmentDate
+// aff.js:59 Field name: basicSalary
+// aff.js:59 Field name: deduction
+// aff.js:59 Field name: payslipNetPay
+// aff.js:59 Field name: accHolder
+// aff.js:59 Field name: accNumber
+// aff.js:59 Field name: bankName
+// aff.js:59 Field name: branchName
+// aff.js:59 Field name: branchCode
+// aff.js:59 Field name: accType
+// aff.js:59 Field name: refWard
+// aff.js:59 Field name: refCity
+// aff.js:59 Field name: refCellNumber
+// aff.js:59 Field name: refName
+// aff.js:59 Field name: refName1
+// aff.js:59 Field name: ref2Ward
+// aff.js:59 Field name: refCity2
+// aff.js:59 Field name: ref2CellNumber
+// aff.js:59 Field name: notMarried
+// aff.js:59 Field name: dirvoced
+// aff.js:59 Field name: widowed
+// aff.js:59 Field name: marriedCOP
+// aff.js:59 Field name: marriedOCOP
+// aff.js:59 Field name: marriageDate
     // streetName
     // boxNumber
     // cellNumber
@@ -2630,6 +2686,7 @@ function createSettleLoanCodesOption() {
                 delete settleLoanInputs[f]
                 delete settleLoanBalances[f]
             }
+
         });
     });
 
@@ -3114,7 +3171,6 @@ function selectQualifyingProduct() {
         case 'botusafe20':
             bot20Input.checked = true;
             break;
-    
         default:
             break;
     }
@@ -3425,3 +3481,107 @@ if (rate === 0) {
     return -pmt; // Negate the result to match the Excel PMT function behavior
 }
 }
+
+// Function to create the form dynamically
+function createForm() {
+    // Get the div where the form will be appended
+    const formContainer = document.getElementById('particularsForm');
+
+    // Create the form element
+    const form = document.createElement('form');
+    form.setAttribute('id', 'dynamicForm');
+
+    // Helper function to create a section with a title
+    function createSection(title) {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.classList.add('form-section');
+
+        const sectionTitle = document.createElement('h4');
+        sectionTitle.textContent = title;
+        sectionDiv.appendChild(sectionTitle);
+
+        return sectionDiv;
+    }
+
+    // Helper function to create a form field
+    function createField(labelText, inputType, inputName) {
+        const fieldDiv = document.createElement('div');
+        fieldDiv.classList.add('form-field');
+
+        const label = document.createElement('label');
+        label.textContent = labelText;
+        label.setAttribute('for', inputName);
+
+        const input = document.createElement('input');
+        input.setAttribute('type', inputType);
+        input.setAttribute('name', inputName);
+        input.setAttribute('id', inputName);
+
+        fieldDiv.appendChild(label);
+        fieldDiv.appendChild(input);
+
+        return fieldDiv;
+    }
+
+    // Section 1: Applicant Details (Name, Surname)
+    const applicantDetails = createSection('APPLICANT DETAILS');
+    applicantDetails.appendChild(createField('Name', 'text', 'applicantName'));
+    applicantDetails.appendChild(createField('Surname', 'text', 'applicantSurname'));
+
+    // Section 2: Work Details (Phone Number, Occupation)
+    const workDetails = createSection('WORK DETAILS');
+    workDetails.appendChild(createField('Work Number', 'tel', 'workPhone'));
+    workDetails.appendChild(createField('Occupation', 'text', 'occupation'));
+
+    // Section 3: Next of Kin 1 (Name, Surname)
+    const nextOfKin1 = createSection('NEXT OF KIN 1');
+    nextOfKin1.appendChild(createField('Name', 'text', 'kin1Name'));
+    nextOfKin1.appendChild(createField('Surname', 'text', 'kin1Surname'));
+
+    // Section 4: Next of Kin 2 (Name, Surname)
+    const nextOfKin2 = createSection('NEXT OF KIN 2');
+    nextOfKin2.appendChild(createField('Name', 'text', 'kin2Name'));
+    nextOfKin2.appendChild(createField('Surname', 'text', 'kin2Surname'));
+
+    // Section 5: Beneficiary (Name, Surname)
+    const beneficiary = createSection('BENEFICIARY');
+    beneficiary.appendChild(createField('Name', 'text', 'beneficiaryName'));
+    beneficiary.appendChild(createField('Surname', 'text', 'beneficiarySurname'));
+
+    // Append all sections to the form
+    form.appendChild(applicantDetails);
+    form.appendChild(workDetails);
+    form.appendChild(nextOfKin1);
+    form.appendChild(nextOfKin2);
+    form.appendChild(beneficiary);
+
+    // Optional: Add a submit button and a cancel button inside a flex container
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.justifyContent = 'space-between';
+    buttonContainer.style.marginTop = '20px';  // Add some space above the buttons
+
+    // Submit Button
+    const submitButton = document.createElement('button');
+    submitButton.setAttribute('type', 'submit');
+    submitButton.textContent = 'Save';
+    submitButton.style.marginLeft = 'auto';  // Move the cancel button to the far right
+
+
+    // Cancel Button
+    const cancelButton = document.createElement('button');
+    cancelButton.setAttribute('type', 'button');
+    cancelButton.textContent = 'Cancel';
+
+    // Append buttons to the button container
+    buttonContainer.appendChild(cancelButton);
+    buttonContainer.appendChild(submitButton);
+
+    // Append the button container to the form
+    form.appendChild(buttonContainer);
+
+
+    // Append the form to the container div
+    formContainer.appendChild(form);
+}
+//createForm()
