@@ -3315,16 +3315,19 @@ function calculateTaxNonIndustrial() {
     var tax = 0;
     var permanentAllowance = Number(addPairs(allowanceInputs))
     var one = Math.floor(Number(basicAmount) + permanentAllowance);
-    if (one > 0 && one < 7000) {
+    if (Number(basicAmount) <= 4000) {
+        tax = 0;
+    } else if (one > 4000 && one < 7000) {
         tax = 0.05 * one
     } else if(one >=7000 && one < 10000) {
-        tax = 350 + 0.125*(one - 7000)
+        tax = 150 + 0.125*(one - 7000)
     } else if(one >=10000 && one < 13000){
-        tax = 725 + 0.1875*(one - 10000)
+        tax = 525 + 0.1875*(one - 10000)
     } else{
         tax = 1087.50 + 0.25*(Number(basicAmount) + permanentAllowance - 13000 - Number(taxPensionDeductions[1]))
     }
-
+    console.log(Number(taxPensionDeductions[0]))
+    console.log(tax)
     return Number(taxPensionDeductions[0]) - Math.floor(tax * 100) / 100
 }
 
