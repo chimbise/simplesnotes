@@ -1,3 +1,4 @@
+var formfcbApp1 = '';
 async function fillPdf() {
     // Fetch the PDF file from the img folder
     const overview = await fetch('../img/overview.pdf');
@@ -49,7 +50,7 @@ async function fillPdf() {
     const formbpopf = pdfDocbpopf.getForm();
     const formbotsLife = pdfDocbotsLife.getForm();
     const formdeclaration = pdfDocdeclaration.getForm();
-    const formfcbApp1 = pdfDocfcbApp1.getForm();
+    formfcbApp1 = pdfDocfcbApp1.getForm();
     const formfcbApp2 = pdfDocfcbApp2.getForm();
     const formfcbApp3 = pdfDocfcbApp3.getForm();
 
@@ -70,7 +71,7 @@ async function fillPdf() {
     fillOverview(formoverview)
     fillaffordability(formaffordability,calMax)
     fillblil(formblil)
-    pg1(formfcbApp1)
+    //pg1(formfcbApp1)
     var cg = ''
 
     switch (inputid) {
@@ -205,8 +206,17 @@ labels.forEach(labelText => {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.id = labelText;
-    if (labelText === 'odc') {
-        //checkbox.disabled = true; // Disable the checkbox
+    if (labelText === 'fcbApp1') {
+        checkbox.disabled = true; // Disable the checkbox
+    }
+    if (labelText === 'fcbApp1' ) {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                createForm()
+            } else {
+                
+            }
+        });
     }
     
     // Add the checkbox and the label text to the label element
@@ -216,6 +226,7 @@ labels.forEach(labelText => {
     // Append the label to the container
     container.appendChild(label);
 });
+
 
 
 // Show the download button
@@ -231,6 +242,8 @@ optionsDiv.appendChild(container)
 
 optionsDiv.appendChild(downloadButton)
 // // Handle download on button click
+
+
 downloadButton.onclick = function() {
     // const checkedLabels = [];
     
@@ -758,16 +771,42 @@ function fillDeclaration(form) {
 var gender = 'male';
 function pg1(form) {
 
-    const streetName2 = form.getTextField('Street Name_2');
+    const fields = form.getFields();
+    fields.forEach((field) => {
+        console.log(`Field name: ${field.getName()}`);
+    });
+    // // Section 2: Work Details (Phone Number, Occupation)
+    // const workDetails = createSection('WORK DETAILS');
+    // workDetails.appendChild(createField('Work Number', 'tel', 'workPhone'));
+    // workDetails.appendChild(createField('Occupation', 'text', 'occupation'));
+
+    // // Section 3: Next of Kin 1 (Name, Surname)
+    // const nextOfKin1 = createSection('NEXT OF KIN 1');
+    // nextOfKin1.appendChild(createField('Name', 'text', 'kin1Name'));
+    // nextOfKin1.appendChild(createField('Surname', 'text', 'kin1Surname'));
+
+    // // Section 4: Next of Kin 2 (Name, Surname)
+    // const nextOfKin2 = createSection('NEXT OF KIN 2');
+    // nextOfKin2.appendChild(createField('Name', 'text', 'kin2Name'));
+    // nextOfKin2.appendChild(createField('Surname', 'text', 'kin2Surname'));
+
+    // // Section 5: Beneficiary (Name, Surname)
+    // const beneficiary = createSection('BENEFICIARY');
+    // beneficiary.appendChild(createField('Name', 'text', 'beneficiaryName'));
+    // beneficiary.appendChild(createField('Surname', 'text', 'beneficiarySurname'));
+//    const streetName2 = form.getTextField('Street Name_2');
 //     Field name: Street Name_2
 // aff.js:59 Field name: Plot Number
 // aff.js:59 Field name: officeNumber
 // aff.js:59 Field name: Check Box3
-// aff.js:59 Field name: surname
-// aff.js:59 Field name: firstname
+const surname = form.getTextField('surname');
+surname.setText(formData.get('applicantapplicantSurnameName')); 
+const firstname = form.getTextField('firstname');
+firstname.setText(formData.get('applicantName')); 
 // aff.js:59 Field name: othername
 // aff.js:59 Field name: title
-// aff.js:59 Field name: omangNumber
+const omangNumber = form.getTextField('omangNumber');
+omangNumber.setText(formData.get('omangNumber')); 
 // aff.js:59 Field name: birthdate
 // aff.js:59 Field name: gender
 // aff.js:59 Field name: streetName
@@ -796,8 +835,11 @@ function pg1(form) {
 // aff.js:59 Field name: refWard
 // aff.js:59 Field name: refCity
 // aff.js:59 Field name: refCellNumber
-// aff.js:59 Field name: refName
+const refName = form.getTextField('refName');
+refName.setText(formData.get('kin1Name') + ' ' + formData.get('kin1Surname')); 
 // aff.js:59 Field name: refName1
+const refName1 = form.getTextField('refName1');
+refName1.setText(formData.get('kin2Name') + ' ' + formData.get('kin2Surname')); 
 // aff.js:59 Field name: ref2Ward
 // aff.js:59 Field name: refCity2
 // aff.js:59 Field name: ref2CellNumber
@@ -945,8 +987,8 @@ var currentDiv = ''
 var current = ''
 
 document.getElementById('next').addEventListener('click',()=>{
+    
     // fillPdf().then(() => {
-    //     console.log('PDF filled successfully!');
     //   }).catch(err => {
     //     console.error('Error filling PDF:', err);
     //   });
@@ -3313,9 +3355,10 @@ function getAge() {
 
 function calculateTaxNonIndustrial() {
     var tax = 0;
-    var permanentAllowance = Number(addPairs(allowanceInputs))
-    var one = Math.floor(Number(basicAmount) + permanentAllowance);
-    if (Number(basicAmount) <= 4000) {
+    //var permanentAllowance = Number(addPairs(allowanceInputs))
+    var permanentAllowanceTax = Number(addTaxPairs(allowanceInputs))
+    var one = Math.floor(Number(basicAmount) + permanentAllowanceTax);
+    if (one <= 4000) {
         tax = 0;
     } else if (one > 4000 && one < 7000) {
         tax = 0.05 * one
@@ -3323,8 +3366,8 @@ function calculateTaxNonIndustrial() {
         tax = 150 + 0.125*(one - 7000)
     } else if(one >=10000 && one < 13000){
         tax = 525 + 0.1875*(one - 10000)
-    } else{
-        tax = 1087.50 + 0.25*(Number(basicAmount) + permanentAllowance - 13000 - Number(taxPensionDeductions[1]))
+    } else {
+        tax = 1087.50 + 0.25*(Number(basicAmount) + permanentAllowanceTax - 13000 - Number(taxPensionDeductions[1]))
     }
     console.log(Number(taxPensionDeductions[0]))
     console.log(tax)
@@ -3335,6 +3378,16 @@ function addPairs(obj) {
     var sum = 0;
     for (let key in obj) {
         sum += Number(obj[key])
+    }
+    return sum
+}
+function addTaxPairs(obj) {
+    var sum = 0;
+    var excludeArray = ['Night duty overtime ICE','RASA']//exclude used non permanent allowances 
+    for (let key in obj) {
+        if (!excludeArray.includes(key)) {
+            sum += Number(obj[key])
+        }
     }
     return sum
 }
@@ -3485,6 +3538,12 @@ if (rate === 0) {
 }
 }
 
+function showform(){
+    //hide next and back back
+    //block particular form
+
+}
+var formData = ''
 // Function to create the form dynamically
 function createForm() {
     // Get the div where the form will be appended
@@ -3530,6 +3589,7 @@ function createForm() {
     const applicantDetails = createSection('APPLICANT DETAILS');
     applicantDetails.appendChild(createField('Name', 'text', 'applicantName'));
     applicantDetails.appendChild(createField('Surname', 'text', 'applicantSurname'));
+    applicantDetails.appendChild(createField('Omang', 'tel', 'omangNumber'))
 
     // Section 2: Work Details (Phone Number, Occupation)
     const workDetails = createSection('WORK DETAILS');
@@ -3570,11 +3630,24 @@ function createForm() {
     submitButton.textContent = 'Save';
     submitButton.style.marginLeft = 'auto';  // Move the cancel button to the far right
 
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+    
+        formData = new FormData(event.target);
+        console.log(formfcbApp1)
+        pg1(formfcbApp1)
+        formContainer.style.display = 'none'
+
+    });
+
 
     // Cancel Button
     const cancelButton = document.createElement('button');
     cancelButton.setAttribute('type', 'button');
     cancelButton.textContent = 'Cancel';
+    cancelButton.addEventListener('click',()=>{
+        formContainer.style.display = 'none'
+    })
 
     // Append buttons to the button container
     buttonContainer.appendChild(cancelButton);
@@ -3586,5 +3659,5 @@ function createForm() {
 
     // Append the form to the container div
     formContainer.appendChild(form);
+    formContainer.style.display = 'block'
 }
-//createForm()
