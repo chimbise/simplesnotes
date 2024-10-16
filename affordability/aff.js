@@ -3144,6 +3144,19 @@ function selectQualifyingProduct() {
     opt3.appendChild(bot26Input)
     opt3.appendChild(bot26Label)
 
+    const opt6 = document.createElement('div')
+    opt3.className = 'lahisa'
+    const lahisaInput = document.createElement('input');
+    lahisaInput.setAttribute('type', 'radio');
+    lahisaInput.setAttribute('name', 'product');
+    lahisaInput.setAttribute('id', 'lahisa');
+    lahisaInput.setAttribute('value', '0.26');
+    const lahisaLabel = document.createElement('label');
+    lahisaLabel.setAttribute('for', 'product');
+    lahisaLabel.textContent = 'lahisa';
+    opt6.appendChild(lahisaInput)
+    opt6.appendChild(lahisaLabel)
+
 
     // Append the radio inputs before the labels to the parent div
     productDiv.appendChild(optDiv);
@@ -3151,6 +3164,8 @@ function selectQualifyingProduct() {
     productDiv.appendChild(opt2);
     productDiv.appendChild(opt5);
     productDiv.appendChild(opt3);
+    productDiv.appendChild(opt6);
+
 
 
     containerDiv.appendChild(productDiv)
@@ -3195,6 +3210,14 @@ function selectQualifyingProduct() {
         inputid = 'tawu26'
 
     });
+    lahisaInput.addEventListener('change', (event)=>{
+        productValue = Number(event.target.value);
+        rt = productValue;
+        b6 = productValue/12;
+        c9 = 1 - 0.0268;
+        inputid = 'lahisa'
+
+    });
 
     // Set initial value for checked
     switch (inputid) {
@@ -3212,6 +3235,9 @@ function selectQualifyingProduct() {
             break;
         case 'botusafe20':
             bot20Input.checked = true;
+            break;
+        case 'lahisa':
+            lahisaInput.checked = true;
             break;
         default:
             break;
