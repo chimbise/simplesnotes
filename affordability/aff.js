@@ -3145,7 +3145,7 @@ function selectQualifyingProduct() {
     opt3.appendChild(bot26Label)
 
     const opt6 = document.createElement('div')
-    opt3.className = 'lahisa'
+    opt6.className = 'lahisa'
     const lahisaInput = document.createElement('input');
     lahisaInput.setAttribute('type', 'radio');
     lahisaInput.setAttribute('name', 'product');
