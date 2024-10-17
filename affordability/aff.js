@@ -1,4 +1,4 @@
-var formfcbApp1 = '';
+//let formfcbApp1;
 async function fillPdf() {
     // Fetch the PDF file from the img folder
     const overview = await fetch('../img/overview.pdf');
@@ -50,7 +50,7 @@ async function fillPdf() {
     const formbpopf = pdfDocbpopf.getForm();
     const formbotsLife = pdfDocbotsLife.getForm();
     const formdeclaration = pdfDocdeclaration.getForm();
-    formfcbApp1 = pdfDocfcbApp1.getForm();
+    const formfcbApp1 = pdfDocfcbApp1.getForm();
     const formfcbApp2 = pdfDocfcbApp2.getForm();
     const formfcbApp3 = pdfDocfcbApp3.getForm();
 
@@ -71,7 +71,7 @@ async function fillPdf() {
     fillOverview(formoverview)
     fillaffordability(formaffordability,calMax)
     fillblil(formblil)
-    //pg1(formfcbApp1)
+    pg1(formfcbApp1)
     var cg = ''
 
     switch (inputid) {
@@ -800,13 +800,10 @@ function pg1(form) {
 // aff.js:59 Field name: officeNumber
 // aff.js:59 Field name: Check Box3
 const surname = form.getTextField('surname');
-surname.setText(formData.get('applicantapplicantSurnameName')); 
 const firstname = form.getTextField('firstname');
-firstname.setText(formData.get('applicantName')); 
 // aff.js:59 Field name: othername
 // aff.js:59 Field name: title
 const omangNumber = form.getTextField('omangNumber');
-omangNumber.setText(formData.get('omangNumber')); 
 // aff.js:59 Field name: birthdate
 // aff.js:59 Field name: gender
 // aff.js:59 Field name: streetName
@@ -836,10 +833,17 @@ omangNumber.setText(formData.get('omangNumber'));
 // aff.js:59 Field name: refCity
 // aff.js:59 Field name: refCellNumber
 const refName = form.getTextField('refName');
-refName.setText(formData.get('kin1Name') + ' ' + formData.get('kin1Surname')); 
 // aff.js:59 Field name: refName1
 const refName1 = form.getTextField('refName1');
-refName1.setText(formData.get('kin2Name') + ' ' + formData.get('kin2Surname')); 
+if (formData !== '') {
+    var s = formData.get('applicantapplicantSurnameName')
+    console.log(s)
+    surname.setText(formData.get('applicantapplicantSurnameName'));
+    firstname.setText(formData.get('applicantName')); 
+    omangNumber.setText(formData.get('omangNumber')); 
+    refName.setText(formData.get('kin1Name') + ' ' + formData.get('kin1Surname')); 
+    refName1.setText(formData.get('kin2Name') + ' ' + formData.get('kin2Surname')); 
+}
 // aff.js:59 Field name: ref2Ward
 // aff.js:59 Field name: refCity2
 // aff.js:59 Field name: ref2CellNumber
@@ -3157,6 +3161,19 @@ function selectQualifyingProduct() {
     opt6.appendChild(lahisaInput)
     opt6.appendChild(lahisaLabel)
 
+    const opt7 = document.createElement('div')
+    opt7.className = 'tawuPara'
+    const tawuParaInput = document.createElement('input');
+    tawuParaInput.setAttribute('type', 'radio');
+    tawuParaInput.setAttribute('name', 'product');
+    tawuParaInput.setAttribute('id', 'tawuPara');
+    tawuParaInput.setAttribute('value', '0.26');
+    const tawuParaLabel = document.createElement('label');
+    tawuParaLabel.setAttribute('for', 'product');
+    tawuParaLabel.textContent = 'tawu Para';
+    opt7.appendChild(tawuParaInput)
+    opt7.appendChild(tawuParaLabel)
+
 
     // Append the radio inputs before the labels to the parent div
     productDiv.appendChild(optDiv);
@@ -3164,8 +3181,8 @@ function selectQualifyingProduct() {
     productDiv.appendChild(opt2);
     productDiv.appendChild(opt5);
     productDiv.appendChild(opt3);
+    productDiv.appendChild(opt7);
     productDiv.appendChild(opt6);
-
 
 
     containerDiv.appendChild(productDiv)
@@ -3210,6 +3227,14 @@ function selectQualifyingProduct() {
         inputid = 'tawu26'
 
     });
+    tawuParaInput.addEventListener('change', (event)=>{
+        productValue = Number(event.target.value);
+        rt = productValue;
+        b6 = productValue/12;
+        c9 = 1 - 0.025;
+        inputid = 'tawuPara'
+
+    });
     lahisaInput.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
         rt = productValue;
@@ -3223,6 +3248,9 @@ function selectQualifyingProduct() {
     switch (inputid) {
         case 'tawu26':
             tawu26Input.checked = true;
+            break;
+        case 'tawuPara':
+            tawuParaInput.checked = true;
             break;
         case 'tawu23':
             tawu23Input.checked = true;
@@ -3660,8 +3688,8 @@ function createForm() {
         event.preventDefault(); // Prevent form submission
     
         formData = new FormData(event.target);
-        console.log(formfcbApp1)
-        pg1(formfcbApp1)
+        //console.log(formfcbApp1)
+        fillPdf()
         formContainer.style.display = 'none'
 
     });
