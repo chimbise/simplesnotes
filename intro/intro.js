@@ -310,12 +310,14 @@
          c9 = 1 - 0.0268;
          break;
        case "Bpopf":
-         //c9 = 1 - 0.0306;
          c9 = 1 - 0.0280;
          break;
        case "botusafe 20%":
          c9 = 1 - 0.0271;
          break;
+        case "Tawu Para":
+          c9 = 1 - 0.025;
+          break;
        default:
          break;
            // Code to be executed if expression doesn't match any case
