@@ -1020,6 +1020,9 @@ document.getElementById('next').addEventListener('click',()=>{
         triggerShakeEffect()
       return;
     }
+    if (currentDiv === 'birthdateDiv'){
+        checkAge()
+    }
     current.classList.add('shrink');
     setTimeout(() => {
         switch (currentDiv) {
@@ -3033,48 +3036,51 @@ function maritalStatus() {
 }
 var productValue = 0.20;
 var inputid = 'botusafe20'
-var productMaxYear = 'all'
+var productMaxYear = 'other'
 const today = new Date();
+function checkAge(){
+    const birthday = new Date(`${yearValue}-${monthValue}-${dayValue}`);
+    const sixtiethBirthday = new Date(birthday);
+    if(productMaxYear === 'botsLife'||productMaxYear === 'bpopf'||productMaxYear === 'dikgosana'||productMaxYear === 'tawuPara') {
+        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 75);
+    } else{
+        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 60);
+    }
+
+    const monthsUntilSixty = monthsDifference(today, sixtiethBirthday);
+    if (monthsUntilSixty>=96) {
+        term = 96;
+    } else if(monthsUntilSixty>=84) {
+        term = 84;
+    } else if(monthsUntilSixty>=72) {
+        term = 72;
+    } else if(monthsUntilSixty>=60) {
+        term = 60;
+    } else if(monthsUntilSixty>=54) {
+        term = 54;
+    } else if(monthsUntilSixty>=48) {
+        term = 48;
+    } else if(monthsUntilSixty>=36){
+        term =36;
+    } else if(monthsUntilSixty>=30) {
+        term = 30;
+    } else if(monthsUntilSixty>=24) {
+        term = 24;
+    } else if(monthsUntilSixty>=18) {
+        term = 18;
+    } else if(monthsUntilSixty>=12) {
+        term = 12;
+    } else if(monthsUntilSixty>=6) {
+        term = 6;
+    } else {
+        showNotification("client does not qualify due to Age")
+        return;
+    }
+}
 function selectQualifyingProduct() {
 
         // Create a Date object for your birthday
-        const birthday = new Date(`${yearValue}-${monthValue}-${dayValue}`);
-        const sixtiethBirthday = new Date(birthday);
-        if(productMaxYear === 'botsLife'||productMaxYear === 'bpopf'||productMaxYear === 'dikgosana') {
-            sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 75);
-        } else{
-            sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 60);
-        }
-    
-        const monthsUntilSixty = monthsDifference(today, sixtiethBirthday);
-        if (monthsUntilSixty>=96) {
-            term = 96;
-        } else if(monthsUntilSixty>=84) {
-            term = 84;
-        } else if(monthsUntilSixty>=72) {
-            term = 72;
-        } else if(monthsUntilSixty>=60) {
-            term = 60;
-        } else if(monthsUntilSixty>=54) {
-            term = 54;
-        } else if(monthsUntilSixty>=48) {
-            term = 48;
-        } else if(monthsUntilSixty>=36){
-            term =36;
-        } else if(monthsUntilSixty>=30) {
-            term = 30;
-        } else if(monthsUntilSixty>=24) {
-            term = 24;
-        } else if(monthsUntilSixty>=18) {
-            term = 18;
-        } else if(monthsUntilSixty>=12) {
-            term = 12;
-        } else if(monthsUntilSixty>=6) {
-            term = 6;
-        } else {
-            showNotification("client does not qualify due to Age")
-            return;
-        }
+        
     
     const productDiv = document.createElement('div')
     productDiv.className = 'productDiv'
@@ -3193,7 +3199,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.0271;
         inputid = 'botusafe20'
-
+        productMaxYear = 'other'
     });
     bot23Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3201,7 +3207,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.0271;
         inputid = 'botusafe23'
-
+        productMaxYear = 'other'
     });
     bot26Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3209,7 +3215,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.0271;
         inputid = 'botusafe26'
-
+        productMaxYear = 'other'
     });
     tawu23Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3217,7 +3223,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.025;
         inputid = 'tawu23'
-
+        productMaxYear = 'other'
     });
     tawu26Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3225,7 +3231,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.025;
         inputid = 'tawu26'
-
+        productMaxYear = 'other'
     });
     tawuParaInput.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3233,7 +3239,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.025;
         inputid = 'tawuPara'
-
+        productMaxYear = 'tawuPara';
     });
     lahisaInput.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3241,7 +3247,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.0268;
         inputid = 'lahisa'
-
+        productMaxYear = 'other'
     });
 
     // Set initial value for checked
