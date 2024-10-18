@@ -2207,7 +2207,7 @@ function bdfAllowanceSelection() {
   const allowance =  ['Commuted allowance','Technical allowance','BDF special Hazard',
         'Housing & Upkeep allowance','Housing allowance','Scarce skill',
         'X-Factor','Professional allowance','BDF special duty','Band Allowance',
-        'Fire Fighters Overtime Allowance 30%','Horse Allowance']
+        'Fire Fighters Overtime Allowance 30%','Horse Allowance', 'counter terrorism allowance','utilities allowance']
     // Create the bdfAllowance div
     const bdfAllowanceDiv = document.createElement('div');
     bdfAllowanceDiv.className = 'allowance';
