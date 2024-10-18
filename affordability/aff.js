@@ -2202,6 +2202,7 @@ function createCouncilDepartmentDiv() {
     } else {
         departmentDiv.classList.add('slide-in-left');
     }
+    
 }
 function bdfAllowanceSelection() {
   const allowance =  ['Commuted allowance','Technical allowance','BDF special Hazard',
