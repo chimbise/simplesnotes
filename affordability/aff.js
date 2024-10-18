@@ -1021,7 +1021,9 @@ document.getElementById('next').addEventListener('click',()=>{
       return;
     }
     if (currentDiv === 'birthdateDiv'){
-        checkAge()
+        if(checkAge()){
+            return;
+        }
     }
     current.classList.add('shrink');
     setTimeout(() => {
@@ -3074,14 +3076,12 @@ function checkAge(){
         term = 6;
     } else {
         showNotification("client does not qualify due to Age")
-        return;
+        return true;
     }
 }
 function selectQualifyingProduct() {
 
-        // Create a Date object for your birthday
-        
-    
+    // Create a Date object for your birthday
     const productDiv = document.createElement('div')
     productDiv.className = 'productDiv'
     productDiv.id = 'productDiv'
@@ -3492,13 +3492,17 @@ function calculateMaxInstallment() {
 }
 function findClosestKey(target) {
     var arr = loans; 
+    var realMonthly1 = totalMonthlyAmountDisplay(arr[0]);
+    var difference1 = realMonthly1[0] - target;
+    if (difference1 > 0) {
+        return showNotification('client does not qualify(NET)')
+    }
     for (let i = 0; i < arr.length; i++) {
         var realMonthly = totalMonthlyAmountDisplay(arr[i]);
         var difference = realMonthly[0] - target;
         if(difference == 0 || arr[i] == 700000){
             return [realMonthly[0],arr[i],realMonthly[1]]
         }else if (difference > 0) {
-
             var t = totalMonthlyAmountDisplay(arr[i-1])
             return [t[0],arr[i-1],t[1]]//intalment, loanAmount, insurance
         }
