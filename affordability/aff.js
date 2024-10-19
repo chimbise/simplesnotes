@@ -1,5 +1,10 @@
 //let formfcbApp1;
 async function fillPdf() {
+    // const checkbox33 = document.getElementById('fcbapp1');
+    // // Check if the checkbox is checked
+    // if (checkbox33.checked) {
+    //     return;
+    // }
     // Fetch the PDF file from the img folder
     const overview = await fetch('../img/overview.pdf');
     const affordability = await fetch('../img/affordability.pdf');
@@ -836,9 +841,7 @@ const refName = form.getTextField('refName');
 // aff.js:59 Field name: refName1
 const refName1 = form.getTextField('refName1');
 if (formData !== '') {
-    var s = formData.get('applicantapplicantSurnameName')
-    console.log(s)
-    surname.setText(formData.get('applicantapplicantSurnameName'));
+    surname.setText(formData.get('applicantSurname'));
     firstname.setText(formData.get('applicantName')); 
     omangNumber.setText(formData.get('omangNumber')); 
     refName.setText(formData.get('kin1Name') + ' ' + formData.get('kin1Surname')); 
@@ -3157,8 +3160,8 @@ function selectQualifyingProduct() {
     lahisaInput.setAttribute('value', '0.26');
     const lahisaLabel = document.createElement('label');
     lahisaLabel.setAttribute('for', 'product');
-    lahisaLabel.textContent = 'lahisa';
-    opt6.appendChild(lahisaInput)
+    lahisaLabel.textContent = 'lahisa/metropolitan';
+    opt6.appendChild(lahisaInput)  
     opt6.appendChild(lahisaLabel)
 
     const opt7 = document.createElement('div')
@@ -3415,7 +3418,7 @@ function calculateTaxNonIndustrial() {
     if (one <= 4000) {
         tax = 0;
     } else if (one > 4000 && one < 7000) {
-        tax = 0.05 * one
+        tax = 0.05 * (one - 4000)
     } else if(one >=7000 && one < 10000) {
         tax = 150 + 0.125*(one - 7000)
     } else if(one >=10000 && one < 13000){
@@ -3423,6 +3426,7 @@ function calculateTaxNonIndustrial() {
     } else {
         tax = 1087.50 + 0.25*(Number(basicAmount) + permanentAllowanceTax - 13000 - Number(taxPensionDeductions[1]))
     }
+    console.log(one)
     console.log(Number(taxPensionDeductions[0]))
     console.log(tax)
     return Number(taxPensionDeductions[0]) - Math.floor(tax * 100) / 100
@@ -3526,6 +3530,7 @@ var l14 = 0; // calculate l14
 
 function totalMonthlyAmountDisplay(selectedLoanAmount){
     // Initialize variables for calculations
+    console.log(selectedLoanAmount )
     if(selectedLoanAmount.toString()==="undefined"||selectedLoanAmount.toString()==="NaN"){
     return null;
     }
@@ -3688,7 +3693,6 @@ function createForm() {
         event.preventDefault(); // Prevent form submission
     
         formData = new FormData(event.target);
-        //console.log(formfcbApp1)
         fillPdf()
         formContainer.style.display = 'none'
 

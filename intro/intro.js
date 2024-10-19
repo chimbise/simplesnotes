@@ -306,7 +306,7 @@
        case "Bots life":
          c9 = 1 - 0.0268;
          break;
-       case "Lahisa":
+       case "Lahisa/metropolitan":
          c9 = 1 - 0.0268;
          break;
        case "Bpopf":
