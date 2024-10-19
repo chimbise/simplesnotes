@@ -1023,6 +1023,11 @@ document.getElementById('next').addEventListener('click',()=>{
         triggerShakeEffect()
       return;
     }
+    if (currentDiv === 'birthdateDiv'){
+        if(checkAge()){
+            return;
+        }
+    }
     current.classList.add('shrink');
     setTimeout(() => {
         switch (currentDiv) {
@@ -2200,12 +2205,13 @@ function createCouncilDepartmentDiv() {
     } else {
         departmentDiv.classList.add('slide-in-left');
     }
+    
 }
 function bdfAllowanceSelection() {
   const allowance =  ['Commuted allowance','Technical allowance','BDF special Hazard',
         'Housing & Upkeep allowance','Housing allowance','Scarce skill',
         'X-Factor','Professional allowance','BDF special duty','Band Allowance',
-        'Fire Fighters Overtime Allowance 30%','Horse Allowance']
+        'Fire Fighters Overtime Allowance 30%','Horse Allowance', 'counter terrorism allowance','utilities allowance']
     // Create the bdfAllowance div
     const bdfAllowanceDiv = document.createElement('div');
     bdfAllowanceDiv.className = 'allowance';
@@ -3036,49 +3042,50 @@ function maritalStatus() {
 }
 var productValue = 0.20;
 var inputid = 'botusafe20'
-var productMaxYear = 'all'
+var productMaxYear = 'other'
 const today = new Date();
+function checkAge(){
+    const birthday = new Date(`${yearValue}-${monthValue}-${dayValue}`);
+    const sixtiethBirthday = new Date(birthday);
+    if(productMaxYear === 'botsLife'||productMaxYear === 'bpopf'||productMaxYear === 'dikgosana'||productMaxYear === 'tawuPara') {
+        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 75);
+    } else{
+        sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 60);
+    }
+
+    const monthsUntilSixty = monthsDifference(today, sixtiethBirthday);
+    if (monthsUntilSixty>=96) {
+        term = 96;
+    } else if(monthsUntilSixty>=84) {
+        term = 84;
+    } else if(monthsUntilSixty>=72) {
+        term = 72;
+    } else if(monthsUntilSixty>=60) {
+        term = 60;
+    } else if(monthsUntilSixty>=54) {
+        term = 54;
+    } else if(monthsUntilSixty>=48) {
+        term = 48;
+    } else if(monthsUntilSixty>=36){
+        term =36;
+    } else if(monthsUntilSixty>=30) {
+        term = 30;
+    } else if(monthsUntilSixty>=24) {
+        term = 24;
+    } else if(monthsUntilSixty>=18) {
+        term = 18;
+    } else if(monthsUntilSixty>=12) {
+        term = 12;
+    } else if(monthsUntilSixty>=6) {
+        term = 6;
+    } else {
+        showNotification("client does not qualify due to Age")
+        return true;
+    }
+}
 function selectQualifyingProduct() {
 
-        // Create a Date object for your birthday
-        const birthday = new Date(`${yearValue}-${monthValue}-${dayValue}`);
-        const sixtiethBirthday = new Date(birthday);
-        if(productMaxYear === 'botsLife'||productMaxYear === 'bpopf'||productMaxYear === 'dikgosana') {
-            sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 75);
-        } else{
-            sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 60);
-        }
-    
-        const monthsUntilSixty = monthsDifference(today, sixtiethBirthday);
-        if (monthsUntilSixty>=96) {
-            term = 96;
-        } else if(monthsUntilSixty>=84) {
-            term = 84;
-        } else if(monthsUntilSixty>=72) {
-            term = 72;
-        } else if(monthsUntilSixty>=60) {
-            term = 60;
-        } else if(monthsUntilSixty>=54) {
-            term = 54;
-        } else if(monthsUntilSixty>=48) {
-            term = 48;
-        } else if(monthsUntilSixty>=36){
-            term =36;
-        } else if(monthsUntilSixty>=30) {
-            term = 30;
-        } else if(monthsUntilSixty>=24) {
-            term = 24;
-        } else if(monthsUntilSixty>=18) {
-            term = 18;
-        } else if(monthsUntilSixty>=12) {
-            term = 12;
-        } else if(monthsUntilSixty>=6) {
-            term = 6;
-        } else {
-            showNotification("client does not qualify due to Age")
-            return;
-        }
-    
+    // Create a Date object for your birthday
     const productDiv = document.createElement('div')
     productDiv.className = 'productDiv'
     productDiv.id = 'productDiv'
@@ -3196,7 +3203,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.0271;
         inputid = 'botusafe20'
-
+        productMaxYear = 'other'
     });
     bot23Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3204,7 +3211,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.0271;
         inputid = 'botusafe23'
-
+        productMaxYear = 'other'
     });
     bot26Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3212,7 +3219,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.0271;
         inputid = 'botusafe26'
-
+        productMaxYear = 'other'
     });
     tawu23Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3220,7 +3227,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.025;
         inputid = 'tawu23'
-
+        productMaxYear = 'other'
     });
     tawu26Input.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3228,7 +3235,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.025;
         inputid = 'tawu26'
-
+        productMaxYear = 'other'
     });
     tawuParaInput.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3236,7 +3243,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.025;
         inputid = 'tawuPara'
-
+        productMaxYear = 'tawuPara';
     });
     lahisaInput.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3244,7 +3251,7 @@ function selectQualifyingProduct() {
         b6 = productValue/12;
         c9 = 1 - 0.0268;
         inputid = 'lahisa'
-
+        productMaxYear = 'other'
     });
 
     // Set initial value for checked
@@ -3490,13 +3497,17 @@ function calculateMaxInstallment() {
 }
 function findClosestKey(target) {
     var arr = loans; 
+    var realMonthly1 = totalMonthlyAmountDisplay(arr[0]);
+    var difference1 = realMonthly1[0] - target;
+    if (difference1 > 0) {
+        return showNotification('client does not qualify(NET)')
+    }
     for (let i = 0; i < arr.length; i++) {
         var realMonthly = totalMonthlyAmountDisplay(arr[i]);
         var difference = realMonthly[0] - target;
         if(difference == 0 || arr[i] == 700000){
             return [realMonthly[0],arr[i],realMonthly[1]]
         }else if (difference > 0) {
-
             var t = totalMonthlyAmountDisplay(arr[i-1])
             return [t[0],arr[i-1],t[1]]//intalment, loanAmount, insurance
         }
