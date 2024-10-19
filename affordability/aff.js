@@ -1,11 +1,6 @@
-//let formfcbApp1;
+let aFromB;
 async function fillPdf() {
-    // const checkbox33 = document.getElementById('fcbapp1');
-    // // Check if the checkbox is checked
-    // if (checkbox33.checked) {
-    //     return;
-    // }
-    // Fetch the PDF file from the img folder
+
     const overview = await fetch('../img/overview.pdf');
     const affordability = await fetch('../img/affordability.pdf');
     const blil = await fetch('../img/blil.pdf');
@@ -63,14 +58,6 @@ async function fillPdf() {
     fields.forEach((field) => {
         console.log(`Field name: ${field.getName()}`);
     });
-
-    // real data for affordability
-    
-    //var MaxLoan = findClosestKey(calMax[10])
-    //console.log("maxloan: " + MaxLoan)
-
-    
-
 
     
     fillOverview(formoverview)
@@ -142,37 +129,37 @@ async function fillPdf() {
 
     // Trigger the download of the filled PDF
     const blob = new Blob([filledPdfBytes], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
+    var url = URL.createObjectURL(blob);
 
     const blob2 = new Blob([filledPdfBytes1], { type: 'application/pdf' });
-    const url2 = URL.createObjectURL(blob2);
+    var url2 = URL.createObjectURL(blob2);
 
     const blob3 = new Blob([filledPdfBytes2], { type: 'application/pdf' });
-    const url3 = URL.createObjectURL(blob3);
+    var url3 = URL.createObjectURL(blob3);
 
     const blob4 = new Blob([filledPdfBytes3], { type: 'application/pdf' });
-    const url4 = URL.createObjectURL(blob4);
+    var url4 = URL.createObjectURL(blob4);
 
     const blob5 = new Blob([filledPdfBytes4], { type: 'application/pdf' });
-    const url5 = URL.createObjectURL(blob5);
+    var url5 = URL.createObjectURL(blob5);
 
     const blob6 = new Blob([filledPdfBytes5], { type: 'application/pdf' });
-    const url6 = URL.createObjectURL(blob6);
+    var url6 = URL.createObjectURL(blob6);
 
     const blob7 = new Blob([filledPdfBytes6], { type: 'application/pdf' });
-    const url7 = URL.createObjectURL(blob7);
+    var url7 = URL.createObjectURL(blob7);
 
     const blob8 = new Blob([filledPdfBytes7], { type: 'application/pdf' });
-    const url8 = URL.createObjectURL(blob8);
+    var url8 = URL.createObjectURL(blob8);
 
     const blob9 = new Blob([filledPdfBytes8], { type: 'application/pdf' });
-    const url9 = URL.createObjectURL(blob9);
+    var url9 = URL.createObjectURL(blob9);
 
     const blob10 = new Blob([filledPdfBytes9], { type: 'application/pdf' });
-    const url10 = URL.createObjectURL(blob10);
+    var url10 = URL.createObjectURL(blob10);
 
     const blob11 = new Blob([filledPdfBytes10], { type: 'application/pdf' });
-    const url11 = URL.createObjectURL(blob11);
+    var url11 = URL.createObjectURL(blob11);
 
 
     const optionsDiv = document.createElement('div')
@@ -212,7 +199,7 @@ labels.forEach(labelText => {
     checkbox.type = 'checkbox';
     checkbox.id = labelText;
     if (labelText === 'fcbApp1') {
-        checkbox.disabled = true; // Disable the checkbox
+        //checkbox.disabled = true; // Disable the checkbox
     }
     if (labelText === 'fcbApp1' ) {
         checkbox.addEventListener('change', function() {
@@ -231,8 +218,20 @@ labels.forEach(labelText => {
     // Append the label to the container
     container.appendChild(label);
 });
+    async function updatePage1() {
 
+        const pdfDocfcbApp1 = await PDFLib.PDFDocument.load(pdfBytesfcbApp1);
+        const formfcbApp1 = pdfDocfcbApp1.getForm();
 
+        pg1(formfcbApp1);
+
+        formfcbApp1.flatten();
+        const filledPdfBytes8 = await pdfDocfcbApp1.save();
+        const blob9 = new Blob([filledPdfBytes8], { type: 'application/pdf' });
+        url9 = URL.createObjectURL(blob9);
+
+    }
+    aFromB = updatePage1; // Assign function to a variable accessible outside
 
 // Show the download button
 const downloadButton = document.createElement('button');
@@ -329,8 +328,8 @@ downloadButton.onclick = function() {
         document.body.removeChild(b);
         document.body.removeChild(c);
         document.body.removeChild(d);
-
-
+        document.body.removeChild(e);
+        document.body.removeChild(f);
     };
     containerDiv.appendChild(optionsDiv)
     // const c = document.createElement('a');
@@ -402,7 +401,6 @@ downloadButton.onclick = function() {
     } else {
         optionsDiv.classList.add('slide-in-left');
     }
-
 }
 function fillOverview(form){
     const loanAmount = form.getTextField('loanAmount');
@@ -995,10 +993,6 @@ var current = ''
 
 document.getElementById('next').addEventListener('click',()=>{
     
-    // fillPdf().then(() => {
-    //   }).catch(err => {
-    //     console.error('Error filling PDF:', err);
-    //   });
     direction = true;
     currentDiv = containerDiv.firstElementChild.className.split(' ')[0]
     current = document.getElementById(currentDiv)
@@ -1194,7 +1188,6 @@ document.getElementById('next').addEventListener('click',()=>{
                     }
                 containerDiv.removeChild(current);
                 chooseLoan()
-                //fillPdf()
                 break;
             case 'chooseLoanDiv':
                 if(!containerDiv.contains(current)){
@@ -3500,7 +3493,8 @@ function findClosestKey(target) {
     var realMonthly1 = totalMonthlyAmountDisplay(arr[0]);
     var difference1 = realMonthly1[0] - target;
     if (difference1 > 0) {
-        return showNotification('client does not qualify(NET)')
+        showNotification('client does not qualify(NET TOO LOW)')
+        return [0,0,0]
     }
     for (let i = 0; i < arr.length; i++) {
         var realMonthly = totalMonthlyAmountDisplay(arr[i]);
@@ -3541,7 +3535,6 @@ var l14 = 0; // calculate l14
 
 function totalMonthlyAmountDisplay(selectedLoanAmount){
     // Initialize variables for calculations
-    console.log(selectedLoanAmount )
     if(selectedLoanAmount.toString()==="undefined"||selectedLoanAmount.toString()==="NaN"){
     return null;
     }
@@ -3616,9 +3609,13 @@ function showform(){
 var formData = ''
 // Function to create the form dynamically
 function createForm() {
+    
     // Get the div where the form will be appended
     const formContainer = document.getElementById('particularsForm');
-
+    if (formContainer.hasChildNodes()) {
+        formContainer.style.display = 'block'
+        return;
+    } 
     // Create the form element
     const form = document.createElement('form');
     form.setAttribute('id', 'dynamicForm');
@@ -3704,9 +3701,9 @@ function createForm() {
         event.preventDefault(); // Prevent form submission
     
         formData = new FormData(event.target);
-        fillPdf()
+        aFromB();
+        //containerDiv.removeChild(form);
         formContainer.style.display = 'none'
-
     });
 
 
