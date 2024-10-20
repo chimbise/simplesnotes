@@ -71,7 +71,7 @@ body {
 
 label {
     display: inline-block;
-    width: 150px;
+    width: 70%;
     font-weight: bold;
 }
 
@@ -224,7 +224,7 @@ input[type="checkbox"]{
     width: 100%;
 }
 .newDiv{
-    max-height: 100%; /* Make it fit within the parent */
+    max-height: 90%; /* Make it fit within the parent */
     overflow-y: auto; /* Enable vertical scrolling */
     margin-bottom: 10px;
     margin-top: 10px;
@@ -239,7 +239,7 @@ input[type="checkbox"]{
     padding:5px;
     border-radius:10px 10px 0 0;
 }
-#allowance11{
+#allowance13{
     border-radius:0 0 10px 10px;
 }
 #textheader {
@@ -507,6 +507,21 @@ input[type="checkbox"]{
     border-radius:10px 10px 0 0;
 }
 
+.notMarried {
+    padding:10px;
+    margin-top: 10px;
+    background-color: white;
+    border-radius:10px 10px 0 0;
+}
+.marital {
+    padding:10px;
+    background-color: white;
+}
+.ocop {
+    padding:10px;
+    background-color: white;
+    border-radius:0 0 10px 10px;
+}
 .birthdateDiv{
     width: 90%;
 }
@@ -547,7 +562,7 @@ select, input[type="submit"] {
     padding:10px;
     background-color: white;
 }
-.tawuPara{
+.metropolitan{
     padding:10px;
     background-color: white;
 }

@@ -328,8 +328,8 @@ downloadButton.onclick = function() {
         document.body.removeChild(b);
         document.body.removeChild(c);
         document.body.removeChild(d);
-        document.body.removeChild(e);
-        document.body.removeChild(f);
+        //document.body.removeChild(e); already removed
+        //document.body.removeChild(f); already removed
     };
     containerDiv.appendChild(optionsDiv)
     // const c = document.createElement('a');
@@ -528,8 +528,8 @@ function fillaffordability(form,aff){
 
 
     const blilpremium = form.getTextField('blilpremium');
-    var se = 2*(h14.toFixed(2))
-    blilpremium.setText(se.toString());
+   
+    blilpremium.setText(MaxLoan[2].toString());
 
     var index2 = 0;
     for (let settle in settleLoanBalances) {
@@ -804,19 +804,33 @@ function pg1(form) {
 // aff.js:59 Field name: Check Box3
 const surname = form.getTextField('surname');
 const firstname = form.getTextField('firstname');
-// aff.js:59 Field name: othername
-// aff.js:59 Field name: title
+const othername = form.getTextField('othername')
+const title = form.getTextField('title')
 const omangNumber = form.getTextField('omangNumber');
-// aff.js:59 Field name: birthdate
-// aff.js:59 Field name: gender
+const birthdate = form.getTextField('birthdate');
+const gender = form.getTextField('gender');
+const cellNumber = form.getTextField('cellNumber');
+const boxNumber = form.getTextField('boxNumber');
+const city1 = form.getTextField('city1');//postal
+
+const city = form.getTextField('city');
+const ward = form.getTextField('ward');
+const officeNumber = form.getTextField('officeNumber');
+
+
+
+const notMarried = form.getCheckBox('notMarried');
+const dirvoced = form.getCheckBox('dirvoced');
+const widowed = form.getCheckBox('widowed');
+const marriedCOP = form.getCheckBox('marriedCOP');
+const marriedOCOP = form.getCheckBox('marriedOCOP');
+const administrator = form.getCheckBox('Check Box3');
+administrator.check();
+
 // aff.js:59 Field name: streetName
 // aff.js:59 Field name: plotNumber
-// aff.js:59 Field name: ward
-// aff.js:59 Field name: city
-// aff.js:59 Field name: boxNumber
-// aff.js:59 Field name: city1
+
 // aff.js:59 Field name: email
-// aff.js:59 Field name: cellNumber
 // aff.js:59 Field name: employerName
 // aff.js:59 Field name: department
 // aff.js:59 Field name: employerAddress
@@ -838,35 +852,67 @@ const omangNumber = form.getTextField('omangNumber');
 const refName = form.getTextField('refName');
 // aff.js:59 Field name: refName1
 const refName1 = form.getTextField('refName1');
+
+const occupation = form.getTextField('occupation');
+const omangNumber1 = form.getTextField('omangNumber1');
+const employerAddress = form.getTextField('employerAddress');
+const employmentDate = form.getTextField('employmentDate');
+const employerName = form.getTextField('employerName');
+const department = form.getTextField('department');
 if (formData !== '') {
     surname.setText(formData.get('applicantSurname'));
     firstname.setText(formData.get('applicantName')); 
+    othername.setText(formData.get('middleNamme')); 
     omangNumber.setText(formData.get('omangNumber')); 
+    if (formData.get('omangNumber').charAt(4) == 1) {
+        title.setText('Mr')
+        gender.setText('M'); 
+    } else if(maritalStatusValue == 'Not married'){
+        title.setText('Ms')
+        gender.setText('F'); 
+    } else{
+        title.setText('Mrs')
+        gender.setText('F'); 
+    }
+    birthdate.setText(dayValue+'/'+monthValue+'/'+yearValue); 
     refName.setText(formData.get('kin1Name') + ' ' + formData.get('kin1Surname')); 
     refName1.setText(formData.get('kin2Name') + ' ' + formData.get('kin2Surname')); 
+
+    if (maritalStatusValue === 'Not married') {
+        notMarried.check();
+    } else if(maritalStatusValue === 'Divorced') {
+        dirvoced.check();
+    } else if(maritalStatusValue === 'Widowed') {
+        widowed.check();
+    } else if(maritalStatusValue === 'married COP') {
+        marriedCOP.check();
+    } else {
+        marriedOCOP.check();
+    }
+
+    cellNumber.setText(formData.get('cell')); 
+    boxNumber.setText(formData.get('addressBox')); 
+    city1.setText(formData.get('town')); 
+    city.setText(formData.get('city')); 
+    ward.setText(formData.get('ward')); 
+    officeNumber.setText(formData.get('workPhone')); 
+
+    employerName.setText(formData.get('employer')); 
+    department.setText(formData.get('department')); 
+    employerAddress.setText(formData.get('employerAddress')); 
+    occupation.setText(formData.get('occupation')); 
+    employmentDate.setText(formData.get('employmentDate')); 
+    omangNumber1.setText(formData.get('omangNumber')); 
+
+
 }
-// aff.js:59 Field name: ref2Ward
-// aff.js:59 Field name: refCity2
-// aff.js:59 Field name: ref2CellNumber
-// aff.js:59 Field name: notMarried
-// aff.js:59 Field name: dirvoced
-// aff.js:59 Field name: widowed
-// aff.js:59 Field name: marriedCOP
-// aff.js:59 Field name: marriedOCOP
-// aff.js:59 Field name: marriageDate
+
     // streetName
-    // boxNumber
-    // cellNumber
     // plotNumber
-    // city1
-    // ward
-    // officeNumber
-    // city
     // email   
-    // occupation  
-    // omangNumber1
-    // employerAddress
-    // employmentDate
+
+   
+
     // basicSalary 
     // deduction 
     // payslipNetPay 
@@ -886,8 +932,7 @@ if (formData !== '') {
     // refCity2
     // refCellNumber
     // refCellNumber2
-    // employerName
-    // department
+   
 
 
 
@@ -983,7 +1028,7 @@ var selectedNewLoanCode = []
 var selectedsettleLoanCode = []
 var taxCorrection = 'no'
 var taxPensionDeductions = [0,0];
-var maritalStatusValue = 'no'
+var maritalStatusValue = 'Not married'
 var birthdate = 0;
 
 const containerDiv = document.querySelector('.container');
@@ -1017,7 +1062,7 @@ document.getElementById('next').addEventListener('click',()=>{
         triggerShakeEffect()
       return;
     }
-    if (currentDiv === 'birthdateDiv'){
+    if (currentDiv === 'productDiv'){
         if(checkAge()){
             return;
         }
@@ -1238,7 +1283,7 @@ function chooseLoan() {
     net = Number(calMax[8]-MaxLoan[0]).toFixed(2)
     
     var settle3 = addPairs(settleLoanBalances)  ///make global
-    b2c = Number(MaxLoan[1]-2*MaxLoan[2]-settle3).toFixed(2);
+    b2c = Number(MaxLoan[1]-MaxLoan[2]-settle3).toFixed(2);
 
     // Create the basic div
     const chooseLoanDiv = document.createElement('div');
@@ -1301,7 +1346,7 @@ function chooseLoan() {
                 net = Number(calMax[8]-MaxLoan[0]).toFixed(2)
                 
                 var settle = addPairs(settleLoanBalances)  ///make global
-                b2c = Number(MaxLoan[1]-2*MaxLoan[2]-settle).toFixed(2);
+                b2c = Number(MaxLoan[1]-MaxLoan[2]-settle).toFixed(2);
 
                 updateTerm(change,Actual2)
                 updateInstallment(Actual4)
@@ -2974,58 +3019,120 @@ function maritalStatus() {
     const maritalDiv = document.createElement('div')
     maritalDiv.className = 'maritalDiv'
     maritalDiv.id = 'maritalDiv'
-    maritalDiv.textContent = 'Select YES if you are either MARRIED, DIRVOCED or WIDOWED'
+    maritalDiv.textContent = 'Select your marital status'
     maritalDiv.style.width = '90%'
 
     // Create the first radio input for Government
     const optDiv = document.createElement('div')
-    optDiv.className = 'yes'
-    const yesInput = document.createElement('input');
-    yesInput.setAttribute('type', 'radio');
-    yesInput.setAttribute('name', 'maritalStatus');
-    yesInput.setAttribute('id', 'maritalStatus');
-    yesInput.setAttribute('value', 'yes');
-    const yesLabel = document.createElement('label');
-    yesLabel.setAttribute('for', 'maritalStatus');
-    yesLabel.textContent = 'yes';
-    optDiv.appendChild(yesInput)
-    optDiv.appendChild(yesLabel)
+    optDiv.className = 'notMarried'
+    const notMarriedinput = document.createElement('input');
+    notMarriedinput.setAttribute('type', 'radio');
+    notMarriedinput.setAttribute('name', 'maritalStatus');
+    notMarriedinput.setAttribute('id', 'maritalStatus');
+    notMarriedinput.setAttribute('value', 'Not married');
+    const notMarriedLabel = document.createElement('label');
+    notMarriedLabel.setAttribute('for', 'maritalStatus');
+    notMarriedLabel.textContent = 'Not married';
+    optDiv.appendChild(notMarriedinput)
+    optDiv.appendChild(notMarriedLabel)
+
+    const optDiv3 = document.createElement('div')
+    optDiv3.className = 'marital'
+    const divorcedInput = document.createElement('input');
+    divorcedInput.setAttribute('type', 'radio');
+    divorcedInput.setAttribute('name', 'maritalStatus');
+    divorcedInput.setAttribute('id', 'maritalStatus');
+    divorcedInput.setAttribute('value', 'Divorced');
+    const dirvocedLabel = document.createElement('label');
+    dirvocedLabel.setAttribute('for', 'maritalStatus');
+    dirvocedLabel.textContent = 'Divorced';
+    optDiv3.appendChild(divorcedInput)
+    optDiv3.appendChild(dirvocedLabel)
+
+    const optDiv4 = document.createElement('div')
+    optDiv4.className = 'marital'
+    const widowedInput = document.createElement('input');
+    widowedInput.setAttribute('type', 'radio');
+    widowedInput.setAttribute('name', 'maritalStatus');
+    widowedInput.setAttribute('id', 'maritalStatus');
+    widowedInput.setAttribute('value', 'Widowed');
+    const widowedLabel = document.createElement('label');
+    widowedLabel.setAttribute('for', 'maritalStatus');
+    widowedLabel.textContent = 'Widowed';
+    optDiv4.appendChild(widowedInput)
+    optDiv4.appendChild(widowedLabel)
+
+    const optDiv5 = document.createElement('div')
+    optDiv5.className = 'marital'
+    const marriedCOPInput = document.createElement('input');
+    marriedCOPInput.setAttribute('type', 'radio');
+    marriedCOPInput.setAttribute('name', 'maritalStatus');
+    marriedCOPInput.setAttribute('id', 'maritalStatus');
+    marriedCOPInput.setAttribute('value', 'married COP');
+    const marriedCOPLabel = document.createElement('label');
+    marriedCOPLabel.setAttribute('for', 'maritalStatus');
+    marriedCOPLabel.textContent = 'Married COP';
+    optDiv5.appendChild(marriedCOPInput)
+    optDiv5.appendChild(marriedCOPLabel)
 
     // Create the second radio input for Council
     const opt2 = document.createElement('div')
-    opt2.className ='no'
-    const noInput = document.createElement('input');
-    noInput.setAttribute('type', 'radio');
-    noInput.setAttribute('name', 'maritalStatus');
-    noInput.setAttribute('id', 'maritalStatus');
-    noInput.setAttribute('value', 'no');
-    const noLabel = document.createElement('label');
-    noLabel.setAttribute('for', 'maritalStatus');
-    noLabel.textContent = 'no';
-    opt2.appendChild(noInput)
-    opt2.appendChild(noLabel)
+    opt2.className ='ocop'
+    const marriedOCOPInput = document.createElement('input');
+    marriedOCOPInput.setAttribute('type', 'radio');
+    marriedOCOPInput.setAttribute('name', 'maritalStatus');
+    marriedOCOPInput.setAttribute('id', 'maritalStatus');
+    marriedOCOPInput.setAttribute('value', 'Married out of COP');
+    const marriedOCOPLabel = document.createElement('label');
+    marriedOCOPLabel.setAttribute('for', 'maritalStatus');
+    marriedOCOPLabel.textContent = 'Married out of COP';
+    opt2.appendChild(marriedOCOPInput)
+    opt2.appendChild(marriedOCOPLabel)
 
 
     // Append the radio inputs before the labels to the parent div
     maritalDiv.appendChild(optDiv);
+    maritalDiv.appendChild(optDiv3)
+    maritalDiv.appendChild(optDiv4)
+    maritalDiv.appendChild(optDiv5)
     maritalDiv.appendChild(opt2);
+
 
     containerDiv.appendChild(maritalDiv)
 
     // Add change event listeners to the radio buttons
-    yesInput.addEventListener('change', (event)=>{
+    notMarriedinput.addEventListener('change', (event)=>{
         maritalStatusValue = event.target.value;
     });
-    noInput.addEventListener('change', (event)=>{
+    divorcedInput.addEventListener('change', (event)=>{
+        maritalStatusValue = event.target.value;
+    });
+    widowedInput.addEventListener('change', (event)=>{
+        maritalStatusValue = event.target.value;
+    });
+    marriedCOPInput.addEventListener('change', (event)=>{
+        maritalStatusValue = event.target.value;
+    });
+    marriedOCOPInput.addEventListener('change', (event)=>{
         maritalStatusValue = event.target.value;
     });
 
     // Set initial value for checked
-    if (maritalStatusValue === 'no') {
-        noInput.setAttribute('checked', 'no');
-        maritalStatusValue = 'no'
+    if (maritalStatusValue === 'Not married') {
+        notMarriedinput.checked = true;  // This will check the checkbox
+        maritalStatusValue = 'Not married'
+    } else if(maritalStatusValue === 'Divorced') {
+        divorcedInput.checked = true;  // This will check the checkbox
+        maritalStatusValue = 'Divorced'
+    } else if(maritalStatusValue === 'Widowed') {
+        widowedInput.checked = true;  // This will check the checkbox
+        maritalStatusValue = 'Widowed'
+    } else if(maritalStatusValue === 'married COP') {
+        marriedCOPInput.checked = true;  // This will check the checkbox
+        maritalStatusValue = 'married COP'
     } else {
-        yesInput.setAttribute('checked','yes')
+        marriedOCOPInput.checked = true;  // This will check the checkbox
+        maritalStatusValue = 'Married out of COP'
     }
     if (direction) {
         maritalDiv.classList.add('slide-in-right');
@@ -3040,7 +3147,7 @@ const today = new Date();
 function checkAge(){
     const birthday = new Date(`${yearValue}-${monthValue}-${dayValue}`);
     const sixtiethBirthday = new Date(birthday);
-    if(productMaxYear === 'botsLife'||productMaxYear === 'bpopf'||productMaxYear === 'dikgosana'||productMaxYear === 'tawuPara') {
+    if(productMaxYear === 'botsLife'||productMaxYear === 'bpopf'||productMaxYear === 'dikgosana'||productMaxYear === 'metropolitan') {
         sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 75);
     } else{
         sixtiethBirthday.setFullYear(sixtiethBirthday.getFullYear() + 60);
@@ -3160,22 +3267,22 @@ function selectQualifyingProduct() {
     lahisaInput.setAttribute('value', '0.26');
     const lahisaLabel = document.createElement('label');
     lahisaLabel.setAttribute('for', 'product');
-    lahisaLabel.textContent = 'lahisa/metropolitan';
+    lahisaLabel.textContent = 'lahisa';
     opt6.appendChild(lahisaInput)  
     opt6.appendChild(lahisaLabel)
 
     const opt7 = document.createElement('div')
-    opt7.className = 'tawuPara'
-    const tawuParaInput = document.createElement('input');
-    tawuParaInput.setAttribute('type', 'radio');
-    tawuParaInput.setAttribute('name', 'product');
-    tawuParaInput.setAttribute('id', 'tawuPara');
-    tawuParaInput.setAttribute('value', '0.26');
-    const tawuParaLabel = document.createElement('label');
-    tawuParaLabel.setAttribute('for', 'product');
-    tawuParaLabel.textContent = 'tawu Para';
-    opt7.appendChild(tawuParaInput)
-    opt7.appendChild(tawuParaLabel)
+    opt7.className = 'metropolitan'
+    const metropolitanInput = document.createElement('input');
+    metropolitanInput.setAttribute('type', 'radio');
+    metropolitanInput.setAttribute('name', 'product');
+    metropolitanInput.setAttribute('id', 'metropolitan');
+    metropolitanInput.setAttribute('value', '0.26');
+    const metropolitanLabel = document.createElement('label');
+    metropolitanLabel.setAttribute('for', 'product');
+    metropolitanLabel.textContent = 'Metropolitan';
+    opt7.appendChild(metropolitanInput)
+    opt7.appendChild(metropolitanLabel)
 
 
     // Append the radio inputs before the labels to the parent div
@@ -3230,13 +3337,13 @@ function selectQualifyingProduct() {
         inputid = 'tawu26'
         productMaxYear = 'other'
     });
-    tawuParaInput.addEventListener('change', (event)=>{
+    metropolitanInput.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
         rt = productValue;
         b6 = productValue/12;
-        c9 = 1 - 0.025;
-        inputid = 'tawuPara'
-        productMaxYear = 'tawuPara';
+        c9 = 1 - 0.0268;
+        inputid = 'metropolitan'
+        productMaxYear = 'metropolitan';
     });
     lahisaInput.addEventListener('change', (event)=>{
         productValue = Number(event.target.value);
@@ -3252,8 +3359,8 @@ function selectQualifyingProduct() {
         case 'tawu26':
             tawu26Input.checked = true;
             break;
-        case 'tawuPara':
-            tawuParaInput.checked = true;
+        case 'metropolitan':
+            metropolitanInput.checked = true;
             break;
         case 'tawu23':
             tawu23Input.checked = true;
@@ -3480,7 +3587,7 @@ function calculateMaxInstallment() {
     var n11 = adjNettIncome + taxx + settleloans;
     if (basicAmount <= 9019) {
         rule = 600;
-    } else if(maritalStatusValue === 'yes') {
+    } else if(maritalStatusValue !== 'Not married') {
         rule = 1500
     }
     var n13 = n11 - rule;
@@ -3496,14 +3603,18 @@ function findClosestKey(target) {
         showNotification('client does not qualify(NET TOO LOW)')
         return [0,0,0]
     }
+    var ui = 2;
+    if (inputid === 'lahisa') {
+        ui = 1;
+    }
     for (let i = 0; i < arr.length; i++) {
         var realMonthly = totalMonthlyAmountDisplay(arr[i]);
         var difference = realMonthly[0] - target;
         if(difference == 0 || arr[i] == 700000){
-            return [realMonthly[0],arr[i],realMonthly[1]]
+            return [realMonthly[0],arr[i],ui*realMonthly[1]]
         }else if (difference > 0) {
             var t = totalMonthlyAmountDisplay(arr[i-1])
-            return [t[0],arr[i-1],t[1]]//intalment, loanAmount, insurance
+            return [t[0],arr[i-1],ui*t[1]]//intalment, loanAmount, insurance
         }
     }
 }
@@ -3655,13 +3766,31 @@ function createForm() {
     // Section 1: Applicant Details (Name, Surname)
     const applicantDetails = createSection('APPLICANT DETAILS');
     applicantDetails.appendChild(createField('Name', 'text', 'applicantName'));
+    applicantDetails.appendChild(createField('other Names', 'text', 'middleNamme'));
     applicantDetails.appendChild(createField('Surname', 'text', 'applicantSurname'));
     applicantDetails.appendChild(createField('Omang', 'tel', 'omangNumber'))
+    applicantDetails.appendChild(createField('Cell Number', 'tel', 'cell'))
+
+
+
+    const postalAD = createSection('POSTAL ADDRESS');
+    postalAD.appendChild(createField('Box Number', 'text', 'addressBox'));
+    postalAD.appendChild(createField('City/Town', 'text', 'town'))
+    
+
+    const physicalAD = createSection('PHYSICAL ADDRESS');
+    physicalAD.appendChild(createField('Suburb/Ward', 'text', 'ward'))
+    physicalAD.appendChild(createField('City/Town', 'text', 'city'));
 
     // Section 2: Work Details (Phone Number, Occupation)
     const workDetails = createSection('WORK DETAILS');
-    workDetails.appendChild(createField('Work Number', 'tel', 'workPhone'));
+    workDetails.appendChild(createField('Name of Employer', 'text', 'employer'));
+    workDetails.appendChild(createField('Department', 'text', 'department'));
+    workDetails.appendChild(createField('Employer Address', 'text', 'employerAddress'));
+    workDetails.appendChild(createField('Office/Work Number', 'tel', 'workPhone'));
     workDetails.appendChild(createField('Occupation', 'text', 'occupation'));
+    workDetails.appendChild(createField('Date of Employment', 'text', 'employmentDate'));
+
 
     // Section 3: Next of Kin 1 (Name, Surname)
     const nextOfKin1 = createSection('NEXT OF KIN 1');
@@ -3680,6 +3809,8 @@ function createForm() {
 
     // Append all sections to the form
     form.appendChild(applicantDetails);
+    form.appendChild(postalAD);
+    form.appendChild(physicalAD);
     form.appendChild(workDetails);
     form.appendChild(nextOfKin1);
     form.appendChild(nextOfKin2);
