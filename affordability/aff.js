@@ -778,25 +778,6 @@ function pg1(form) {
     fields.forEach((field) => {
         console.log(`Field name: ${field.getName()}`);
     });
-    // // Section 2: Work Details (Phone Number, Occupation)
-    // const workDetails = createSection('WORK DETAILS');
-    // workDetails.appendChild(createField('Work Number', 'tel', 'workPhone'));
-    // workDetails.appendChild(createField('Occupation', 'text', 'occupation'));
-
-    // // Section 3: Next of Kin 1 (Name, Surname)
-    // const nextOfKin1 = createSection('NEXT OF KIN 1');
-    // nextOfKin1.appendChild(createField('Name', 'text', 'kin1Name'));
-    // nextOfKin1.appendChild(createField('Surname', 'text', 'kin1Surname'));
-
-    // // Section 4: Next of Kin 2 (Name, Surname)
-    // const nextOfKin2 = createSection('NEXT OF KIN 2');
-    // nextOfKin2.appendChild(createField('Name', 'text', 'kin2Name'));
-    // nextOfKin2.appendChild(createField('Surname', 'text', 'kin2Surname'));
-
-    // // Section 5: Beneficiary (Name, Surname)
-    // const beneficiary = createSection('BENEFICIARY');
-    // beneficiary.appendChild(createField('Name', 'text', 'beneficiaryName'));
-    // beneficiary.appendChild(createField('Surname', 'text', 'beneficiarySurname'));
 //    const streetName2 = form.getTextField('Street Name_2');
 //     Field name: Street Name_2
 // aff.js:59 Field name: Plot Number
@@ -818,7 +799,6 @@ const ward = form.getTextField('ward');
 const officeNumber = form.getTextField('officeNumber');
 
 
-
 const notMarried = form.getCheckBox('notMarried');
 const dirvoced = form.getCheckBox('dirvoced');
 const widowed = form.getCheckBox('widowed');
@@ -837,21 +817,28 @@ administrator.check();
 // aff.js:59 Field name: occupation
 // aff.js:59 Field name: omangNumber1
 // aff.js:59 Field name: employmentDate
-// aff.js:59 Field name: basicSalary
-// aff.js:59 Field name: deduction
-// aff.js:59 Field name: payslipNetPay
-// aff.js:59 Field name: accHolder
-// aff.js:59 Field name: accNumber
-// aff.js:59 Field name: bankName
-// aff.js:59 Field name: branchName
-// aff.js:59 Field name: branchCode
-// aff.js:59 Field name: accType
-// aff.js:59 Field name: refWard
-// aff.js:59 Field name: refCity
-// aff.js:59 Field name: refCellNumber
+const basicSalary = form.getTextField('basicSalary');
+const deduction = form.getTextField('deduction');
+const payslipNetPay = form.getTextField('payslipNetPay');
+
+
+const accHolder = form.getTextField('accHolder');
+const accNumber = form.getTextField('accNumber');
+const bankName = form.getTextField('bankName');
+const branchName = form.getTextField('branchName');
+const accType = form.getTextField('accType');
+const branchCode = form.getTextField('branchCode');
+
 const refName = form.getTextField('refName');
+const refWard = form.getTextField('refWard');
+const refCity = form.getTextField('refCity');
+const refCellNumber = form.getTextField('refCellNumber');
+
 // aff.js:59 Field name: refName1
 const refName1 = form.getTextField('refName1');
+const refWard1 = form.getTextField('ref2Ward');
+const refCity1 = form.getTextField('refCity2');
+const refCellNumber1 = form.getTextField('ref2CellNumber');
 
 const occupation = form.getTextField('occupation');
 const omangNumber1 = form.getTextField('omangNumber1');
@@ -875,8 +862,17 @@ if (formData !== '') {
         gender.setText('F'); 
     }
     birthdate.setText(dayValue+'/'+monthValue+'/'+yearValue); 
+    
     refName.setText(formData.get('kin1Name') + ' ' + formData.get('kin1Surname')); 
+    refWard.setText(formData.get('kin1Ward'))
+    refCity.setText(formData.get('kin1Town'))
+    refCellNumber.setText(formData.get('kin1Cell'))
+
+
     refName1.setText(formData.get('kin2Name') + ' ' + formData.get('kin2Surname')); 
+    refWard1.setText(formData.get('kin2Ward'))
+    refCity1.setText(formData.get('kin2Town'))
+    refCellNumber1.setText(formData.get('kin2Cell'))
 
     if (maritalStatusValue === 'Not married') {
         notMarried.check();
@@ -901,41 +897,33 @@ if (formData !== '') {
     department.setText(formData.get('department')); 
     employerAddress.setText(formData.get('employerAddress')); 
     occupation.setText(formData.get('occupation')); 
-    employmentDate.setText(formData.get('employmentDate')); 
+    employmentDate.setText('             '+formData.get('employmentDate')); 
     omangNumber1.setText(formData.get('omangNumber')); 
 
+    basicSalary.setText(basicAmount.toString()); 
+    deduction.setText(deductionAmount.toString());
+    payslipNetPay.setText('')
 
-}
+    accHolder.setText(formData.get('applicantName') + ' ' + formData.get('applicantSurname')); 
+    branchName.setText(formData.get('branchName'));
+    accNumber.setText(formData.get('accNummber')); 
+    bankName.setText(formData.get('bankName'));
+    accType.setText('current');
+    branchCode.setText(' ');
+
+
+
+    }
 
     // streetName
     // plotNumber
     // email   
 
-   
-
-    // basicSalary 
-    // deduction 
-    // payslipNetPay 
-    // accHolder   
-    // branchName 
-    // accNumber 
-    // branchCode 
-    // bankName
-    // accType
     // refName 
     // refName1 
     // Street Name_2
     // Plot Number
-    // refWard
-    // ref2Ward
-    // refCity
-    // refCity2
-    // refCellNumber
-    // refCellNumber2
    
-
-
-
     const interestRate = form.getTextField('interestRate');
     var i = rt*100;
     interestRate.setText(i.toString());
@@ -961,21 +949,6 @@ if (formData !== '') {
     collectionFee.setText(Number(i14.toFixed(2)).toString());
     const installmentz = form.getTextField('installment');
     installmentz.setText(installment.toString()); 
-        
-    // surname 
-    // firstName 
-    // title 
-    // omangNumber 
-    // birthdate 
-    // gender 
-    // Check Box3 -
-    // notMarried 
-    // marriedCOP
-    // marriedOCOP
-    // widowed 
-    // dirvoced -
-    // marriageDate
-    // othername
 }
 function pg2(form) {
     // customerSignature
@@ -3792,16 +3765,30 @@ function createForm() {
     workDetails.appendChild(createField('Date of Employment', 'text', 'employmentDate'));
 
 
+    //section Banking detail
+    const bankDetails = createSection('BANKING DETAILS');
+    bankDetails.appendChild(createField('Account Number', 'tel', 'accNummber'));
+    bankDetails.appendChild(createField('Bank Name', 'text', 'bankName'));
+    bankDetails.appendChild(createField('Branch Name', 'text', 'branchName'));
+
+
+
     // Section 3: Next of Kin 1 (Name, Surname)
     const nextOfKin1 = createSection('NEXT OF KIN 1');
     nextOfKin1.appendChild(createField('Name', 'text', 'kin1Name'));
     nextOfKin1.appendChild(createField('Surname', 'text', 'kin1Surname'));
+    nextOfKin1.appendChild(createField('Suburb/Ward', 'text', 'kin1Ward'));
+    nextOfKin1.appendChild(createField('City/Town/Village', 'text', 'kin1Town'));
+    nextOfKin1.appendChild(createField('Cell Number', 'tel', 'kin1Cell'));
+
 
     // Section 4: Next of Kin 2 (Name, Surname)
     const nextOfKin2 = createSection('NEXT OF KIN 2');
     nextOfKin2.appendChild(createField('Name', 'text', 'kin2Name'));
     nextOfKin2.appendChild(createField('Surname', 'text', 'kin2Surname'));
-
+    nextOfKin2.appendChild(createField('Suburb/Ward', 'text', 'kin2Ward'));
+    nextOfKin2.appendChild(createField('City/Town/Village', 'text', 'kin2Town'));
+    nextOfKin2.appendChild(createField('Cell Number', 'tel', 'kin2Cell'));
     // Section 5: Beneficiary (Name, Surname)
     const beneficiary = createSection('BENEFICIARY');
     beneficiary.appendChild(createField('Name', 'text', 'beneficiaryName'));
@@ -3812,6 +3799,7 @@ function createForm() {
     form.appendChild(postalAD);
     form.appendChild(physicalAD);
     form.appendChild(workDetails);
+    form.appendChild(bankDetails);
     form.appendChild(nextOfKin1);
     form.appendChild(nextOfKin2);
     form.appendChild(beneficiary);
