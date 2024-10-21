@@ -1,4 +1,10 @@
 let aFromB;
+let OverviewFromB;
+let affordabilityFromB;
+let blilFromB;
+let tawuFromB;
+let govFromB;
+
 async function fillPdf() {
 
     const overview = await fetch('../img/overview.pdf');
@@ -78,7 +84,7 @@ async function fillPdf() {
             fillgovOdc(formgov)
             cg = 'g'
             break;
-        case 'botusafe20':
+        case 'botslife':
             fillBotsLifeOdc(formgov)
             cg = 'g'
             break;
@@ -232,7 +238,79 @@ labels.forEach(labelText => {
 
     }
     aFromB = updatePage1; // Assign function to a variable accessible outside
+    async function updateOverview() {
 
+        const pdfDocOverview = await PDFLib.PDFDocument.load(pdfBytesoverview);
+        const formOverview = pdfDocOverview.getForm();
+
+        fillOverview(formOverview);
+
+        formOverview.flatten();
+        const filledPdfBytes = await pdfDocOverview.save();
+        const blob = new Blob([filledPdfBytes], { type: 'application/pdf' });
+        url = URL.createObjectURL(blob);
+
+    }
+    OverviewFromB = updateOverview; // Assign function to a variable accessible outside
+    async function updateAffordability() {
+
+        const pdfDocAffordability = await PDFLib.PDFDocument.load(pdfBytesaffordability);
+        const formAffordability = pdfDocAffordability.getForm();
+
+        fillaffordability(formAffordability,calMax);
+
+        formAffordability.flatten();
+        const filledPdfByte = await pdfDocAffordability.save();
+        const blob = new Blob([filledPdfByte], { type: 'application/pdf' });
+        url2 = URL.createObjectURL(blob);
+
+    }
+    affordabilityFromB = updateAffordability; // Assign function to a variable accessible outside
+
+    async function updateBlil() {
+
+        const pdfDocBlil = await PDFLib.PDFDocument.load(pdfBytesblil);
+        const formblil = pdfDocBlil.getForm();
+
+        fillblil(formblil)
+
+        formblil.flatten();
+        const filledPdfByte = await pdfDocBlil.save();
+        const blob = new Blob([filledPdfByte], { type: 'application/pdf' });
+        url3 = URL.createObjectURL(blob);
+
+    }
+    blilFromB = updateBlil; // Assign function to a variable accessible outside
+
+    async function updareTawuOdc() {
+
+        const pdfDocTawu = await PDFLib.PDFDocument.load(pdfBytestawuOdc);
+        const formtawu = pdfDocTawu.getForm();
+
+        filltawuOdc(formtawu)
+
+        formtawu.flatten();
+        const filledPdfByte = await pdfDocTawu.save();
+        const blob = new Blob([filledPdfByte], { type: 'application/pdf' });
+        url5 = URL.createObjectURL(blob);
+
+    }
+    tawuFromB = updareTawuOdc;
+
+    async function updateGovOdc() {
+
+        const pdfDocGov = await PDFLib.PDFDocument.load(pdfBytesgovOdc);
+        const formGov = pdfDocGov.getForm();
+
+        fillgovOdc(formGov)
+
+        formGov.flatten();
+        const filledPdfByte = await pdfDocGov.save();
+        const blob = new Blob([filledPdfByte], { type: 'application/pdf' });
+        url4 = URL.createObjectURL(blob);
+
+    }
+    govFromB = updateGovOdc;
 // Show the download button
 const downloadButton = document.createElement('button');
 downloadButton.textContent = 'download'
@@ -434,7 +512,10 @@ function fillOverview(form){
 
     const name = form.getTextField('customerName')
     name.setFontSize(16)
-    name.setText('')
+    if (formData !== '') {
+
+        name.setText(formData.get('applicantName') + ' ' + formData.get('applicantSurname'))
+    }
 
     const customerSignature = form.getTextField('customerSignature');
     customerSignature.setFontSize(16)
@@ -446,16 +527,15 @@ function fillOverview(form){
 }
 function fillaffordability(form,aff){
 
-    // return [Number(basicAmount),permanentAllowance,adjBasicSalary,Number(deductionAmount),
-    //     otherLoans,adjNettIncome,
-    //     taxx,settleloans,Number(n11.toFixed(2)),rule,n13]
-
-
-
     const customerName = form.getTextField('customerName');
-    customerName.setText('');
+    if (formData !== '') {
+
+        customerName.setText(formData.get('applicantName') + ' ' + formData.get('applicantSurname'))
+    }
+
     const brokerName = form.getTextField('brokerName');
-    brokerName.setText('')
+    brokerName.setText('Ashley')
+
     const basicSalary = form.getTextField('basicSalary')
     basicSalary.setText(aff[0].toString())
 
@@ -548,35 +628,43 @@ function fillaffordability(form,aff){
 }
 
 
-function fillblil(form){
+function 
+fillblil(form){
     const bankName = form.getTextField('bankName');
     bankName.setText('First Capital Bank');
 
     const firstName = form.getTextField('firstName');
-    //firstName.setText('100000');
 
     const surname = form.getTextField('surname');
-    //surname.setText('100000');
 
     const nationality = form.getTextField('nationality');
     nationality.setText('Motswana');
 
     const addressLine1 = form.getTextField('addressLine1');
-    //addressLine1.setText('100000');
 
     const addressLine2 = form.getTextField('addressLine2');
-    //addressLine2.setText('100000');
 
     const occupation = form.getTextField('occupation');
-    //occupation.setText('100000');
+
+    const cellNo = form.getTextField('cellNo');
+    const workNo = form.getTextField('workNo');
 
     const accType = form.getCheckBox('accType');
     accType.check();
 
-    //const cellNo = form.getTextField('cellNo');
-    //cellNo.setText('100000');
-    //const workNo = form.getTextField('workNo');
-    //workNo.setText('100000');
+    if (formData !== '') {
+
+        firstName.setText(formData.get('applicantName'))
+        surname.setText(formData.get('applicantSurname'))
+        addressLine1.setText(formData.get('addressBox'))
+        addressLine2.setText(formData.get('town'))
+        occupation.setText(formData.get('occupation'))
+
+        cellNo.setText(formData.get('cell'));
+        workNo.setText(formData.get('workPhone'));
+
+    }
+
 
     const male = form.getCheckBox('male');
     const female = form.getCheckBox('female');
@@ -620,20 +708,29 @@ function fillblil(form){
 function fillgovOdc(form){
     const date = form.getTextField('date');
     var s = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
-    date.setText(s.toString());    // const omangNumber = form.getTextField('omangNumber');
-    // omangNumber.setText('100000');
-    // const customerName = form.getTextField('customerName');
-    // customerName.setText('100000');
-    // const omangNumber2 = form.getTextField('omangNumber2');
-    // omangNumber2.setText('100000');
-    // const ministry = form.getTextField('ministry');
-    // ministry.setText('100000');
-    // const postOf = form.getTextField('postOf');
-    // postOf.setText('100000');
-    // const situated = form.getTextField('situated');
-    // situated.setText('100000');
-    // const residingAt = form.getTextField('residingAt');
-    // residingAt.setText('100000');
+    date.setText(s.toString());    
+    const omangNumber = form.getTextField('omangNumber');
+    const customerName = form.getTextField('customerName');
+    const omangNumber2 = form.getTextField('omangNumber2');
+    const ministry = form.getTextField('ministry');
+    const postOf = form.getTextField('postOf');
+    const situated = form.getTextField('situated');
+    const residingAt = form.getTextField('residingAt');
+
+    if (formData !== '') {
+
+        customerName.setText(formData.get('applicantName')+ ' ' + formData.get('applicantSurname'))
+        postOf.setText(formData.get('occupation'))
+
+        omangNumber.setText(formData.get('omangNumber'));
+        omangNumber2.setText(formData.get('omangNumber'));
+
+        ministry.setText(formData.get('employer'));
+
+        situated.setText(formData.get('employerAddress'));
+        residingAt.setText(formData.get('ward')+','+formData.get('city'));
+
+    }
     const loanAmount = form.getTextField('loanAmount');
     loanAmount.setText(loan.toString());
     const installmentf = form.getTextField('installment');
@@ -656,22 +753,28 @@ function fillgovOdc(form){
     // customerSignature.setText('100000');
 }
 function filltawuOdc(form){
+
     const date = form.getTextField('date');
     var s = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
     date.setText(s.toString());
-    // const omangNumber = form.getTextField('omangNumber');
-    //     omangNumber.setText('100000');
-    // const customerName = form.getTextField('customerName');
-    //     customerName.setText('100000');
-    // const place = form.getTextField('place');
-    //     place.setText('100000');
-    // const institution = form.getTextField('institution');
-    //     institution.setText('100000');
-    // const position = form.getTextField('position');
-    //     position.setText('100000');
-    // const omangNumber1 = form.getTextField('omangNumber1');
-    //     omangNumber1.setText('100000');
+    const omangNumber = form.getTextField('omangNumber');
+    const customerName = form.getTextField('customerName');
+    const institution = form.getTextField('institution');
+    const position = form.getTextField('position');
+    const omangNumber1 = form.getTextField('omangNumber1');
 
+    if (formData !== '') {
+
+        customerName.setText(formData.get('applicantName')+ ' ' + formData.get('applicantSurname'))
+        position.setText(formData.get('occupation'))
+
+        omangNumber.setText(formData.get('omangNumber'));
+        omangNumber1.setText(formData.get('omangNumber'));
+
+        institution.setText(formData.get('employer'));
+
+
+    }
 
     const place = form.getTextField('place');
     place.setText('Gaborone');
@@ -774,10 +877,6 @@ function fillDeclaration(form) {
 var gender = 'male';
 function pg1(form) {
 
-    const fields = form.getFields();
-    fields.forEach((field) => {
-        console.log(`Field name: ${field.getName()}`);
-    });
 //    const streetName2 = form.getTextField('Street Name_2');
 //     Field name: Street Name_2
 // aff.js:59 Field name: Plot Number
@@ -3821,6 +3920,11 @@ function createForm() {
     
         formData = new FormData(event.target);
         aFromB();
+        OverviewFromB();
+        affordabilityFromB();
+        blilFromB();
+        tawuFromB();
+        govFromB();
         //containerDiv.removeChild(form);
         formContainer.style.display = 'none'
     });
