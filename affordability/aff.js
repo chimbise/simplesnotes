@@ -1476,6 +1476,7 @@ function chooseLoan() {
                 loan = number;
 
                 calMax = calculateMaxInstallment()
+                MaxLoan = findClosestKey(installment)
 
                 net = Number(calMax[8] - installment).toFixed(2);
 
@@ -1531,16 +1532,16 @@ function chooseLoan() {
                 if (isNaN(number)) {
                     number = number.slice(0, -1);  // Remove non-numeric character
                 }
-                var result = findClosestKey(number);  //intalment, loanAmount, insurance
-                installment = result[0];
-                loan = result[1];
+                MaxLoan = findClosestKey(number);  //intalment, loanAmount, insurance
+                installment = MaxLoan[0];
+                loan = MaxLoan[1];
 
                 calMax = calculateMaxInstallment()
 
                 net = Number(calMax[8] - installment).toFixed(2);
 
                 var settle = addPairs(settleLoanBalances)  ///make global
-                b2c = Number(loan-2*result[2]-settle).toFixed(2);
+                b2c = Number(loan-MaxLoan[2]-settle).toFixed(2);
 
                 updateTerm(term,Actual2)
                 updateInstallment(Actual4)
@@ -1591,14 +1592,14 @@ function chooseLoan() {
                 calMax = calculateMaxInstallment()
                     var t = calMax[8] - number
                 if(t >= rule && t <= calMax[8]){
-                    var result = findClosestKey(t);  //intalment, loanAmount, insurance
-                    installment = result[0];
-                    loan = result[1];
+                    MaxLoan = findClosestKey(t);  //intalment, loanAmount, insurance
+                    installment = MaxLoan[0];
+                    loan = MaxLoan[1];
 
                     net = Number(calMax[8] - installment).toFixed(2);
 
                     var settle = addPairs(settleLoanBalances)  ///make global
-                    b2c = Number(loan-2*result[2]-settle).toFixed(2);
+                    b2c = Number(loan-MaxLoan[2]-settle).toFixed(2);
                 }
 
                 updateTerm(term,Actual2)
@@ -1656,12 +1657,10 @@ function chooseLoan() {
                 var settle = addPairs(settleLoanBalances)  ///make global
 
                 var t = number + settle;
-                console.log(t)
 
                 t = Math.ceil(t / 500) * 500;
                 
                 var f = totalMonthlyAmountDisplay(t)
-                console.log(f)
 
                 var t2 = t + 2*f[1]
 
@@ -1672,13 +1671,13 @@ function chooseLoan() {
                 }
 
                 if(number >= 1000 && t2 <= result[1]){
-                    console.log('here')
                     f = totalMonthlyAmountDisplay(t2)
                     installment = f[0];
                     loan = t2;
+                    MaxLoan = findClosestKey(installment); 
 
                     net = Number(calMax[8] - installment).toFixed(2);
-                    b2c = Number(loan-2*f[1]-settle).toFixed(2);
+                    b2c = Number(loan-MaxLoan[2]-settle).toFixed(2);
                     
                     updateTerm(term,Actual2)
                     updateInstallment(Actual4)
@@ -3175,18 +3174,27 @@ function maritalStatus() {
     // Add change event listeners to the radio buttons
     notMarriedinput.addEventListener('change', (event)=>{
         maritalStatusValue = event.target.value;
+        console.log(maritalStatusValue)
     });
     divorcedInput.addEventListener('change', (event)=>{
         maritalStatusValue = event.target.value;
+        console.log(maritalStatusValue)
+
     });
     widowedInput.addEventListener('change', (event)=>{
         maritalStatusValue = event.target.value;
+        console.log(maritalStatusValue)
+
     });
     marriedCOPInput.addEventListener('change', (event)=>{
         maritalStatusValue = event.target.value;
+        console.log(maritalStatusValue)
+
     });
     marriedOCOPInput.addEventListener('change', (event)=>{
         maritalStatusValue = event.target.value;
+        console.log(maritalStatusValue)
+
     });
 
     // Set initial value for checked
@@ -3659,8 +3667,10 @@ function calculateMaxInstallment() {
     var n11 = adjNettIncome + taxx + settleloans;
     if (basicAmount <= 9019) {
         rule = 600;
-    } else if(maritalStatusValue !== 'Not married') {
-        rule = 1500
+    } else if(maritalStatusValue === 'Not married') {
+        rule = 1300
+    } else {
+        rule = 1500;
     }
     var n13 = n11 - rule;
    return [Number(basicAmount),permanentAllowance,Number(adjBasicSalary.toFixed(2)),Number(deductionAmount),
