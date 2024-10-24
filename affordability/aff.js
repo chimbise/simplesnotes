@@ -4,6 +4,8 @@ let affordabilityFromB;
 let blilFromB;
 let tawuFromB;
 let govFromB;
+let pg2FromB;
+let pg3FromB;
 
 async function fillPdf() {
 
@@ -60,16 +62,14 @@ async function fillPdf() {
     const formfcbApp2 = pdfDocfcbApp2.getForm();
     const formfcbApp3 = pdfDocfcbApp3.getForm();
 
-    const fields = formfcbApp1.getFields();
-    fields.forEach((field) => {
-        console.log(`Field name: ${field.getName()}`);
-    });
-
     
     fillOverview(formoverview)
     fillaffordability(formaffordability,calMax)
     fillblil(formblil)
     pg1(formfcbApp1)
+    pg2(formfcbApp2)
+    pg3(formfcbApp3)
+
     var cg = ''
 
     switch (inputid) {
@@ -193,7 +193,7 @@ container.style.display = 'flex';
 container.style.flexDirection = 'column'; // Align checkboxes vertically
 
 // Array of labels for the checkboxes
-const labels = ['overview', 'affordability', 'credit life', 'odc', 'fcbApp1'];
+const labels = ['overview', 'affordability', 'credit life', 'odc', 'fcbApp1','page2','page3'];
 
 // Loop through the labels to create checkboxes and their labels
 labels.forEach(labelText => {
@@ -311,6 +311,34 @@ labels.forEach(labelText => {
 
     }
     govFromB = updateGovOdc;
+    async function updatepg2() {
+
+        const pdfDocPg2 = await PDFLib.PDFDocument.load(pdfBytesfcbApp2);
+        const formPg2 = pdfDocPg2.getForm();
+
+        pg2(formPg2)
+
+        formPg2.flatten();
+        const filledPdfByte = await pdfDocPg2.save();
+        const blob = new Blob([filledPdfByte], { type: 'application/pdf' });
+        url10 = URL.createObjectURL(blob);
+
+    }
+    pg2FromB = updatepg2;
+    async function updatepg3() {
+
+        const pdfDocPg3 = await PDFLib.PDFDocument.load(pdfBytesfcbApp3);
+        const formPg3 = pdfDocPg3.getForm();
+
+        pg3(formPg3)
+
+        formPg3.flatten();
+        const filledPdfByte = await pdfDocPg3.save();
+        const blob = new Blob([filledPdfByte], { type: 'application/pdf' });
+        url11 = URL.createObjectURL(blob);
+
+    }
+    pg3FromB = updatepg3;
 // Show the download button
 const downloadButton = document.createElement('button');
 downloadButton.textContent = 'download'
@@ -326,9 +354,8 @@ optionsDiv.appendChild(downloadButton)
 // // Handle download on button click
 
 
-downloadButton.onclick = function() {
-    // const checkedLabels = [];
-    
+downloadButton.onclick = function() {  
+
     // Select all checkboxes
     const checkboxes = container.querySelectorAll('input[type="checkbox"]');
 
@@ -338,15 +365,17 @@ downloadButton.onclick = function() {
         const d = document.createElement('a')
         const e = document.createElement('a')
         const f = document.createElement('a')
-
-
+        const g = document.createElement('a')
+        const h = document.createElement('a')
 
         a.href = url;
         b.href = url2;
         c.href = url3;
         e.href = url4;
         f.href = url5;
-        d.href = url9;//pg1
+        d.href = url9;
+        g.href = url10;
+        h.href = url11;
 
         a.download = 'overview.pdf';
         b.download = 'affordability.pdf';
@@ -354,14 +383,17 @@ downloadButton.onclick = function() {
         d.download = 'page1.pdf';
         e.download = 'odc.pdf';
         f.download = 'odc.pdf';
-
-
+        g.download = 'page2.pdf';
+        h.download = 'page3.pdf';
+        
         document.body.appendChild(a);
         document.body.appendChild(b);
         document.body.appendChild(c);
         document.body.appendChild(d);
         document.body.appendChild(e);
         document.body.appendChild(f);
+        document.body.appendChild(g);
+        document.body.appendChild(h);
 
 
 
@@ -386,15 +418,19 @@ downloadButton.onclick = function() {
                         if (cg === 'g') {
                             e.click()
                             document.body.removeChild(e);
-
                         } else {
                             f.click()
                             document.body.removeChild(f);
-
                         }
                         break;
                     case 'fcbApp1':
                         d.click()
+                        break;
+                    case 'page2':
+                        g.click()
+                        break;
+                    case 'page3':
+                        h.click()
                         break;
                     default:
                         break;
@@ -406,8 +442,8 @@ downloadButton.onclick = function() {
         document.body.removeChild(b);
         document.body.removeChild(c);
         document.body.removeChild(d);
-        //document.body.removeChild(e); already removed
-        //document.body.removeChild(f); already removed
+        document.body.removeChild(g);
+        document.body.removeChild(h);
     };
     containerDiv.appendChild(optionsDiv)
     // const c = document.createElement('a');
@@ -628,8 +664,12 @@ function fillaffordability(form,aff){
 }
 
 
-function 
-fillblil(form){
+function fillblil(form){
+
+    // const fields = formfcbApp1.getFields();
+    // fields.forEach((field) => {
+    //     console.log(`Field name: ${field.getName()}`);
+    // });
     const bankName = form.getTextField('bankName');
     bankName.setText('First Capital Bank');
 
@@ -651,6 +691,8 @@ fillblil(form){
 
     const accType = form.getCheckBox('accType');
     accType.check();
+    const omang = form.getTextField('omang');
+
 
     if (formData !== '') {
 
@@ -662,7 +704,7 @@ fillblil(form){
 
         cellNo.setText(formData.get('cell'));
         workNo.setText(formData.get('workPhone'));
-
+        omang.setText(formData.get('omangNumber'));
     }
 
 
@@ -699,7 +741,6 @@ fillblil(form){
     var s = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
     date.setText(s.toString());
 
-    //const omang = form.getTextField('omang');
     //omang.setText('100000');
 
     const birthdate = form.getTextField('birthdate');
@@ -716,6 +757,7 @@ function fillgovOdc(form){
     const postOf = form.getTextField('postOf');
     const situated = form.getTextField('situated');
     const residingAt = form.getTextField('residingAt');
+    const customerName1 = form.getTextField('customerName1');
 
     if (formData !== '') {
 
@@ -729,6 +771,7 @@ function fillgovOdc(form){
 
         situated.setText(formData.get('employerAddress'));
         residingAt.setText(formData.get('ward')+','+formData.get('city'));
+        customerName1.setText(formData.get('applicantName')+ ' ' + formData.get('applicantSurname'))
 
     }
     const loanAmount = form.getTextField('loanAmount');
@@ -745,7 +788,6 @@ function fillgovOdc(form){
 
     const gaborone = form.getTextField('Gaborone');
     gaborone.setText('Gaborone');
-    // const customerName1 = form.getTextField('customerName1');
     // customerName1.setText('100000');
     const date2 = form.getTextField('date2');
     date2.setText(s.toString());    // const omangNumber = form.getTextField('omangNumber');
@@ -1050,36 +1092,94 @@ if (formData !== '') {
     installmentz.setText(installment.toString()); 
 }
 function pg2(form) {
+
+    console.log('here')
+    var s = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+   
     // customerSignature
     // agentSignature
-    // date1
-    // witness1
-    // Signature_3
-    const Signature_4 = form.getTextField('Signature_4');
-    Signature_4.setText('100000');
-    // date2
-    // date3
-    // date4
-    // agentName
-    // witness2
-    // customerName
+    const witness1 = form.getTextField('witness1');
+    witness1.setText('Ashley Hetanang-Mampane');
+
+    //const Signature_4 = form.getTextField('Signature_4');
+
+    const date2 = form.getTextField('date2');
+    const date3 = form.getTextField('date3');
+    const date4 = form.getTextField('date4');
+    const date1 = form.getTextField('date1');
+
+    date1.setText(s.toString());
+    date2.setText(s.toString());
+    date3.setText(s.toString());
+    date4.setText(s.toString());
+
+    //const agentName = form.getTextField('agentName');
+    const witness2 = form.getTextField('witness2');
+    witness2.setText('Lefoko Ronkwane');
+
+    const customerName = form.getTextField('customerName');
+    if (formData !== '') {
+
+        customerName.setText(formData.get('applicantName')+ ' ' + formData.get('applicantSurname'))
+
+    }
+
 }
 function pg3(form) {
-    // beneficiaryName
-    // beneficiaryID
-    // beneficiaryBirthdate
-    // beneficiaryGender
-    // beneficiaryAddress
+
+    // const fields = form.getFields();
+    // fields.forEach((field) => {
+    //     console.log(`Field name: ${field.getName()}`);
+    // });
+    const beneficiaryName = form.getTextField('beneficiaryName');
+    const beneficiaryID = form.getTextField('beneficiaryID');
+    const beneficiaryBirthdate = form.getTextField('beneficiaryBirthdate');
+    const beneficiaryAddress = form.getTextField('beneficiaryAddress');
+    const beneficiaryGender = form.getTextField('beneficiaryGender');
     const beneficiaryCellNumber = form.getTextField('beneficiaryCellNumber');
-    beneficiaryCellNumber.setText('100000');
-    // title
-    // customerName1
-    // customerID 
-    // customerGender
-    // customerBirthdate
-    // customerAddress
-    // customerCellNumber
-    // workNumber
+
+    const title = form.getTextField('tittle');
+    const customerName1 = form.getTextField('customerName1');
+    const customerID = form.getTextField('customerID');
+    const customerGender = form.getTextField('customerGender');
+    const customerBirthdate = form.getTextField('customerBirthdate');
+    const customerAddress = form.getTextField('customerAddress');
+    const customerCellNumber = form.getTextField('customerCellNumber');
+    const workNumber = form.getTextField('workNumber');
+  
+    customerBirthdate.setText(dayValue+'/'+monthValue+'/'+yearValue); 
+
+    if (formData !== '') {
+
+        beneficiaryName.setText(formData.get('beneficiaryName')+ ' ' + formData.get('beneficiarySurname'))
+        beneficiaryID.setText(formData.get('beneficiaryID'))
+        beneficiaryBirthdate.setText(formData.get('beneficiaryBirthdate'))
+        beneficiaryAddress.setText(formData.get('beneficiaryAddressBox')+','+formData.get('beneficiaryTown'))
+        beneficiaryCellNumber.setText(formData.get('beneficiaryCellNumber'))
+
+        customerName1.setText(formData.get('applicantName')+ ' ' + formData.get('applicantSurname'))
+        customerID.setText(formData.get('omangNumber')); 
+        if (formData.get('omangNumber').charAt(4) == 1) {
+            title.setText('Mr')
+            customerGender.setText('M'); 
+        } else if(maritalStatusValue == 'Not married'){
+            title.setText('Ms')
+            customerGender.setText('F'); 
+        } else{
+            title.setText('Mrs')
+            customerGender.setText('F'); 
+        }
+
+        if (formData.get('beneficiaryID').charAt(4) == 1) {
+            beneficiaryGender.setText('M');
+        } else {
+            beneficiaryGender.setText('F'); 
+        }    
+
+        customerCellNumber.setText(formData.get('cell')); 
+        customerAddress.setText(formData.get('addressBox')+','+formData.get('town'));  
+        workNumber.setText(formData.get('workPhone'));
+    }
     // customerSignature1
     // bankSignature
 }
@@ -3902,6 +4002,11 @@ function createForm() {
     const beneficiary = createSection('BENEFICIARY');
     beneficiary.appendChild(createField('Name', 'text', 'beneficiaryName'));
     beneficiary.appendChild(createField('Surname', 'text', 'beneficiarySurname'));
+    beneficiary.appendChild(createField('beneficiary ID', 'text', 'beneficiaryID'));
+    beneficiary.appendChild(createField('DOB', 'text', 'beneficiaryBirthdate'));
+    beneficiary.appendChild(createField('Box Number', 'text', 'beneficiaryAddressBox'));
+    beneficiary.appendChild(createField('City/Town', 'text', 'beneficiaryTown'))
+    beneficiary.appendChild(createField('Cell Number', 'text', 'beneficiaryCellNumber'));
 
     // Append all sections to the form
     form.appendChild(applicantDetails);
@@ -3935,6 +4040,8 @@ function createForm() {
         blilFromB();
         tawuFromB();
         govFromB();
+        pg2FromB();
+        pg3FromB();
         //containerDiv.removeChild(form);
         formContainer.style.display = 'none'
     });
