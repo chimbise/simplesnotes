@@ -85,8 +85,8 @@ async function fillPdf() {
             cg = 'g'
             break;
         case 'botslife':
-            fillBotsLifeOdc(formgov)
-            cg = 'g'
+            fillBotsLife(formbotsLife)
+            cg = 'bl'
             break;
         default:
             break;
@@ -174,19 +174,6 @@ async function fillPdf() {
     optionsDiv.style.width = '90%'
     optionsDiv.style.height = '90%'
 
-//     // Display the PDF in an iframe
-//     const iframe = document.createElement('iframe');
-//     iframe.style.width = '100%'
-//     iframe.style.height = '100%'
-//     iframe.style.backgroundColor = 'white'
-//     iframe.src = url;
-// // iframe.hidden = false;
-// // Display the PDF in an iframe
-// const iframe2 = document.createElement('iframe');
-// iframe2.style.width = '100%'
-// iframe2.style.height = '100%'
-// iframe2.style.backgroundColor = 'white'
-// iframe2.src = url2;
 // Create a container div for the checkboxes
 const container = document.createElement('div');
 container.style.display = 'flex';
@@ -367,6 +354,8 @@ downloadButton.onclick = function() {
         const f = document.createElement('a')
         const g = document.createElement('a')
         const h = document.createElement('a')
+        const i = document.createElement('a')
+
 
         a.href = url;
         b.href = url2;
@@ -376,15 +365,19 @@ downloadButton.onclick = function() {
         d.href = url9;
         g.href = url10;
         h.href = url11;
+        i.href = url7;
+
 
         a.download = 'overview.pdf';
         b.download = 'affordability.pdf';
         c.download = 'insurance.pdf';
         d.download = 'page1.pdf';
-        e.download = 'odc.pdf';
-        f.download = 'odc.pdf';
+        e.download = 'gov odc.pdf';
+        f.download = 'tawu odc.pdf';
         g.download = 'page2.pdf';
         h.download = 'page3.pdf';
+        i.download = 'bots life.pdf';
+
         
         document.body.appendChild(a);
         document.body.appendChild(b);
@@ -394,6 +387,8 @@ downloadButton.onclick = function() {
         document.body.appendChild(f);
         document.body.appendChild(g);
         document.body.appendChild(h);
+        document.body.appendChild(i);
+
 
 
 
@@ -418,9 +413,12 @@ downloadButton.onclick = function() {
                         if (cg === 'g') {
                             e.click()
                             document.body.removeChild(e);
-                        } else {
+                        } else if(cg === 't') {
                             f.click()
                             document.body.removeChild(f);
+                        } else if(cg === 'bl') {
+                            i.click()
+                            document.body.removeChild(i);
                         }
                         break;
                     case 'fcbApp1':
@@ -1132,26 +1130,53 @@ function pg3(form) {
     //     console.log(`Field name: ${field.getName()}`);
     // });
     const beneficiaryName = form.getTextField('beneficiaryName');
+    beneficiaryName.setFontSize(12);
+
     const beneficiaryID = form.getTextField('beneficiaryID');
+    beneficiaryID.setFontSize(12);
+
     const beneficiaryBirthdate = form.getTextField('beneficiaryBirthdate');
+    beneficiaryBirthdate.setFontSize(12);
+
     const beneficiaryAddress = form.getTextField('beneficiaryAddress');
+    beneficiaryAddress.setFontSize(12);
+
     const beneficiaryGender = form.getTextField('beneficiaryGender');
+    beneficiaryGender.setFontSize(12);
+
     const beneficiaryCellNumber = form.getTextField('beneficiaryCellNumber');
+    beneficiaryCellNumber.setFontSize(12);
+
 
     const title = form.getTextField('tittle');
+    title.setFontSize(12);
+
     const customerName1 = form.getTextField('customerName1');
+    customerName1.setFontSize(12);
+
     const customerID = form.getTextField('customerID');
+    customerID.setFontSize(12);
+
     const customerGender = form.getTextField('customerGender');
+    customerGender.setFontSize(12);
+
     const customerBirthdate = form.getTextField('customerBirthdate');
+    customerBirthdate.setFontSize(12);
+
     const customerAddress = form.getTextField('customerAddress');
+    customerAddress.setFontSize(12);
+
     const customerCellNumber = form.getTextField('customerCellNumber');
+    customerCellNumber.setFontSize(12);
+
     const workNumber = form.getTextField('workNumber');
-  
+
     customerBirthdate.setText(dayValue+'/'+monthValue+'/'+yearValue); 
 
     if (formData !== '') {
 
         beneficiaryName.setText(formData.get('beneficiaryName')+ ' ' + formData.get('beneficiarySurname'))
+
         beneficiaryID.setText(formData.get('beneficiaryID'))
         beneficiaryBirthdate.setText(formData.get('beneficiaryBirthdate'))
         beneficiaryAddress.setText(formData.get('beneficiaryAddressBox')+','+formData.get('beneficiaryTown'))
@@ -1465,17 +1490,6 @@ function chooseLoan() {
     chooseLoanDiv.style.display = 'flex';  // This makes the spans align horizontally
     chooseLoanDiv.style.flexDirection = 'vertical';  // Adds space between the two spans 
 
-    // const contain1 = document.createElement('div');
-    // contain1.className = 'l6xers'
-    //     const Actual1 = document.createElement('div')
-    //     Actual1.textContent = 'Actual'
-    //     const Actual11 = document.createElement('div')
-    //     Actual11.textContent = 'Parameter'
-    //     const Actual111 = document.createElement('div')
-    //     Actual111.textContent = 'Edit'
-    // contain1.appendChild(Actual1)
-    // contain1.appendChild(Actual11)
-    // contain1.appendChild(Actual111)
 
     const contain2 = document.createElement('div');
     contain2.className = 'l6xers'
@@ -1571,28 +1585,25 @@ function chooseLoan() {
                 }
 
                 if (isMultipleOf500AndInRange(number)) {
-                var t = totalMonthlyAmountDisplay(number);
-                installment = t[0];
-                loan = number;
+                    var t = totalMonthlyAmountDisplay(number);
+                    installment = t[0];
+                    loan = number;
 
-                calMax = calculateMaxInstallment()
-                MaxLoan = findClosestKey(installment)
+                    calMax = calculateMaxInstallment()
+                    MaxLoan = findClosestKey(installment)
 
-                net = Number(calMax[8] - installment).toFixed(2);
+                    net = Number(calMax[8] - installment).toFixed(2);
 
-                var settle = addPairs(settleLoanBalances)  ///make global
-                b2c = Number(loan - 2*t[1]-settle).toFixed(2);
+                    var settle = addPairs(settleLoanBalances)  //make global
+                    b2c = Number(loan - MaxLoan[2]-settle).toFixed(2);
 
-                updateTerm(term,Actual2)
-                updateInstallment(Actual4)
-                updateLoanAmount(Actual3)
-                updateNetPay(Actual5)
-                updateB2c(Actual6)
-
-                } 
-                
+                    updateTerm(term,Actual2)
+                    updateInstallment(Actual4)
+                    updateLoanAmount(Actual3)
+                    updateNetPay(Actual5)
+                    updateB2c(Actual6)
+                }     
             });
-
             // Append the editable span to the container div
         Actual333.appendChild(editableSpan);
     contain3.appendChild(Actual33) 
@@ -3464,6 +3475,31 @@ function selectQualifyingProduct() {
     opt7.appendChild(metropolitanInput)
     opt7.appendChild(metropolitanLabel)
 
+    const opt8 = document.createElement('div')
+    opt8.className = 'botsLife'
+    const botsLifeInput = document.createElement('input');
+    botsLifeInput.setAttribute('type', 'radio');
+    botsLifeInput.setAttribute('name', 'product');
+    botsLifeInput.setAttribute('id', 'botsLife');
+    botsLifeInput.setAttribute('value', '0.26');
+    const botsLifeLabel = document.createElement('label');
+    botsLifeLabel.setAttribute('for', 'product');
+    botsLifeLabel.textContent = 'Bots Life';
+    opt8.appendChild(botsLifeInput)
+    opt8.appendChild(botsLifeLabel)
+
+    const opt9 = document.createElement('div')
+    opt9.className = 'bpopf'
+    const bpopfInput = document.createElement('input');
+    bpopfInput.setAttribute('type', 'radio');
+    bpopfInput.setAttribute('name', 'product');
+    bpopfInput.setAttribute('id', 'bpopf');
+    bpopfInput.setAttribute('value', '0.26');
+    const bpopfLabel = document.createElement('label');
+    bpopfLabel.setAttribute('for', 'product');
+    bpopfLabel.textContent = 'bpopf';
+    opt9.appendChild(bpopfInput)
+    opt9.appendChild(bpopfLabel)
 
     // Append the radio inputs before the labels to the parent div
     productDiv.appendChild(optDiv);
@@ -3473,6 +3509,9 @@ function selectQualifyingProduct() {
     productDiv.appendChild(opt3);
     productDiv.appendChild(opt7);
     productDiv.appendChild(opt6);
+    productDiv.appendChild(opt8);
+    productDiv.appendChild(opt9);
+
 
 
     containerDiv.appendChild(productDiv)
@@ -3533,7 +3572,22 @@ function selectQualifyingProduct() {
         inputid = 'lahisa'
         productMaxYear = 'other'
     });
-
+    botsLifeInput.addEventListener('change', (event)=>{
+        productValue = Number(event.target.value);
+        rt = productValue;
+        b6 = productValue/12;
+        c9 = 1 - 0.0268;
+        inputid = 'botsLife'
+        productMaxYear = 'botsLife'
+    });
+    bpopfInput.addEventListener('change', (event)=>{
+        productValue = Number(event.target.value);
+        rt = productValue;
+        b6 = productValue/12;
+        c9 = 1 - 0.028;
+        inputid = 'botsLife'
+        productMaxYear = 'botsLife'
+    });
     // Set initial value for checked
     switch (inputid) {
         case 'tawu26':
@@ -3556,6 +3610,12 @@ function selectQualifyingProduct() {
             break;
         case 'lahisa':
             lahisaInput.checked = true;
+            break;
+        case 'botsLife':
+            botsLifeInput.checked = true;
+            break;
+        case 'bpopf':
+            bpopfInput.checked = true;
             break;
         default:
             break;
@@ -3785,9 +3845,9 @@ function findClosestKey(target) {
         showNotification('client does not qualify(NET TOO LOW)')
         return [0,0,0]
     }
-    var ui = 2;
-    if (inputid === 'lahisa') {
-        ui = 1;
+    var ui = 1;
+    if (inputid !== 'lahisa' && productMaxYear === 'other') {
+        ui = 2;
     }
     for (let i = 0; i < arr.length; i++) {
         var realMonthly = totalMonthlyAmountDisplay(arr[i]);

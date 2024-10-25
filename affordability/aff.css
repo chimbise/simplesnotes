@@ -569,6 +569,14 @@ select, input[type="submit"] {
 .lahisa{
     padding:10px;
     background-color: white;
+}
+.botsLife{
+    padding:10px;
+    background-color: white;
+}
+.bpopf{
+    padding:10px;
+    background-color: white;
     border-radius:0 0 10px 10px;
 }
 .optionsDiv{
