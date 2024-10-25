@@ -84,7 +84,7 @@ async function fillPdf() {
             fillgovOdc(formgov)
             cg = 'g'
             break;
-        case 'botslife':
+        case 'botsLife----------------':
             fillBotsLife(formbotsLife)
             cg = 'bl'
             break;
